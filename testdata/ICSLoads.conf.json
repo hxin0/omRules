@@ -1,0 +1,20 @@
+{
+    "loadCount": 2,
+    "projectCode": "1770",
+    "carrier": [
+        "DEH2",
+        "DEH2",
+        "001F"
+    ],
+    "loads": [
+        {
+            "loadNumber": "LS68403",
+            "status": "Tendered",
+            "carrier": "DEH2"
+        },
+        {
+            "loadNumber": "LS68404",
+            "status": "Available"
+        }
+    ]
+}
