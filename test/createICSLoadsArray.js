@@ -3,6 +3,7 @@
 
 //put multiple created loads into an json object and write to a file under ../testdata/ICSLoads.conf.json
 //the file also has an array of carrier's SCAC codes for the loads to be tendered to
+//skeletonRowNumber: 0 based
 // the json file should look like this:
 /*
 {
@@ -38,7 +39,7 @@ describe('CarrierMobile Test Data Creation', function() {
     // var load = '';
     // var loadCount = 1;
     var testObject = require('../testdata/ICSLoads.conf');
-    var loadCount = testObject.loadCount;
+    //var loadCount = testObject.loadCount;
     var loadsList = [];
     
     function formatDate(date) {
@@ -74,21 +75,40 @@ describe('CarrierMobile Test Data Creation', function() {
             browser.click('input[value="HJBT JBVAN"][type="checkbox"]');
         }
         //console.log('checkbox HJBT JBVAN: ' + !browser.isSelected('input[value="HJBT JBVAN"][type="checkbox"]'))
-        browser.selectByValue('[id="eomSearchMain:baseSearchList"]', 'PROJECT CODE');
-        browser.setValue('[id="eomSearchMain:baseSearchVal"]', '1770');
+        browser.selectByValue('[id="eomSearchMain:baseSearchList"]', testObject.searchOptions);
+        browser.setValue('[id="eomSearchMain:baseSearchVal"]', testObject.searchValue);
+        //browser.selectByValue('[id="eomSearchMain:baseSearchList"]', 'PROJECT CODE');
+        //browser.setValue('[id="eomSearchMain:baseSearchVal"]', projectCode);
         browser.click('input[id="eomSearchMain:advNext"]');
         //click book order icon on the first skeleton
-        browser.waitForExist('img[id="frmSkeletonListing:lSkeletonListing:1:cmdBtnBookFromSklActionFocusLink"]');
-        browser.click('img[id="frmSkeletonListing:lSkeletonListing:1:cmdBtnBookFromSklActionFocusLink"]');
-        if (loadCount>1) {
-            browser.setValue('input[id="frmPickupDate:inpNumberOfCopies"]', loadCount); //for multiple loads
+        browser.waitForExist('img[id="frmSkeletonListing:lSkeletonListing:' + testObject.skeletonRowNumber.toString() + ':cmdBtnBookFromSklActionFocusLink"]');
+        browser.click('img[id="frmSkeletonListing:lSkeletonListing:' + testObject.skeletonRowNumber.toString() + ':cmdBtnBookFromSklActionFocusLink"]');
+        if (testObject.loadCount>1) {
+            browser.setValue('input[id="frmPickupDate:inpNumberOfCopies"]', testObject.loadCount); //for multiple loads
             browser.keys('\uE004');
             browser.selectByValue('select[id="frmPickupDate:somBookMultipleTypes"]', 'EXACT');
         }
         browser.click('input[id="frmPickupDate:btnNext"]');
+        //browser.debug();
+        //If no rate was found, click OK button to continue, otherwise there will be an exception, catch and ignore
+        try {
+            if (browser.waitForVisible('[id="frmRateCheck:noRateReason"]', 10000)) {
+                //browser.debug();
+                browser.selectByValue('[id="frmRateCheck:noRateReason"]', '264');
+                browser.pause(1000);
+                browser.click('input[id="frmRateCheck:olnkRsnCodeForNoRate"]');
+            }
+        } catch (e) {
+/*             if (e) {
+                console.log("noRateReason not appear");
+            } */
+        }
+        //browser.pause(5000);
 
+        browser.waitForExist('label[id="frmRateCheck:olblStatusMsg"]', 20000, true);
+        browser.pause(3000);
         //switch to iframe, it works!
-        browser.waitForExist('iframe[id="TB_iframeContent"]');
+        browser.waitForExist('iframe[id="TB_iframeContent"]',500000);
         var my_frame = $('iframe[id="TB_iframeContent"]').value;
         console.log('frame: ' + my_frame);
         browser.frame(my_frame);
@@ -97,23 +117,32 @@ describe('CarrierMobile Test Data Creation', function() {
         // browser.frame(my_frame.value);
         //console.log('debug: get to the iframe');
 
+        browser.waitForExist('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:0:recFleetId"]');
         //click the ICS link
-        browser.waitForExist('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:1:recFleetId"]');
-        browser.click('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:1:recFleetId"]');
-        console.log('ICS');
+        for (i=0; i<5; i++) {
+            if (browser.getText('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]') == "ICS") {
+                console.log(browser.getText('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]'));
+                browser.click('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]');
+                break;
+            }       
+        }
+
+        //browser.debug();
+
         //get scheduled appointment date from stop 1 to set stop 99
         browser.selectByValue('[id="eomOrderDetail:stopsList:1:trailerActionVal"]', 'N');
         var dat = new Date();
-        
-        browser.setValue('input[id="eomOrderDetail:stopsList:0:schedBegCalendarTime"]', '06:00');
-        browser.setValue('input[id="eomOrderDetail:stopsList:0:schedEndCalendarTime"]', '20:00');
-        browser.setValue('input[id="eomOrderDetail:stopsList:1:schedBegCalendarDate"]', formatDate(addDays(dat, 1)));
-        browser.setValue('input[id="eomOrderDetail:stopsList:1:schedBegCalendarTime"]', '07:00');
-        browser.setValue('input[id="eomOrderDetail:stopsList:1:schedEndCalendarTime"]', '21:00');
+
+        browser.waitForEnabled('input[id="eomOrderDetail:stopsList:1:schedBegCalendarDate"]', 5000);
+        browser.setValue('input[id="eomOrderDetail:stopsList:0:schedBegCalendarTime"]', testObject.appt.apptTime.stop1Time1);
+        browser.setValue('input[id="eomOrderDetail:stopsList:0:schedEndCalendarTime"]', testObject.appt.apptTime.stop1Time2);
+        browser.setValue('input[id="eomOrderDetail:stopsList:1:schedBegCalendarDate"]', formatDate(addDays(dat, testObject.appt.apptDate)));
+        browser.setValue('input[id="eomOrderDetail:stopsList:1:schedBegCalendarTime"]', testObject.appt.apptTime.stop99Time1);
+        browser.setValue('input[id="eomOrderDetail:stopsList:1:schedEndCalendarTime"]', testObject.appt.apptTime.stop99Time2);
 
         browser.pause(3000);
         
-        if (loadCount == 1) {
+        if (testObject.loadCount == 1) {
             browser.click('input[id="eomOrderDetail:createOrder"]');              
             //get load number
             var loadMessage = browser.getText('table label[id="eomOrderDetail:orderLabel"]');
@@ -122,7 +151,7 @@ describe('CarrierMobile Test Data Creation', function() {
             loadsList.push({loadNumber:load, status:"Available"});
             testObject.loads = loadsList;
         } else {
-            console.log('multiple load count: ' + loadCount);
+            console.log('multiple load count: ' + testObject.loadCount);
             browser.click('input[id="eomOrderDetail:lnfscCrtMultOrders"]'); //for multiple loads
             console.log('debug: alert: ' + browser.alertText()); //for multiple loads
             browser.alertAccept();
@@ -133,12 +162,12 @@ describe('CarrierMobile Test Data Creation', function() {
             browser.pause(3000);
             //get load numbers //for multiple loads
             //- first switch to the frame
-            browser.waitForExist('iframe[id="TB_iframeContent"]');
+            browser.waitForExist('iframe[id="TB_iframeContent"]', 50000);
             var my_frame = $('iframe[id="TB_iframeContent"]').value;
             console.log('frame: ' + my_frame);
             browser.frame(my_frame);
             //- second get text
-            var loadsMessage = browser.getText('table[id="eomOfferMail:dtBMProgressData"] td[class="progressViewDataClass centerColumnClass"] label[class="labelCell"]')
+            var loadsMessage = browser.getText('table[id="eomOfferMail:dtBMProgressData"] td[class="progressViewDataClass centerColumnClass"] label[class="labelCell"]');
             for (i = 0; i < loadsMessage.length; i++) {
                 load = loadsMessage[i].split(' ')[2];
                 console.log('load-' + (i+1) + ': ############## ' + load + ' ##############');
@@ -183,11 +212,31 @@ describe('CarrierMobile Test Data Creation', function() {
             browser.setValue('[id="form:projects"]',projectCode);
             browser.setValue('[id="form:carriers"]',carrier);
             browser.click('button=Create Preplan');
-            //browser.pause(2000);
+            browser.pause(2000);
+            //if need to refresh
+            if (browser.isExisting('[class="iceMsgsError"]')) {
+                if (browser.getText('[class="iceMsgsError"]') == "Error Preplanning ORDER DATA HAS CHANGED - PLEASE REFRESH DATA") {
+                    browser.click('button=Refresh');
+                    browser.pause(3000);
+                    browser.click('button=Create Preplan');
+                    browser.pause(3000);
+                }
+            }
             //If stop tender warning coming up
-            if (browser.waitForExist('[class="lnfCancelButton iceCmdLnk"]', 5000)) {
+            if (browser.waitForExist('[class="lnfCancelButton iceCmdLnk"]', 50000)) {
                 browser.click('[class="lnfCancelButton iceCmdLnk"]');
             }
+            browser.pause(2000);
+            //need to refresh error could come up after tender warning
+            if (browser.isExisting('[class="iceMsgsError"]')) {
+                if (browser.getText('[class="iceMsgsError"]') == "Error Preplanning ORDER DATA HAS CHANGED - PLEASE REFRESH DATA") {
+                    browser.click('button=Refresh');
+                    browser.pause(3000);
+                    browser.click('button=Create Preplan');
+                    browser.pause(3000);
+                }
+            }
+            //browser.debug();
             loadsList[i].status = "Preplanned";
             //tender the load
             browser.pause(5000);
@@ -200,13 +249,13 @@ describe('CarrierMobile Test Data Creation', function() {
             //browser.debug();
             browser.waitForExist('[id="form:NCONRT_0"]', 50000);
             //browser.pause(2000);
-            browser.setValue('[id="form:NCONFN_0"]', 'ICS');
-            browser.setValue('[id="form:NCONLN_0"]', 'Carrier');
-            browser.setValue('[id="form:NCONPH_0"]', '4791234567');
+            browser.setValue('[id="form:NCONFN_0"]', testObject.tender.carrier.fName);
+            browser.setValue('[id="form:NCONLN_0"]', testObject.tender.carrier.lName);
+            browser.setValue('[id="form:NCONPH_0"]', testObject.tender.carrier.pNumber);
             browser.selectByValue('[id="form:j_id320"]', 'DRIVER');
-            browser.setValue('[id="form:NCONFN_1"]', 'ICS');
-            browser.setValue('[id="form:NCONLN_1"]', 'Driver');
-            browser.setValue('[id="form:NCONPH_1"]', '4791234568');
+            browser.setValue('[id="form:NCONFN_1"]', testObject.tender.driver.fName);
+            browser.setValue('[id="form:NCONLN_1"]', testObject.tender.driver.lName);
+            browser.setValue('[id="form:NCONPH_1"]', testObject.tender.driver.pNumber);
             browser.click('button=Create Tender');          
             loadsList[i].status = "Tendered";
 /*             //Dispatch the load - not working for needing manual approval carriers

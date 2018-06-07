@@ -109,6 +109,7 @@ describe('change loads appointment date and time', function() {
         var changedLoads = [];
         var dat = new Date();
         var newApptDate = eomAppt.newAppt.newApptDate;
+        var my_frame = "";
         if (newApptDate == "") {
             newApptDate = formatDate(dat);
         }
@@ -125,7 +126,7 @@ describe('change loads appointment date and time', function() {
                 //browser.debug();
                 //switch to iframe
                 browser.waitForExist('iframe[id="TB_iframeContent"]');
-                var my_frame = $('iframe[id="TB_iframeContent"]').value;
+                my_frame = $('iframe[id="TB_iframeContent"]').value;
 
                 browser.frame(my_frame);
                 
@@ -174,6 +175,10 @@ describe('change loads appointment date and time', function() {
                     browser.click('[id="frmOrderApptMaint:cbtnSave1"]');
                     browser.pause(1000);
                     //browser.debug();
+                    //no rate warning
+                    if (browser.isExisting('[id="frmOrderApptMaint:cbtnOkNoRateMsg"]')) {
+                        browser.click('[id="frmOrderApptMaint:cbtnOkNoRateMsg"]');
+                    }
                     
                     browser.waitForExist('td*=Appointment changes have been updated successfully', 25000);
                     //browser.pause(6000);
@@ -207,5 +212,3 @@ describe('change loads appointment date and time', function() {
         } 
     })
 });
-
-
