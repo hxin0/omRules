@@ -10,8 +10,10 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/createICSLoadsArray.js'
-        //'./test/eomApptChange.js'
+        //'./test/createICSLoadsArray.js'
+        './test/eomApptChange.js'
+        //'./test/createPCSLoadsArray.js'
+
     ],
     // Patterns to exclude.
     exclude: [
@@ -59,7 +61,7 @@ exports.config = {
     sync: true,
     //
     // Level of logging verbosity: silent | verbose | command | data | result | error
-    logLevel: 'silent',
+    logLevel: 'verbose',
     //
     // Enables colors for log output.
     coloredLogs: true,

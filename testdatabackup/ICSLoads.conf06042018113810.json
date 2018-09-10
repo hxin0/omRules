@@ -14,6 +14,7 @@
         }
     },
     "carrier": [
+        "001F",
         "DEH2",
         "001F"
     ],
@@ -31,14 +32,12 @@
     },
     "loads": [
         {
-            "loadNumber": "M501719",
-            "status": "Tendered",
-            "carrier": "DEH2"
+            "loadNumber": "M501272",
+            "status": "Available"
         },
         {
-            "loadNumber": "M501720",
-            "status": "Tendered",
-            "carrier": "001F"
+            "loadNumber": "M501273",
+            "status": "Available"
         }
     ]
 }

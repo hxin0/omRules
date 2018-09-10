@@ -7,7 +7,7 @@
     "searchBy": {
         "searchOptions": "CREATE USERID",
         "searchValue": "JISQHX3",
-        "pickupApptRange": 0, //how many days before pickupApptDate2
+        "pickupApptRange": 0, //how many days before pickupApptDate2 if it's bigger than 31, then re-calculate pickupApptDate2 as 31 days after pickupApptDate1
         "pickupApptDate2": "" //mm/dd/yyyy, empty string will be converted to yesterday's date
     },
     "newAppt": {
@@ -28,17 +28,23 @@
 */
 
 describe('change loads appointment date and time', function() {
-
+    //parameter date is Date type
     function formatDate(date) {
         return ('0' + (date.getMonth()+1)).slice(-2) + ('0' + date.getDate()).slice(-2) + date.getFullYear();
     }
 
+    //date is string, days is number
     function addDays(date, days) {
       var result = new Date(date);
       result.setDate(result.getDate() + days);
       return result;
     }
+
+    function fileTimestamp(date) {
+        return formatDate(date) + ('0' + (date.getHours())).slice(-2) + ('0' + (date.getMinutes())).slice(-2) + ('0' + (date.getSeconds())).slice(-2);
+    }
  
+    var filename = "../testdata/eomAppt";
     var eomAppt = require('../testdata/eomAppt');
     var loadsList = [];
    
@@ -50,6 +56,9 @@ describe('change loads appointment date and time', function() {
             pickupApptDate2 = formatDate(addDays(dat, -1));
         }
         var pickupApptDate1 = formatDate(addDays(dat, -1-eomAppt.searchBy.pickupApptRange));
+        if (eomAppt.searchBy.pickupApptRange > 31) {
+            pickupApptDate2 = formatDate(addDays(addDays(dat, -1-eomAppt.searchBy.pickupApptRange), 31));
+        }       
 
         browser.url('http://eom.jbhunt.com/eom/search/eomSearch.face?JEBPQV=PEVSF9R&GFQPTRVE=9&Qrh9vp%2BgTnIawIsmpjJGcQ%3D%3D=duMyr8l2vvA%3D&THHPTZ=9&YWMPTLUB=9&GFQDYEV=9325804455');
         browser.pause(2000);
@@ -66,15 +75,22 @@ describe('change loads appointment date and time', function() {
         browser.setValue('[id="eomSearchMain:basePickupBeginCalendarDate"]', pickupApptDate1);
         browser.setValue('[id="eomSearchMain:basePickupEndCalendarDate"]', pickupApptDate2);
         browser.click('[id="eomSearchMain:advOrderSearch"]');
-        
+        //browser.debug();
         browser.waitForExist('[id*=":optxtDispatchStatus"]');
+        //browser.pause(5000);
+        browser.windowHandleMaximize();
+
         browser.pause(5000);
 
-        loadsStatus = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtDispatchStatus"]')
+        browser.waitForExist('[id^="frmOrderListing:lOrderListing:"][id$=":optxtDispatchStatus"]', 15000);
+        //browser.debug();
+        loadsStatus = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtDispatchStatus"]');
         loadsNumber = browser.getText('[id*=":optxtOrderNumberActionFocusLink"]');
-        loadsdt = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime"]')
-        loadsdt2 = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime2"]')
-        loadsdt3 = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime3"]')       
+        browser.pause(2000);
+        browser.waitForExist('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime"]', 25000);
+        loadsdt = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime"]');
+        loadsdt2 = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime2"]');
+        loadsdt3 = browser.getText('[id^="frmOrderListing:lOrderListing:"][id$=":optxtPkpDtTime3"]');  
         //browser.debug();
         //console.log(loads);
         changeLoadCount = 0;
@@ -87,12 +103,23 @@ describe('change loads appointment date and time', function() {
         console.log(pickupApptDate1 + " " + pickupApptDate2);
         //console.log(loadsValue);
         //browser.debug();
+
+        
+        //rename the json file with timestamp before overwrite:
+        
+        var fs = require("fs");
+        var backupFilename = "./testdatabackup/eomAppt." + fileTimestamp(fs.statSync("./testdata/eomAppt.json").birthtime) + ".json";
+        fs.rename("./testdata/eomAppt.json", backupFilename, (err) => {
+			if (err) {
+                console.error(err);
+                return;
+			};
+			console.log("json file has been renamed to " + backupFilename);
+		});
         eomAppt.loads = loadsList;
         eomAppt.loadCount = loadsList.length;
         eomAppt.changeLoadCount = changeLoadCount;
-        
-        //write
-        var fs = require("fs");
+        //overwrite the json file
         fs.writeFile("./testdata/eomAppt.json", JSON.stringify(eomAppt, null, 4), (err) => {
 			if (err) {
                 console.error(err);
@@ -110,10 +137,14 @@ describe('change loads appointment date and time', function() {
         var dat = new Date();
         var newApptDate = eomAppt.newAppt.newApptDate;
         var my_frame = "";
+
         if (newApptDate == "") {
             newApptDate = formatDate(dat);
+        } else if (typeof(newApptDate) == "number") {
+            newApptDate = formatDate(addDays(dat, newApptDate));
         }
-        browser.windowHandleMaximize(); //otherwise will get unclickable error
+
+        //browser.windowHandleMaximize(); //otherwise will get unclickable error
         browser.pause(1000);
         for (i = 0; i < loadsList.length; i++) {
             if (eomAppt.newAppt.status2Change.includes(loadsList[i].status)) {
@@ -173,14 +204,19 @@ describe('change loads appointment date and time', function() {
                     browser.setValue('[id="frmOrderApptMaint:itaCommentText"]', 'TEST');
                     browser.pause(1000);
                     browser.click('[id="frmOrderApptMaint:cbtnSave1"]');
-                    browser.pause(1000);
-                    //browser.debug();
                     //no rate warning
-                    if (browser.isExisting('[id="frmOrderApptMaint:cbtnOkNoRateMsg"]')) {
-                        browser.click('[id="frmOrderApptMaint:cbtnOkNoRateMsg"]');
+                    for (k=0; k<5; k++) {
+                        browser.pause(1000);
+                        //browser.debug();
+                        if (browser.isExisting('td*=Appointment changes have been updated successfully')) {
+                            break;
+                        } else if (browser.isExisting('[id="frmOrderApptMaint:cbtnOkNoRateMsg"]')) {
+                            browser.click('[id="frmOrderApptMaint:cbtnOkNoRateMsg"]');
+                            browser.pause(2000);
+                            continue;   
+                        }
                     }
-                    
-                    browser.waitForExist('td*=Appointment changes have been updated successfully', 25000);
+                    browser.waitForExist('td*=Appointment changes have been updated successfully');
                     //browser.pause(6000);
                     if (j==0) {
                         eomAppt.loads[i].new1Dt = browser.getValue('[id="frmOrderApptMaint:lnfcBeginCalendarDate"]');

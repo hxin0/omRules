@@ -38,7 +38,7 @@ After tender, "load" can be in this format, see which format makes more sense.
 describe('CarrierMobile Test Data Creation', function() {
     // var load = '';
     // var loadCount = 1;
-    var testObject = require('../testdata/ICSLoads.conf');
+    var testObject = require('../testdata/PCSLoads.conf');
     //var loadCount = testObject.loadCount;
     var loadsList = [];
     
@@ -55,15 +55,15 @@ describe('CarrierMobile Test Data Creation', function() {
     function fileTimestamp(date) {
         return formatDate(date) + ('0' + (date.getHours())).slice(-2) + ('0' + (date.getMinutes())).slice(-2) + ('0' + (date.getSeconds())).slice(-2);
     }
-    
+     
     it.skip('to skip eom load creation, using ~~LS66225~~ instead', function() {
 
-        load = 'LS68392';
+        load = 'LS97471';
         console.log('load : ############## ' + load + ' ##############');
         loadsList.push({loadNumber:load});
         testObject.loads = loadsList;
         var fs = require("fs");
-        fs.writeFile("./testdata/ICSLoads.conf.json", JSON.stringify(testObject, null, 4), (err) => {
+        fs.writeFile("./testdata/PCSLoads.conf.json", JSON.stringify(testObject, null, 4), (err) => {
             if (err) {
                 console.error(err);
                 return;
@@ -71,19 +71,16 @@ describe('CarrierMobile Test Data Creation', function() {
         });
     });
     
-	it('should be able to book one or multiple exact ICS loads from eom', function() {
+	it('should be able to book one or multiple exact PCS loads from eom', function() {
 
         browser.url('http://eom.jbhunt.com/eom/search/eomSearch.face?JEBPQV=PEVSF9R&GFQPTRVE=9&Qrh9vp%2BgTnIawIsmpjJGcQ%3D%3D=duMyr8l2vvA%3D&THHPTZ=9&YWMPTLUB=9&GFQDYEV=9325804455');
         //check HJBT JBVAN checkbox is checked, otherwise, check it
         if (!browser.isSelected('input[value="HJBT JBVAN"][type="checkbox"]')) {
             browser.click('input[value="HJBT JBVAN"][type="checkbox"]');
         }
-        //console.log('checkbox HJBT JBVAN: ' + !browser.isSelected('input[value="HJBT JBVAN"][type="checkbox"]'))
-        browser.selectByValue('[id="eomSearchMain:baseSearchList"]', testObject.searchOptions);
-        browser.setValue('[id="eomSearchMain:baseSearchVal"]', testObject.searchValue);
-        //browser.selectByValue('[id="eomSearchMain:baseSearchList"]', 'PROJECT CODE');
-        //browser.setValue('[id="eomSearchMain:baseSearchVal"]', projectCode);
+        browser.setValue('input[id="eomSearchMain:billto"]', testObject.billTo);
         browser.click('input[id="eomSearchMain:advNext"]');
+
         //click book order icon on the first skeleton
         browser.waitForExist('img[id="frmSkeletonListing:lSkeletonListing:' + testObject.skeletonRowNumber.toString() + ':cmdBtnBookFromSklActionFocusLink"]');
         browser.click('img[id="frmSkeletonListing:lSkeletonListing:' + testObject.skeletonRowNumber.toString() + ':cmdBtnBookFromSklActionFocusLink"]');
@@ -122,9 +119,9 @@ describe('CarrierMobile Test Data Creation', function() {
         //console.log('debug: get to the iframe');
 
         browser.waitForExist('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:0:recFleetId"]');
-        //click the ICS link
+        //click the TRUCK link
         for (i=0; i<5; i++) {
-            if (browser.getText('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]') == "ICS") {
+            if (browser.getText('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]') == "TRUCK") {
                 console.log(browser.getText('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]'));
                 browser.click('table[id="eomOrderFleetDec:sifterMainContent"] table[id="eomOrderFleetDec:DayOneRec"] a[id="eomOrderFleetDec:DayOneRec:' + i.toString() + ':recFleetId"]');
                 break;
@@ -149,9 +146,10 @@ describe('CarrierMobile Test Data Creation', function() {
         if (testObject.loadCount == 1) {
             browser.click('input[id="eomOrderDetail:createOrder"]');              
             //get load number
-            var loadMessage = browser.getText('table label[id="eomOrderDetail:orderLabel"]');
-            load = loadMessage.split(' ')[1];
+            var loadMessage = browser.getText('table label[id="eomOrderDetail:precisionLabel"]');
+            load = loadMessage.split(' ')[2];
             console.log('load : ############## ' + load + ' ##############');
+
             loadsList.push({loadNumber:load, status:"Available"});
             testObject.loads = loadsList;
         } else {
@@ -184,17 +182,17 @@ describe('CarrierMobile Test Data Creation', function() {
         //rename the json file with timestamp before overwrite:
         
         var fs = require("fs");
-        var backupFilename = "./testdatabackup/ICSLoads.conf." + fileTimestamp(fs.statSync("./testdata/ICSLoads.conf.json").birthtime) + ".json";
-        fs.rename("./testdata/ICSLoads.conf.json", backupFilename, (err) => {
+        var backupFilename = "./testdatabackup/PCSLoads.conf." + fileTimestamp(fs.statSync("./testdata/PCSLoads.conf.json").birthtime) + ".json";
+        fs.rename("./testdata/PCSLoads.conf.json", backupFilename, (err) => {
 			if (err) {
                 console.error(err);
                 return;
 			};
 			console.log("json file has been renamed to " + backupFilename);
-		});
-
+        });
+                
         var fs = require("fs");
-        fs.writeFile("./testdata/ICSLoads.conf.json", JSON.stringify(testObject, null, 4), (err) => {
+        fs.writeFile("./testdata/PCSLoads.conf.json", JSON.stringify(testObject, null, 4), (err) => {
             if (err) {
                 console.error(err);
                 return;
@@ -202,7 +200,7 @@ describe('CarrierMobile Test Data Creation', function() {
         });
 	});
     
-    it('should tender the loads', function(){
+    it('should preplan and tender the loads', function(){
         browser.url('http://fm.jbhunt.com/FreightManager2/common/index.iface?null&JEBPQV=PEVSF9R&GFQPTRVE=9&Qrh9vp%2BgTnIawIsmpjJGcQ%3D%3D=duMyr8l2vvA%3D&THHPTZ=9&YWMPTLUB=9&GFQDYEV=9325804455');
         projectCode = testObject.projectCode;      
         for (i=0; i<Object.keys(testObject.loads).length; i++) {
@@ -212,25 +210,41 @@ describe('CarrierMobile Test Data Creation', function() {
             if (Object.keys(testObject.carrier).length > i) {
                 carrier = testObject.carrier[i];                
             } else if (Object.keys(testObject.carrier).length =0) {
-                carrier = "DEH2"
+                carrier = {
+                    "tractor": "882055",
+                    "projectCode": "Z2B7",
+                    "scac": "PA01"
+                };
             } else {
                 carrier = testObject.carrier[0]
             }
-            loadsList[i].carrier = carrier;
-            console.log('load#: ' + load + ' carrier: ' + carrier);
+            loadsList[i].carrier = carrier.scac;
+            console.log('load#: ' + load + ' tractor: ' + carrier.tractor + ' projectCode: ' + carrier.projectCode + ' scac: ' + carrier.scac);
             browser.waitForExist('=Planning');
             browser.click('=Planning');
             browser.click('=Order Segment');
             browser.waitForExist('input[id="form:orderNumber"]');
             browser.setValue('input[id="form:orderNumber"]', load);
             browser.click('[class="lnfButton iceCmdBtn"]');
-            console.log('preplan!!!');           
-            browser.waitForExist('[id="form:projects"]');
-            browser.waitForEnabled('[id="form:projects"]');
-            browser.setValue('[id="form:projects"]',projectCode);
-            browser.setValue('[id="form:carriers"]',carrier);
+            console.log('preplan!!!');
+            browser.pause(3000);
+            browser.click('input[id="form:j_id1298:_2"]');
+            browser.waitForEnabled('input[id="form:tractorUi"]');
+            browser.setValue('input[id="form:tractorUi"]', carrier.tractor);
+
             browser.click('button=Create Preplan');
-            browser.pause(2000);
+            browser.pause(2000); //handling preplanning to tractor, then autorate to projectCode/carrier @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            if (browser.isVisible('button=Continue')) {
+                browser.click('button=Continue');
+                browser.pause(1500);
+                console.log('first while - change to if - do not use while as [all webdriverio commands are async since they have to send (mutliple) requests to the selenium server]');
+            }
+            //browser.debug();
+            browser.waitForExist('span[class="iceMsgsInfo"]', 30000);
+            browser.getText('span[class="iceMsgsInfo"]').includes('Tractor Preplan Successful');
+            assert(browser.getText('span[class="iceMsgsInfo"]').includes('Tractor Preplan Successful'));
+            //browser.click('button=Exit');
+
             //if need to refresh
             if (browser.isExisting('[class="iceMsgsError"]')) {
                 if (browser.getText('[class="iceMsgsError"]') == "Error Preplanning ORDER DATA HAS CHANGED - PLEASE REFRESH DATA") {
@@ -241,20 +255,10 @@ describe('CarrierMobile Test Data Creation', function() {
                 }
             }
             //If stop tender warning coming up
-
-            //browser.debug();
-            for (k=0; k<5; k++) {
-                browser.pause(1000);
-                //browser.debug();
-                if (browser.isExisting('[class="lnfCancelButton iceCmdLnk"]')) {
-                    browser.click('[class="lnfCancelButton iceCmdLnk"]');
-                    break;
-                } else {
-                    continue;   
-                }
+            browser.pause(2000);
+            if (browser.isExisting('[class="lnfCancelButton iceCmdLnk"]')) {
+                browser.click('[class="lnfCancelButton iceCmdLnk"]');
             }
-
-            //
             browser.pause(2000);
             //need to refresh error could come up after tender warning
             if (browser.isExisting('[class="iceMsgsError"]')) {
@@ -265,6 +269,21 @@ describe('CarrierMobile Test Data Creation', function() {
                     browser.pause(3000);
                 }
             }
+
+            //enter project code/scac here
+            browser.waitForExist('[id="form:projects"]');
+            browser.setValue('[id="form:projects"]', carrier.projectCode);
+            browser.setValue('[id="form:carriers"]', carrier.scac);
+            browser.click('button=Auto Rate / Preplan');
+
+            browser.pause(3000); //lnfAcceptButton iceCmdLnk
+            if (browser.waitForExist('[class="lnfAcceptButton iceCmdLnk"]')) {
+                browser.click('[class="lnfAcceptButton iceCmdLnk"]');
+            };
+            browser.pause(3000); //lnfCancelButton iceCmdLnk
+            if (browser.waitForExist('[class="lnfCancelButton iceCmdLnk"]')) {
+                browser.click('[class="lnfCancelButton iceCmdLnk"]');
+            };
             //browser.debug();
             loadsList[i].status = "Preplanned";
             //tender the load
@@ -276,15 +295,15 @@ describe('CarrierMobile Test Data Creation', function() {
             browser.waitForEnabled('button=Tender Control', 50000);
             browser.click('button=Tender Control');
             //browser.debug();
-            browser.waitForExist('[id="form:NCONRT_0"]', 50000);
-            //browser.pause(2000);
-            browser.setValue('[id="form:NCONFN_0"]', testObject.tender.carrier.fName);
+            //browser.waitForExist('[id="form:NCONRT_0"]', 50000);
+            browser.pause(2000);
+/*             browser.setValue('[id="form:NCONFN_0"]', testObject.tender.carrier.fName);
             browser.setValue('[id="form:NCONLN_0"]', testObject.tender.carrier.lName);
-            browser.setValue('[id="form:NCONPH_0"]', testObject.tender.carrier.pNumber);
-            browser.selectByValue('[id="form:j_id320"]', 'DRIVER');
-            browser.setValue('[id="form:NCONFN_1"]', testObject.tender.driver.fName);
-            browser.setValue('[id="form:NCONLN_1"]', testObject.tender.driver.lName);
-            browser.setValue('[id="form:NCONPH_1"]', testObject.tender.driver.pNumber);
+            browser.setValue('[id="form:NCONPH_0"]', testObject.tender.carrier.pNumber); */
+            //browser.selectByValue('[id="form:j_id320"]', 'DRIVER');
+            browser.setValue('[id="form:CONFN_1"]', testObject.tender.driver.fName);
+            browser.setValue('[id="form:CONLN_1"]', testObject.tender.driver.lName);
+            //browser.setValue('[id="form:CONPH_1"]', testObject.tender.driver.pNumber);
             browser.click('button=Create Tender');          
             loadsList[i].status = "Tendered";
 /*             //Dispatch the load - not working for needing manual approval carriers
@@ -323,7 +342,7 @@ describe('CarrierMobile Test Data Creation', function() {
             console.log('msg: ' + browser.getText('td[class="iceDatTblCol2"]*=DISPATCHED ON')); */
             testObject.loads = loadsList;
             var fs = require("fs");
-            fs.writeFile("./testdata/ICSLoads.conf.json", JSON.stringify(testObject, null, 4), (err) => {
+            fs.writeFile("./testdata/PCSLoads.conf.json", JSON.stringify(testObject, null, 4), (err) => {
                 if (err) {
                     console.error(err);
                     return;

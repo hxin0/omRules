@@ -1,0 +1,179 @@
+{
+    "searchBy": {
+        "searchOptions": "CREATE USERID",
+        "searchValue": "JISQHX3",
+        "pickupApptRange": 30,
+        "pickupApptDate2": ""
+    },
+    "newAppt": {
+        "status2Change": [
+            "Available",
+            "Dispatched"
+        ],
+        "newApptDate": 0,
+        "newApptTime": {
+            "stop1Time1": "06:00",
+            "stop1Time2": "18:00",
+            "stop99Time1": "09:00",
+            "stop99Time2": "23:00"
+        }
+    },
+    "loads": [
+        {
+            "loadNumber": "LS70278",
+            "status": "Dispatched",
+            "dt": "07/02/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70911",
+            "status": "Dispatched",
+            "dt": "07/02/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS66923",
+            "status": "Emptied",
+            "dt": "07/06/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70899",
+            "status": "Emptied",
+            "dt": "07/09/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS66889",
+            "status": "Emptied",
+            "dt": "07/11/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS63561",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS56270",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS68395",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS68401",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70891",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70900",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS56269",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS67074",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS66164",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS67203",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS66138",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70898",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS66888",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70912",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        },
+        {
+            "loadNumber": "LS70931",
+            "status": "Available",
+            "dt": "07/12/18",
+            "dt2": "06:00",
+            "dt3": "18:00"
+        }
+    ],
+    "loadCount": 20,
+    "changeLoadCount": 17,
+    "changedLoads": [
+        "LS70278",
+        "LS70911",
+        "LS57711",
+        "LS61613",
+        "LS70268",
+        "LS66897",
+        "LS66891",
+        "LS70276",
+        "LS66922",
+        "LS68403",
+        "LS67073",
+        "LS56616"
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "searchBy": {
+        "searchOptions": "CREATE USERID",
+        "searchValue": "JISQHX3",
+        "pickupApptRange": 30,
+        "pickupApptDate2": ""
+    },
+    "newAppt": {
+        "newApptDate": "",
+        "newApptTime": {
+            "stop1Time1": "06:00",
+            "stop1Time2": "18:00",
+            "stop99Time1": "09:00",
+            "stop99Time2": "23:00"
+        }
+    },
+    "loads": [
+        {"loadNumber" : "LS63551", "status" : "Emptied"},
+        "LS63565": "Available",
+        "LS63562": "Emptied",
+        "LS63567": "Emptied",
+        "LS63563": "Available",
+        "LS63561": "Available",
+        "LS64135": "Available",
+        "LS64144": "Available",
+        "LS64145": "Available",
+        "LS64143": "Available",
+        "LS64307": "Available",
+        "LS64290": "Available",
+        "LS64438": "Available",
+        "LS64437": "Available",
+        "LS64435": "Available",
+        "LS65434": "Available",
+        "LS65720": "Available",
+        "LS65504": "Emptied",
+        "LS66225": "Available",
+        "LS66226": "Available"
+    ],
+    "loadCount": 20
+}

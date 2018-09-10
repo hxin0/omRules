@@ -1,5 +1,5 @@
 {
-    "loadCount": 2,
+    "loadCount": 1,
     "skeletonRowNumber": 1,
     "searchOptions": "PROJECT CODE",
     "searchValue": "1770",
@@ -14,8 +14,8 @@
         }
     },
     "carrier": [
-        "DEH2",
-        "001F"
+        "00GZ",
+        "00GZ"
     ],
     "tender": {
         "carrier": {
@@ -31,14 +31,8 @@
     },
     "loads": [
         {
-            "loadNumber": "M501719",
-            "status": "Tendered",
-            "carrier": "DEH2"
-        },
-        {
-            "loadNumber": "M501720",
-            "status": "Tendered",
-            "carrier": "001F"
+            "loadNumber": "M501711",
+            "status": "Available"
         }
     ]
 }
