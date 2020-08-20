@@ -1,10 +1,15 @@
-exports.tier1 = function tier1(ruleName) {
+const actions = require('./actions');
+const { locators, consts, ruleNames } = require('./locators');
+exports.tier1 = function tier1(input, tExcel, ruleName, resultantType, delaySecond) {
     var i;
     var ruleCode = "";
     var scacCode = "";
     var selectedShp = [];
     var createdRule = {};
     var skipClickNewRuleButton = false;
+    var ml = {};
+    ml.dateTime = new Date();
+    ml.missingLocations = [];
     for (i = 0; i < tExcel.length; i++) {
         if ((tExcel[i].code != ruleCode) || (tExcel[i].scac != scacCode)) {
             // start a new rule
@@ -65,7 +70,7 @@ exports.tier1 = function tier1(ruleName) {
                     // Add scac
                     actions.setAttributeScac(tExcel[i].scac, delaySecond);
                 }
-                actions.setResultant(ruleCode, delaySecond);
+                (resultantType === 1) ? actions.setResultant(ruleCode, delaySecond) : actions.setResultant2(ruleCode, delaySecond);
                 browser.pause(delaySecond);
                 browser.click(locators.saveButton);
                 actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
@@ -82,7 +87,7 @@ exports.tier1 = function tier1(ruleName) {
             }
         }
     }
-
+    const missingLocationsFile = require('../testdata/missingLocations.json');
     if (ml.missingLocations.length > 0) {
         ml.dateTime = new Date();
         missingLocationsFile.push(ml);

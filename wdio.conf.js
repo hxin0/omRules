@@ -26,8 +26,8 @@ exports.config = {
         // './test/t1so.js',
         // './test/t2so.js',
         // './test/t1fl.js',
-        // './test/t2fl.js',
-        // './test/t1cu.js'
+        './test/t2fl.js',
+        './test/t1cu.js'
     ],
     // Patterns to exclude.
     exclude: [
