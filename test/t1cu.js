@@ -36,7 +36,7 @@ describe('tier 1 default customer rules', function () {
         ? 1 : -1) : -1 ) : -1); // sort by scac then code then shipper
     });
 
-    it('should add t1 btc for the trading partner', () => {
+    it('should add t1 customer rule for the trading partner', () => {
         delaySecond = input.delaySecond * 1000;
         browser.url(input.url);
         browser.pause(delaySecond);
