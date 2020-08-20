@@ -1,8 +1,4 @@
 const schemaInactivateRules = {
-    "url": {
-        prop: 'url',
-        type: String
-    },
     "tradingPartner": {
         prop: 'tradingPartner',
         type: String
@@ -18,18 +14,10 @@ const schemaInactivateRules = {
     "selectorNum": {
         prop: 'selectorNum',
         type: String
-    },
-    "delaySecond": {
-        prop: 'delaySecond',
-        type: Number
     }
 };
 
 const schemaTier = {
-    "url": {
-        prop: 'url',
-        type: String
-    },
     "tradingPartner": {
         prop: 'tradingPartner',
         type: String
@@ -81,18 +69,10 @@ const schemaTier = {
     "t2cu": {
         prop: 't2cu',
         type: String
-    },
-    "delaySecond": {
-        prop: 'delaySecond',
-        type: Number
     }
 };
 
 const schemaSimpleton = {
-    "url": {
-        prop: 'url',
-        type: String
-    },
     "fileName": {
         prop: 'fileName',
         type: String
@@ -100,10 +80,6 @@ const schemaSimpleton = {
     "tabName": {
         prop: 'tabName',
         type: String
-    },
-    "delaySecond": {
-        prop: 'delaySecond',
-        type: Number
     }
 };
 
@@ -130,7 +106,15 @@ const schemaTierData = {
     }
 };
 
-const schemaLogin = {
+const schemaSettings = {
+    "url" : {
+        prop: 'url',
+        type: String
+    },
+    "delaySecond": {
+        prop: 'delaySecond',
+        type: Number
+    },
     "username": {
         prop: 'username',
         type: String
@@ -228,7 +212,7 @@ const schemaMissingCodeData = {
       prop: "oldLocationCode",
       type: String,
     },
-    CODE: {
+    "CODE": {
       prop: "newLocationCode",
       type: String,
     },
