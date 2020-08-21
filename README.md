@@ -1,4 +1,4 @@
-# Version v1.8
+# Version v1.9
 ## modules (group by settings.xlsx tab name)
   - ir  
     - irCreatedBy.js: inactivate rules by users  
@@ -19,6 +19,9 @@
     - irjson.js: inactivate all rules (json version)
 
 # What's new
+## v1.9
+  - combine login.xlsx into settings
+  - refactor tiers
 ## v1.8
   - changed settings.xlsx structure
   - refactored code accordingly
@@ -44,27 +47,25 @@ C:\...\rules>npm install
 
 # Settings
 ## settings.xlsx
-1. ir:  
+1. settings:
     - url: rules page url  
-    - tradingPartner: inactivate rules for the trading partner  
+    - tradingPartner: inactivate rules for the trading partner 
+    - delaySecond: delay how many seconds according to page elements load time 
+    - username: your login username (not required)
+    - password: your login password (not required)
+1. ir:  
     - createdBy: user ids if any  
       comma as delimiter  
       UI should have created by column selected  
       inactivate all if blank  
-    - delaySecond: delay how many seconds according to page elements load time 
 2. tier:  
-    - url: rules page url  
-    - tradingPartner: create tiered rules for the trading partner 
     - fileName: rules data file  
     - t1bt: tier 1 datasheet name in the excel data file  
     - t2bt: tier 2 datasheet name in the excel data file  
     - ...  
-    - simpleton: simpleton datasheet name in the excel data file
-    - delaySecond: delay seconds according to page elements load time  
 3. simpleton:
-    - url: rules page url  
-    - fileName: the simpleton data file  
-    - tabName: data file tab name
+    - fileName: simpleton data file  
+    - tabName: simpleton data file tab name
 4. missingCode:  
     - missingCodeFileName  
     - ruleDataFileName: rules data file  
