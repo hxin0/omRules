@@ -14,7 +14,7 @@ describe('tier 2 default fleet code rules', function () {
     ml.missingLocations = [];
 
     before('read file first', async function () {
-        ({ login, input } = await actions.readDataSheets(login, input));
+        (input = await actions.readDataSheets(input));
 
         ml.file = input.fileName;
         ml.sheet = input.t2fl;
@@ -42,7 +42,7 @@ describe('tier 2 default fleet code rules', function () {
         browser.url(input.url);
         browser.pause(delaySecond);
         // login page
-        actions.clickLoginButtonWhileExisting(login);
+        actions.clickLoginButtonWhileExisting(input);
         browser.pause(delaySecond);
 
         actions.tier2(input, tExcel, ruleNames.fleetCode, resultantType, ml, delaySecond);

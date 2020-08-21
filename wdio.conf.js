@@ -15,9 +15,9 @@ exports.config = {
     ],
     specs: [
         // './test/irexcel.js',
-        // './test/irjson.js',
+        './test/irjson.js',
 
-        './test/irCreatedBy.js',
+        // './test/irCreatedBy.js',
         // './test/simpleton.js',
         // './test/t1bt.js',
         // './test/t2bt.js',
@@ -25,9 +25,9 @@ exports.config = {
         // './test/t2bu.js',
         // './test/t1so.js',
         // './test/t2so.js',
-        // './test/t1fl.js',
-        './test/t2fl.js',
-        './test/t1cu.js'
+        './test/t1fl.js',
+        // './test/t2fl.js',
+        // './test/t1cu.js'
     ],
     // Patterns to exclude.
     exclude: [

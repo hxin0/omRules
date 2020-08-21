@@ -1,14 +1,14 @@
-const { schemaTier, schemaTierData, schemaLogin, schemaSimpleton, schemaSimpletonData } = require('../common/schema');
+const { schemaSettings, schemaTier, schemaTierData, schemaSimpleton, schemaSimpletonData } = require('../common/schema');
 const { locators, consts, ruleNames } = require('../common/locators');
 var _ = require('lodash/core');
 
 exports.clickLoginButtonWhileExisting = function (login) {
     while (browser.isExisting(locators.loginButton)) {
-        if (_.size(login) > 0) {
-            browser.setValue(locators.username, login.username);
-            browser.setValue(locators.password, login.password);
+        if (login.username != undefined) browser.setValue(locators.username, login.username);
+        if (login.password != undefined) browser.setValue(locators.password, login.password);
+        if ((login.username != undefined) && (login.password != undefined))
             browser.click(locators.loginButton);
-        } else {
+        else {
             browser.pause(consts.delaySecond * 30);
         }
     }
@@ -48,9 +48,9 @@ exports.createRule = function (ruleName, delaySecond) {
     browser.waitForExist(locators.ruleNameDropdownValue, delaySecond);
     browser.pause(delaySecond/2);
     browser.click(locators.ruleNameDropdownValue);
-    browser.pause(delaySecond);
+    // browser.pause(delaySecond);
     browser.waitForExist(locators.ruleNameRow, delaySecond);
-    browser.pause(delaySecond);
+    browser.pause(delaySecond/2);
     browser.click(locators.ruleNameRow);
 };
 
@@ -122,25 +122,38 @@ exports.setResultant2 = function (code, delaySecond) {
     browser.click(locators.resultantActionValue2DropdownItem);
 };
 
-exports.readDataSheets = async function readDataSheets(login, input, schema = schemaTier, tabName = 'tier') {
+exports.readDataSheets = async function readDataSheets(input, schema = schemaTier, tabName = 'tier') {
     const xlsxRead = require('read-excel-file/node');
     const fs = require('fs');
+    var login = {};
+    var inputEnv = {};
+    var inputData = {};
     fs.access('testdata/loginTest.xlsx', async (err) => {
         if (err) {
-            await xlsxRead('testdata/login.xlsx', { schema: schemaLogin, sheet: 'login' }).then(({ rows }) => {
-                login = rows[0];
-            });
+            return;
+            // await xlsxRead('testdata/login.xlsx', { schema: schemaLogin, sheet: 'login' }).then(({ rows }) => {
+            //     login = rows[0];
+            // });
         }
         else {
-            await xlsxRead('testdata/loginTest.xlsx', { schema: schemaLogin, sheet: 'login' }).then(({ rows }) => {
+            await xlsxRead('testdata/loginTest.xlsx', { schema: schemaSettings, sheet: 'login' }).then(({ rows }) => {
                 login = rows[0];
             });
         }
     });
-    await xlsxRead('testdata/settings.xlsx', { schema: schema, sheet: tabName }).then(({ rows }) => {
-        input = rows[0];
+    await xlsxRead('testdata/settings.xlsx', { schema: schemaSettings, sheet: 'settings' }).then(({ rows }) => {
+        inputEnv = rows[0];
     });
-    return { login, input };
+    await xlsxRead('testdata/settings.xlsx', { schema: schema, sheet: tabName }).then(({ rows }) => {
+        inputData = rows[0];
+    });
+    input = { ...inputEnv, ...inputData };
+    if (_.size(login) > 0) {
+        input.username = login.username;
+        input.password = login.password;
+    }
+
+    return input;
 }
 
 exports.tier1 = function tier1(input, tExcel, ruleName, resultantType, ml, delaySecond) {
@@ -215,7 +228,7 @@ exports.tier1 = function tier1(input, tExcel, ruleName, resultantType, ml, delay
                     this.setAttributeScac(tExcel[i].scac, delaySecond);
                 }
                 (resultantType === 1) ? this.setResultant(ruleCode, delaySecond) : this.setResultant2(ruleCode, delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
                 this.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
 
@@ -359,7 +372,7 @@ exports.tier2 = function tier2(input, tExcel, ruleName, resultantType, ml, delay
                     this.setAttributeScac(tExcel[i].scac, delaySecond);
                 }
                 (resultantType === 1) ? this.setResultant(ruleCode, delaySecond) : this.setResultant2(ruleCode, delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
                 this.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
 

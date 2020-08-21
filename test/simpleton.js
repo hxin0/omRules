@@ -7,11 +7,10 @@ describe('simpleton rules', function () {
 
     var input = {};
     var delaySecond = 1000;
-    var login = {};
     var sExcel = [];
 
     before('read file first', async function () {
-        ({ login, input } = await actions.readDataSheets(login, input, schemaSimpleton, 'simpleton'));
+        (input = await actions.readDataSheets(input, schemaSimpleton, 'simpleton'));
 
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
         // browser.debug();
@@ -20,7 +19,7 @@ describe('simpleton rules', function () {
             console.log(sExcel);
         });
         if ((sExcel.length == 0) || ((sExcel[0].code == undefined) && (sExcel[0].businessUnit == undefined) && (sExcel[0].serviceOffering == undefined))) {
-            console.log('No data - skipping')
+            console.log('No data - skipped')
             this.skip();
         }
     });
@@ -30,7 +29,7 @@ describe('simpleton rules', function () {
         browser.url(input.url);
         browser.pause(delaySecond);
         // login page
-        actions.clickLoginButtonWhileExisting(login);
+        actions.clickLoginButtonWhileExisting(input);
 
         browser.pause(delaySecond);
         // actions.searchTradingPartner(input);
@@ -65,7 +64,7 @@ describe('simpleton rules', function () {
 
                 createdRule.billtoCode = sExcel[i].code;
                 actions.setResultant(sExcel[i].code, delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
                 console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
@@ -98,7 +97,7 @@ describe('simpleton rules', function () {
                 createdRule.businessUnit = sExcel[i].businessUnit.substring(0,3);
 
                 actions.setResultant2(sExcel[i].businessUnit.substring(0,3), delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
                 console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
@@ -131,7 +130,7 @@ describe('simpleton rules', function () {
                 createdRule.serviceOffering = sExcel[i].serviceOffering;
 
                 actions.setResultant2(soAbbr[sExcel[i].serviceOffering], delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
                 console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
@@ -164,7 +163,7 @@ describe('simpleton rules', function () {
                 createdRule.corpAcct = sExcel[i].corpAcct;
 
                 actions.setResultant(sExcel[i].corpAcct, delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
                 console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
@@ -197,7 +196,7 @@ describe('simpleton rules', function () {
                 createdRule.fleet = sExcel[i].fleet;
 
                 actions.setResultant(sExcel[i].fleet, delaySecond);
-                browser.pause(delaySecond);
+                browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
                 console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');

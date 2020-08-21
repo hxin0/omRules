@@ -7,14 +7,13 @@ describe('tier 1 default billing party rules', function () {
 
     var input = {};
     var delaySecond = 1000;
-    var login = {};
     var tExcel = [];
     var ml = {};
     ml.dateTime = new Date();
     ml.missingLocations = [];
 
     before('read file first', async function () {
-        ({ login, input } = await actions.readDataSheets(login, input));
+        (input = await actions.readDataSheets(input));
 
         ml.file = input.fileName;
         ml.sheet = input.t1bt;
@@ -39,7 +38,7 @@ describe('tier 1 default billing party rules', function () {
         browser.url(input.url);
         browser.pause(delaySecond);
         // login page
-        actions.clickLoginButtonWhileExisting(login);
+        actions.clickLoginButtonWhileExisting(input);
         browser.pause(delaySecond);
 
         actions.tier1(input, tExcel, ruleNames.billingParty, resultantType, ml, delaySecond);

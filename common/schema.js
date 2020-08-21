@@ -219,7 +219,7 @@ const schemaMissingCodeData = {
   };
 
 module.exports = {
-  schemaLogin,
+  schemaSettings,
   schemaInactivateRules,
   schemaTier,
   schemaTierData,

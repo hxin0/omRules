@@ -6,12 +6,11 @@ const { schemaInactivateRules } = require('../common/schema');
 describe('inactivate rules', function () {
 
     var input = {};
-    var login = {};
     var delaySecond = 1000;
     var count = 0;
 
     before('read excel file first', async function () {
-        ({ login, input } = await actions.readDataSheets(login, input, schemaInactivateRules, 'ir'));
+        (input = await actions.readDataSheets(input, schemaInactivateRules, 'ir'));
     })
 
     it('should inactivate all rules for a trading partner', function () {
@@ -20,7 +19,7 @@ describe('inactivate rules', function () {
         browser.url(input.url);
         browser.pause(delaySecond);
 
-        actions.clickLoginButtonWhileExisting(login);
+        actions.clickLoginButtonWhileExisting(input);
 
         browser.pause(delaySecond);
         actions.searchTradingPartner(input);

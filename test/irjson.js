@@ -1,7 +1,7 @@
 const { locators } = require('../common/locators');
 const actions = require('../common/actions');
 
-describe('inactivate rules json version', async () => {
+describe('inactivate rules json version', function () {
 
     var input = require('../testdata/settings.json');
     var login = {};
@@ -10,12 +10,12 @@ describe('inactivate rules json version', async () => {
     const delaySecond = input.delaySecond * 1000;
     var count = 0;
 
-    it('should run test', () => {
+    it('should run test', function () {
         // var tradingPartner = 'BESTTRA';
         // var url = 'https://order-tst.nonprod.jbhunt.com/order/automationrules';
         fs.access('testdata/loginTest.json', (err) => {
             if (err) {
-                login = require('../testdata/login.json')
+                login = input;
             } else {
                 login = require('../testdata/loginTest.json')
             }
@@ -32,7 +32,7 @@ describe('inactivate rules json version', async () => {
         browser.pause(delaySecond);
       
         if ($(locators.rulesNotFound).isVisible()) {
-            console.log('No Rules Found... Skip');
+            console.log('No Rules Found... Skipped');
             this.skip();
         }
 
