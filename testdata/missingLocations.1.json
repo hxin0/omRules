@@ -27,19 +27,5 @@
         "file": "USFOOD",
         "sheet": "t1-Serv_O",
         "dateTime": "08/20/2020, 07:45:47 AM"
-    },
-    {
-        "tradingPartner": "JCPENNEY",
-        "missingLocations": [
-            "HARU02"
-        ],
-        "file": "JCPENNEY",
-        "sheet": "t1-BTC",
-        "dateTime": "8/25/2020, 10:25:14 AM"
-    },
-    { tradingPartner: 'JCPENNEY',
-        missingLocations: [ 'RESACH' ],
-        file: 'JCPENNEY',
-        sheet: 't1-BTC',
-        dateTime: '8/25/2020, 10:01:59 AM' }
+    }
 ]

@@ -230,9 +230,10 @@ exports.tier1 = function tier1(input, tExcel, ruleName, resultantType, ml, delay
                 (resultantType === 1) ? this.setResultant(ruleCode, delaySecond) : this.setResultant2(ruleCode, delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
-                this.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                this.waitForLoadingDotsDisappearIfAny(delaySecond * 60);
+                browser.pause(delaySecond/2);
 
-                createdRule.ruleName = ruleCode;
+                createdRule.parentCode = ruleCode;
                 if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
                 createdRule.shipperCode = selectedShp;
                 console.log('Tier 1 ' + ruleName + ' rule is saved.');
@@ -247,7 +248,6 @@ exports.tier1 = function tier1(input, tExcel, ruleName, resultantType, ml, delay
     const fs = require('fs');
     const missingLocationsFile = require('../testdata/missingLocations.json');
     if (ml.missingLocations.length > 0) {
-        ml.dateTime = new Date();
         missingLocationsFile.push(ml);
         fs.writeFile("./testdata/missingLocations.json", JSON.stringify(missingLocationsFile, null, 4), (err) => {
             if (err) {
@@ -374,9 +374,10 @@ exports.tier2 = function tier2(input, tExcel, ruleName, resultantType, ml, delay
                 (resultantType === 1) ? this.setResultant(ruleCode, delaySecond) : this.setResultant2(ruleCode, delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
-                this.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                this.waitForLoadingDotsDisappearIfAny(delaySecond * 60);
+                browser.pause(delaySecond/2);
 
-                createdRule.billtoCode = ruleCode;
+                createdRule.parentCode = ruleCode;
                 if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
                 createdRule.shipperCode = selectedShp;
                 createdRule.receiverCode = selectedRec;
@@ -392,7 +393,6 @@ exports.tier2 = function tier2(input, tExcel, ruleName, resultantType, ml, delay
     }
     const missingLocationsFile = require('../testdata/missingLocations.json');
     if (ml.missingLocations.length > 0) {
-        ml.dateTime = new Date();
         const fs = require('fs');
         missingLocationsFile.push(ml);
         fs.writeFile("./testdata/missingLocations.json", JSON.stringify(missingLocationsFile, null, 4), (err) => {

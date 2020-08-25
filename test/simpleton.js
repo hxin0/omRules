@@ -18,7 +18,7 @@ describe('simpleton rules', function () {
             sExcel = rows.filter(row=>!(row.skip));
             console.log(sExcel);
         });
-        if ((sExcel.length == 0) || ((sExcel[0].code == undefined) && (sExcel[0].businessUnit == undefined) && (sExcel[0].serviceOffering == undefined))) {
+        if ((sExcel.length == 0) || ((!sExcel[0].code) && (!sExcel[0].businessUnit) && (!sExcel[0].serviceOffering) && (!sExcel[0].corpAcct) && (!sExcel[0].fleet))) {
             console.log('No data - skipped')
             this.skip();
         }

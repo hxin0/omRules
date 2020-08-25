@@ -17,10 +17,10 @@ exports.config = {
         // './test/irexcel.js',
         // './test/irjson.js',
 
-        './test/irCreatedBy.js',
+        // './test/irCreatedBy.js',
         // './test/simpleton.js',
         // './test/t1bt.js',
-        // './test/t2bt.js',
+        './test/t2bt.js',
         // './test/t1bu.js',
         // './test/t2bu.js',
         // './test/t1so.js',

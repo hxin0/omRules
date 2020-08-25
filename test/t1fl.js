@@ -7,17 +7,17 @@ describe('tier 1 default fleet code rules', function () {
 
     var input = {};
     var delaySecond = 1000;
-    var login = {};
     var tExcel = [];
     var ml = {};
-    ml.dateTime = new Date();
-    ml.missingLocations = [];
 
     before('read file first', async function () {
         (input = await actions.readDataSheets(input));
-
+        ml.tradingPartner = input.tradingPartner;
+        ml.missingLocations = [];
         ml.file = input.fileName;
-        ml.sheet = input.t1bt;
+        ml.sheet = input.t1fl;
+        ml.dateTime = new Date().toLocaleString();
+
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
 
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t1fl }).then(({ rows }) => {

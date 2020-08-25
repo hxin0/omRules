@@ -1,0 +1,52 @@
+[
+    {
+        "dateTime": "2020-08-19T15:29:08.730Z",
+        "missingLocations": [
+            "GEBRB2"
+        ],
+        "file": "GERBER",
+        "sheet": "t1-BTC"
+    },
+    {
+        "dateTime": "2020-08-19T15:42:24.119Z",
+        "missingLocations": [
+            "GEBRB2"
+        ],
+        "file": "GERBER",
+        "sheet": "t2-BTC"
+    },
+    {
+        "dateTime": "2020-08-19T16:40:26.829Z",
+        "missingLocations": [
+            "ALLIB1"
+        ],
+        "file": "ALENDIST",
+        "sheet": "t1-Cus"
+    },
+    {
+        "dateTime": "2020-08-19T16:42:49.792Z",
+        "missingLocations": [
+            "ALLIB1"
+        ],
+        "file": "ALENDIST",
+        "sheet": "t1-BTC"
+    },
+    {
+        "dateTime": "2020-08-19T17:45:47.874Z",
+        "missingLocations": [
+            "KIHAAO",
+            "OLGR37",
+            "INNEDO"
+        ],
+        "file": "USFOOD",
+        "sheet": "t1-Serv_O"
+    },
+    {
+        "dateTime": "2020-08-19T17:50:54.807Z",
+        "missingLocations": [
+            "INNEDO"
+        ],
+        "file": "USFOOD",
+        "sheet": "t1-Flt"
+    }
+]

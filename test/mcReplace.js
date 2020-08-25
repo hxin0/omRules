@@ -112,8 +112,30 @@ const processingAll = async () => {
     sheet: "missingCode",
   }).then(({ rows }) => {
     input = rows[0];
-    console.log(input);
+    // console.log(input);
   });
+
+  const { program } = require('commander');
+
+  program
+    .version('v1.9')
+    .option('-m, --missing-codes <file>', 'missing codes file name')
+    .option('-r, --rules-data <file>', 'rules data file name')
+    .option('-o, --output <file>', 'output file name')
+    .option('-l, --list', 'list parameters and exit');
+
+  program.parse(process.argv);
+
+  if (program.missingCodes) input.missingCodeFileName = program.missingCodes;
+  if (program.rulesData) input.ruleDataFileName = program.rulesData;
+  if (program.output) input.newRulesDataFileName = program.output;
+
+  if (program.list) {
+    console.log('*************');
+    console.log(input);
+    console.log('***************');
+    process.exit(0);
+  }
 
   let fileFullName1 = "testdata/" + input.missingCodeFileName + ".xlsx";
   let fileFullName2 = "testdata/" + input.ruleDataFileName + ".xlsx";
@@ -122,10 +144,12 @@ const processingAll = async () => {
   var wb = new xlsxWrite.Workbook();
 
   const styleHeader = wb.createStyle({
+    alignment: {
+      wrapText: true
+    },
     font: {
       color: "#145A32",
       bold: true,
-      size: 14,
       wrapText: true,
     },
   });
@@ -138,6 +162,10 @@ const processingAll = async () => {
   });
   
   const addHeader = (ws) => {
+    ws.column(1).setWidth(19);
+    ws.column(2).setWidth(17);
+    ws.column(3).setWidth(17);
+    ws.column(4).setWidth(8);
     ws.cell(1, 1)
       .string("PARENT(Bill To, Fleet, Service Offering)")
       .style(styleHeader);
