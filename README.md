@@ -16,7 +16,7 @@
   - missingCode  
     - mcReplace.js relace codes with new ones  
   - none
-    - msExport.js export missing code during rule creation to Excel
+    - mcExport.js export missing code during rule creation to Excel
     - irjson.js: inactivate all rules (json version)
 
 # What's new
@@ -93,11 +93,11 @@ Unzip downloaded file into a folder
 ## mcReplace.js
 ### specify in settings.xlsx missingCode tab
 ### run:
-`C:\...\rules>node test\msReplace.js [options] `
+`C:\...\rules>node test\mcReplace.js [options] `
 
 ## mcExport.js
 ### run
-`C:\...\rules>node test\msExport.js [opotions] [file [worksheet]]`
+`C:\...\rules>node test\mcExport.js [opotions] [file [worksheet]]`
 
 # Issues
 - Element still not existing after xxxx ms  
