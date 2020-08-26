@@ -69,8 +69,7 @@ describe('simpleton rules', function () {
 
                 console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
                 console.log(createdRule);
-                browser.pause(delaySecond);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
             }
             createdRule = {};
 
@@ -102,8 +101,7 @@ describe('simpleton rules', function () {
 
                 console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
                 console.log(createdRule);
-                browser.pause(delaySecond);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
             }
             createdRule = {};
 
@@ -135,8 +133,7 @@ describe('simpleton rules', function () {
 
                 console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
                 console.log(createdRule);
-                browser.pause(delaySecond);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
             }
             createdRule = {};
 
@@ -168,8 +165,7 @@ describe('simpleton rules', function () {
 
                 console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
                 console.log(createdRule);
-                browser.pause(delaySecond);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
             }
 
 
@@ -201,8 +197,7 @@ describe('simpleton rules', function () {
 
                 console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
                 console.log(createdRule);
-                browser.pause(delaySecond);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
             }
         }
     });

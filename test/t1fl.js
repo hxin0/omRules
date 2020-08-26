@@ -1,5 +1,5 @@
 const { schemaTierData } = require('../common/schema');
-const { locators, consts, ruleNames } = require('../common/locators');
+const { ruleNames } = require('../common/locators');
 const actions = require('../common/actions');
 
 describe('tier 1 default fleet code rules', function () {
@@ -16,12 +16,11 @@ describe('tier 1 default fleet code rules', function () {
         ml.missingLocations = [];
         ml.file = input.fileName;
         ml.sheet = input.t1fl;
-        ml.dateTime = new Date().toLocaleString();
 
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
 
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t1fl }).then(({ rows }) => {
-            tExcel = rows.filter(row=>!(row.skip));
+            tExcel = rows.filter(row=>!(row.skip))
         });
         if ((tExcel.length == 0) || (tExcel[0].shipper == undefined)) {
             console.log('Tier 1 ' + ruleNames.fleeetCode + ' rule has no data - skipped')

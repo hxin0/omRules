@@ -23,9 +23,7 @@ describe('inactivate rules', function () {
 
         browser.pause(delaySecond);
         actions.searchTradingPartner(input);
-        browser.pause(delaySecond);
-        actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
-        browser.pause(delaySecond);
+        actions.waitForLoadingDotsDisappearIfAny(delaySecond);
 
         if ($(locators.rulesNotFound).isVisible()) {
             console.log('No Rules Found... Skip');
@@ -83,8 +81,7 @@ describe('inactivate rules', function () {
                 }
     
                 count++;
-                browser.pause(delaySecond);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
             } else {
                 // skip to the next row
                 i++;

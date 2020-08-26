@@ -20,11 +20,11 @@ exports.config = {
         // './test/irCreatedBy.js',
         // './test/simpleton.js',
         // './test/t1bt.js',
-        './test/t2bt.js',
+        // './test/t2bt.js',
         // './test/t1bu.js',
         // './test/t2bu.js',
         // './test/t1so.js',
-        // './test/t2so.js',
+        './test/t2so.js',
         // './test/t1fl.js',
         // './test/t2fl.js',
         // './test/t1cu.js'

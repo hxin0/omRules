@@ -15,10 +15,9 @@ describe('tier 2 default customer rules', function () {
         ml.tradingPartner = input.tradingPartner;
         ml.missingLocations = [];
         ml.file = input.fileName;
-        ml.sheet = input.t2cu;
-        ml.dateTime = new Date().toLocaleString();
+        ml.sheet = input.t2cu;        
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
-        // browser.debug();
+
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t2cu }).then(({ rows }) => {
             tExcel = rows.filter(row=>!(row.skip))
         });

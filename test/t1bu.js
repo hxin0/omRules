@@ -1,5 +1,5 @@
 const { schemaTierData } = require('../common/schema');
-const { locators, consts, ruleNames } = require('../common/locators');
+const { ruleNames } = require('../common/locators');
 const actions = require('../common/actions');
 
 describe('tier 1 default business unit rules', function () {
@@ -16,9 +16,8 @@ describe('tier 1 default business unit rules', function () {
         ml.missingLocations = [];
         ml.file = input.fileName;
         ml.sheet = input.t1bu;
-        ml.dateTime = new Date().toLocaleString();
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
-        // browser.debug();
+
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t1bu }).then(({ rows }) => {
             tExcel = rows.filter(row=>!(row.skip))
         });

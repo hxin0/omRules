@@ -15,12 +15,11 @@ describe('tier 1 default billing party rules', function () {
         ml.tradingPartner = input.tradingPartner;
         ml.missingLocations = [];
         ml.file = input.fileName;
-        ml.sheet = input.t1bt;
-        ml.dateTime = new Date().toLocaleString();
+        ml.sheet = input.t1bt;        
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
 
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t1bt }).then(({ rows }) => {
-            tExcel = rows.filter(row=>!(row.skip));
+            tExcel = rows.filter(row=>!(row.skip))
         });
         if ((tExcel.length == 0) || (tExcel[0].shipper == undefined)) {
             console.log('Tier 1 ' + ruleNames.billingParty + ' rule has no data - skipped')

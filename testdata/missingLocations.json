@@ -1,45 +1,106 @@
 [
     {
-        "tradingPartner": "GERBER",
+        "tradingPartner": "JCPENNEY",
         "missingLocations": [
-            "GEBRB2"
+            "HARU02",
+            "JCLAAP"
         ],
-        "file": "GERBER",
-        "sheet": "t1-BTC",
-        "dateTime": "08/19/2020, 03:29:08 PM"
-    },
-    {
-        "tradingPartner": "ALEMDIST",
-        "missingLocations": [
-            "ALLIB1"
-        ],
-        "file": "ALENDIST",
-        "sheet": "t1-BTC",
-        "dateTime": "08/19/2020, 04:42:49 PM"
-    },
-    {
-        "tradingPartner": "USFOOD",
-        "missingLocations": [
-            "KIHAAO",
-            "OLGR37",
-            "INNEDO"
-        ],
-        "file": "USFOOD",
+        "file": "JCPENNEY",
         "sheet": "t1-Serv_O",
-        "dateTime": "08/20/2020, 07:45:47 AM"
+        "dateTime": "8/25/2020, 5:06:39 PM"
     },
     {
         "tradingPartner": "JCPENNEY",
         "missingLocations": [
-            "HARU02"
+            "CLHAAL",
+            "COCHF2",
+            "DOSTA3",
+            "HECODH",
+            "REON89",
+            "RESACH",
+            "THSAK1"
         ],
         "file": "JCPENNEY",
-        "sheet": "t1-BTC",
-        "dateTime": "8/25/2020, 10:25:14 AM"
+        "sheet": "t1-Serv_O",
+        "dateTime": "8/25/2020, 5:13:00 PM"
     },
-    { tradingPartner: 'JCPENNEY',
-        missingLocations: [ 'RESACH' ],
-        file: 'JCPENNEY',
-        sheet: 't1-BTC',
-        dateTime: '8/25/2020, 10:01:59 AM' }
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "LTSE11"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t1-Serv_O",
+        "dateTime": "8/25/2020, 5:15:48 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "JCCE43"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:04:39 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "JBHA96"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:08:26 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "LTDA30"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:20:31 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "SPMAAW"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:27:27 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "JBHA96"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:38:53 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "LTDA30"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:48:09 PM"
+    },
+    {
+        "tradingPartner": "JCPENNEY",
+        "missingLocations": [
+            "SPMAAW"
+        ],
+        "file": "JCPENNEY",
+        "sheet": "t2-Serv_O",
+        "parentCode": "Intermodal",
+        "dateTime": "8/25/2020, 6:54:47 PM"
+    }
 ]

@@ -16,10 +16,8 @@ describe('tier 2 default fleet code rules', function () {
         ml.missingLocations = [];
         ml.file = input.fileName;
         ml.sheet = input.t2fl;
-        ml.dateTime = new Date().toLocaleString();
-
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
-        // browser.debug();
+
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t2fl }).then(({ rows }) => {
             tExcel = rows.filter(row=>!(row.skip))
         });

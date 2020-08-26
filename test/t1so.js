@@ -1,5 +1,5 @@
 const { schemaTierData } = require('../common/schema');
-const { locators, consts, ruleNames, soAbbr } = require('../common/locators');
+const { ruleNames, soAbbr } = require('../common/locators');
 const actions = require('../common/actions');
 
 describe('tier 1 default service offering rules', function () {
@@ -16,7 +16,6 @@ describe('tier 1 default service offering rules', function () {
         ml.missingLocations = [];
         ml.file = input.fileName;
         ml.sheet = input.t1so;
-        ml.dateTime = new Date().toLocaleString();
         var fileFullName = 'testdata/' + input.fileName + '.xlsx';
         
         await xlsxRead(fileFullName, { schema: schemaTierData, sheet: input.t1so }).then(({ rows }) => {
@@ -33,7 +32,7 @@ describe('tier 1 default service offering rules', function () {
     });
 
     it('should add t1 service offering for the trading partner', () => {
-        const reaultantType = 2;
+        const resultantType = 2;
         delaySecond = input.delaySecond * 1000;
         browser.url(input.url);
         browser.pause(delaySecond);
