@@ -10,11 +10,11 @@ describe('simpleton rules', function () {
     var sExcel = [];
 
     before('read file first', async function () {
-        (input = await actions.readDataSheets(input, schemaSimpleton, 'simpleton'));
+        (input = await actions.readDataSheets(input)); // only need login info
 
-        var fileFullName = 'testdata/' + input.fileName + '.xlsx';
+        var fileFullName = 'testdata/settings.xlsx';
         // browser.debug();
-        await xlsxRead(fileFullName, { schema: schemaSimpletonData, sheet: input.tabName }).then(({ rows }) => {
+        await xlsxRead(fileFullName, { schema: schemaSimpletonData, sheet: 'simpleton' }).then(({ rows }) => {
             sExcel = rows.filter(row=>!(row.skip));
             console.log(sExcel);
         });
@@ -42,6 +42,38 @@ describe('simpleton rules', function () {
         var createdRule = {};
         var skipClickNewRuleButton = false;
         for (i = 0; i < sExcel.length; i++) {
+            if (sExcel[i].corpAcct != undefined) { // customer rule
+                // start a new rule
+                console.log('Customer rule');
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
+
+                createdRule.rule = ruleNames.customerRule;
+                createdRule.tradingPartner = sExcel[i].tradingPartner;
+
+                actions.createRule(ruleNames.customerRule, delaySecond);
+                // configure new rule page -- TP
+                browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
+                browser.pause(delaySecond/2);
+                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
+
+                if (sExcel[i].scac != undefined) {
+                    // Add scac
+                    createdRule.scsc = sExcel[i].scac;
+                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
+                }
+
+                createdRule.corpAcct = sExcel[i].corpAcct;
+
+                actions.setResultant(sExcel[i].corpAcct, delaySecond);
+                browser.pause(delaySecond/2);
+                browser.click(locators.saveButton);
+
+                console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
+                console.log(createdRule);
+                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                createdRule = {};
+            }
+
             if (sExcel[i].code != undefined) { // billing party rule
                 // start a new rule
                 console.log('Billing Party rule');
@@ -70,8 +102,8 @@ describe('simpleton rules', function () {
                 console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
                 console.log(createdRule);
                 actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                createdRule = {};
             }
-            createdRule = {};
 
             if (sExcel[i].businessUnit != undefined) { // business unit rule
                 // start a new rule
@@ -102,8 +134,8 @@ describe('simpleton rules', function () {
                 console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
                 console.log(createdRule);
                 actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                createdRule = {};
             }
-            createdRule = {};
 
             if (sExcel[i].serviceOffering != undefined) { // service offering rule
                 // start a new rule
@@ -135,40 +167,8 @@ describe('simpleton rules', function () {
                 console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
                 console.log(createdRule);
                 actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                createdRule = {};
             }
-            createdRule = {};
-
-            if (sExcel[i].corpAcct != undefined) { // customer rule
-                // start a new rule
-                console.log('Customer rule');
-                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
-
-                createdRule.rule = ruleNames.customerRule;
-                createdRule.tradingPartner = sExcel[i].tradingPartner;
-
-                actions.createRule(ruleNames.customerRule, delaySecond);
-                // configure new rule page -- TP
-                browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
-                browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
-
-                if (sExcel[i].scac != undefined) {
-                    // Add scac
-                    createdRule.scsc = sExcel[i].scac;
-                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
-                }
-
-                createdRule.corpAcct = sExcel[i].corpAcct;
-
-                actions.setResultant(sExcel[i].corpAcct, delaySecond);
-                browser.pause(delaySecond/2);
-                browser.click(locators.saveButton);
-
-                console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
-                console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
-            }
-
 
             if ((sExcel[i].fleet != undefined) && (sExcel[i].fleet.toUpperCase() != 'NA') && (sExcel[i].fleet.toUpperCase != 'N/A')) { 
                 // start a new rule
@@ -199,6 +199,7 @@ describe('simpleton rules', function () {
                 console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
                 console.log(createdRule);
                 actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                createdRule = {};
             }
         }
     });
