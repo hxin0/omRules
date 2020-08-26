@@ -15,7 +15,7 @@ function range(val) {
 
 program
   .version('v1.9')
-  .usage('[options] [file [sheetname]]')
+  .usage('[options] [file [worksheet]]')
   .option('-o, --output <file>', 'output file name')
   .option('-w, --worksheet <sheet>', 'output worksheet name')
   .option('-l, --list', 'list missing codes json and exit')

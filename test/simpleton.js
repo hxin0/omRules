@@ -127,7 +127,8 @@ describe('simpleton rules', function () {
 
                 createdRule.serviceOffering = sExcel[i].serviceOffering;
 
-                actions.setResultant2(soAbbr[sExcel[i].serviceOffering], delaySecond);
+                let so = sExcel[i].serviceOffering.toUpperCase();
+                actions.setResultant2(soAbbr[so], delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 

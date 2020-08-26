@@ -102,5 +102,86 @@
         "sheet": "t2-Serv_O",
         "parentCode": "Intermodal",
         "dateTime": "8/25/2020, 6:54:47 PM"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ARLADU",
+            "ARLAEU",
+            "HOLAH9"
+        ],
+        "file": "ARCONIC_HJBBnewsorting 6.15.20",
+        "sheet": "t1-BTC",
+        "dateTime": "8/26/2020, 7:33:57 AM"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ARLAEU",
+            "HOLAH9"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t1-BTC",
+        "dateTime": "8/26/2020, 7:43:17 AM"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ALTE56",
+            "AMCAFL",
+            "ASROAM",
+            "THAUBR"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t1-BTC",
+        "dateTime": "8/26/2020, 7:45:17 AM"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ARLADU"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t2-BTC",
+        "dateTime": "8/26/2020, 7:47:53 AM"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ARDEAQ"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t2-BTC",
+        "dateTime": "8/26/2020, 7:49:38 AM",
+        "parentCode": "ALKN8"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ARLADU"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t2-BTC",
+        "dateTime": "8/26/2020, 7:51:07 AM",
+        "parentCode": "ALKN8"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "ARLADU"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t2-BTC",
+        "dateTime": "8/26/2020, 8:00:57 AM"
+    },
+    {
+        "tradingPartner": "ARCONIC",
+        "missingLocations": [
+            "HWLA36"
+        ],
+        "file": "ARCONIC_HJBTnewsorting 6.15.20",
+        "sheet": "t2-BTC",
+        "dateTime": "8/26/2020, 8:01:34 AM",
+        "parentCode": "HOPI03"
     }
 ]

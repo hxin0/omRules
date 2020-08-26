@@ -62,23 +62,23 @@ const ruleNames = {
 };
 
 const soAbbr = {
-    Brokerage: 'Brokerage',
+    RROKERAGE: 'Brokerage',
     ICS: 'Brokerage',
     BROK: 'Brokerage',
 
-    Intermodal: 'Intermodal',
+    INTERMODAL: 'Intermodal',
     JBI: 'Intermodal',
     IM: 'Intermodal',
 
-    Dedicated: 'Dedicated',
+    DEDICATED: 'Dedicated',
     DCS: 'Dedicated',
     DEDI: 'Dedicated',
 
-    'Over the Road': 'Over the Road',
+    'OVER THE ROAD': 'Over the Road',
     JBT: 'Over the Road',
     OTR: 'Over the Road',
 
-    Refrigerated: 'Refrigerated',
+    REFRIGERATED: 'Refrigerated',
     REEFER: 'Refrigerated'
 };
 

@@ -14,14 +14,16 @@
   - simpleton  
     - simpleton.js: simpleton rules  
   - missingCode  
-    - missingCodes.js relace codes with new ones  
+    - mcReplace.js relace codes with new ones  
   - none
+    - msExport.js export missing code during rule creation to Excel
     - irjson.js: inactivate all rules (json version)
 
 # What's new
 ## v1.9
   - combine login.xlsx into settings
   - refactor tiers
+  - write missing codes json file before save rule in order to avoid missing codes are not recorded when program stops due to errors
 ## v1.8
   - changed settings.xlsx structure
   - refactored code accordingly
@@ -35,7 +37,7 @@
 
 ## copy files
 Unzip downloaded file into a folder
-(or copy the following to a folder e.g. C:\...\rules>):
+(or copy the following to a folder e.g. `C:\...\rules>`):
   - package.json
   - wdio.conf.js
   - common/*
@@ -43,7 +45,7 @@ Unzip downloaded file into a folder
   - testdata/*
 
 ## Install dependencies
-C:\...\rules>npm install
+`C:\...\rules>npm install`
 
 # Settings
 ## settings.xlsx
@@ -86,12 +88,16 @@ C:\...\rules>npm install
         ],
 
 ## run
-C:\...\rules>npm test
+`C:\...\rules>npm test`
 
-## missingCodes.js
+## mcReplace.js
 ### specify in settings.xlsx missingCode tab
 ### run:
-C:\...\rules>node test\missingCodes.js
+`C:\...\rules>node test\msReplace.js [options] `
+
+## mcExport.js
+### run
+`C:\...\rules>node test\msExport.js [opotions] [file [worksheet]]`
 
 # Issues
 - Element still not existing after xxxx ms  

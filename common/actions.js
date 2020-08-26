@@ -242,6 +242,7 @@ exports.tier1 = function tier1(
       }
       if (!eleExists) {
         ml.missingLocations.push(tExcel[i].shipper);
+        ml.parentCode = tExcel[i].code;
         console.log(ml);
       }
       // browser.pause(delaySecond);
@@ -362,6 +363,7 @@ exports.tier2 = function tier2(
         }
         if (!eleExists) {
           ml.missingLocations.push(tExcel[i].shipper);
+          ml.parentCode = tExcel[i].code;
           console.log(ml);
         }
         // browser.pause(delaySecond);
@@ -455,6 +457,10 @@ exports.tier2 = function tier2(
   }
 };
 
+ // this function has a problem that later call will overwite the previous ml object
+ // the json file ends up with duplicate appending ml objects
+ // for example if there are 3 objects, it will show the last object 3 times after finish running
+ // leave here for later understanding of this 
 function missingLocationsFileUpdateOld(ml) {
   let missingLocationsFile = require("../testdata/missingLocations.json");
   if (ml.missingLocations.length > 0) {

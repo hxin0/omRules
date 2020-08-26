@@ -1,3 +1,4 @@
 node_modules/
 errorShots/
-testdata/loginTest.*
+testdata/*Test.*
+testdataArchive
