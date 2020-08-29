@@ -23,8 +23,8 @@ exports.clickLoginButtonWhileExisting = function (login) {
   }
 };
 
-exports.searchTradingPartner = function (input) {
-  const delaySecond = input.delaySecond * 1000;
+exports.searchTradingPartner = function (setEnv, input) {
+  const delaySecond = setEnv.delaySecond * 1000;
   browser.waitForExist(locators.searchMenuDropdown, delaySecond);
   browser.click(locators.searchMenuDropdown);
   browser.click(locators.searchMenu1TradingPartner);
@@ -134,20 +134,16 @@ exports.setResultant2 = function (code, delaySecond) {
 };
 
 exports.readDataSheets = async function readDataSheets(
-  input,
+  setEnv,
+  setData,
   schema = schemaTier,
   tabName = "tier"
 ) {
   const xlsxRead = require("read-excel-file/node");
   var login = {};
-  var inputEnv = {};
-  var inputData = {};
   fs.access("testdata/loginTest.xlsx", async (err) => {
     if (err) {
       return;
-      // await xlsxRead('testdata/login.xlsx', { schema: schemaLogin, sheet: 'login' }).then(({ rows }) => {
-      //     login = rows[0];
-      // });
     } else {
       await xlsxRead("testdata/loginTest.xlsx", {
         schema: schemaSettings,
@@ -161,21 +157,27 @@ exports.readDataSheets = async function readDataSheets(
     schema: schemaSettings,
     sheet: "settings",
   }).then(({ rows }) => {
-    inputEnv = rows[0];
+    for (let i=0; i<rows.length; i++) {
+      if (!rows[i].skip) {
+        setEnv = rows[i];
+        break;
+      }
+    }
+    if (!setEnv) setEnv = rows[0]; // if all rows have SKIP, use the 1st row
   });
   await xlsxRead("testdata/settings.xlsx", {
     schema: schema,
     sheet: tabName,
   }).then(({ rows }) => {
-    inputData = rows[0];
+    setData = rows.filter(row=>!(row.skip));
   });
-  input = { ...inputEnv, ...inputData };
+
   if (_.size(login) > 0) {
-    input.username = login.username;
-    input.password = login.password;
+    setEnv.username = login.username;
+    setEnv.password = login.password;
   }
 
-  return input;
+  return { setEnv, setData };
 };
 
 exports.tier1 = function tier1(
@@ -462,12 +464,12 @@ exports.tier2 = function tier2(
  // for example if there are 3 objects, it will show the last object 3 times after finish running
  // leave here for later understanding of this 
 function missingLocationsFileUpdateOld(ml) {
-  let missingLocationsFile = require("../testdata/missingLocations.json");
+  let missingLocationsFile = require("../testdata/ml");
   if (ml.missingLocations.length > 0) {
     ml.dateTime = new Date().toLocaleString();
     missingLocationsFile.push(ml);
     fs.writeFile(
-      "./testdata/missingLocations.json",
+      "./testdata/ml.json",
       JSON.stringify(missingLocationsFile, null, 4),
       (err) => {
         if (err) {
@@ -482,12 +484,12 @@ function missingLocationsFileUpdateOld(ml) {
 
 function missingLocationsFileUpdate(ml) {
   if (ml.missingLocations.length > 0) {
-    fs.readFile('./testdata/missingLocations.json', function (err, data) {
+    fs.readFile('./testdata/ml.json', function (errR, data) {
       var missingLocationsFile = JSON.parse(data);
       ml.dateTime = new Date().toLocaleString();
       missingLocationsFile.push(ml);
       fs.writeFile(
-        "./testdata/missingLocations.json",
+        "./testdata/ml.json",
         JSON.stringify(missingLocationsFile, null, 4),
         (err) => {
           if (err) {

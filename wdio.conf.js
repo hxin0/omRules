@@ -14,20 +14,18 @@ exports.config = {
         '--inspect=127.0.0.1:5859'
     ],
     specs: [
-        // './test/irexcel.js',
-        // './test/irjson.js',
-
-        // './test/irCreatedBy.js',
-        './test/simpleton.js',
-        // './test/t1bt.js',
-        // './test/t2bt.js',
-        // './test/t1bu.js',
-        // './test/t2bu.js',
-        // './test/t1so.js',
-        // './test/t2so.js',
-        // './test/t1fl.js',
-        // './test/t2fl.js',
-        // './test/t1cu.js'
+        // './test/irby.js',
+        // './test/simpleton.js',
+        './test/t1bt.js',
+        './test/t2bt.js',
+        './test/t1bu.js',
+        './test/t2bu.js',
+        './test/t1so.js',
+        './test/t2so.js',
+        './test/t1fl.js',
+        './test/t2fl.js',
+        './test/t1cu.js',
+        './test/t2cu.js',        
     ],
     // Patterns to exclude.
     exclude: [

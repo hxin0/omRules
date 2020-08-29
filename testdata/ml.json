@@ -183,5 +183,81 @@
         "sheet": "t2-BTC",
         "dateTime": "8/26/2020, 8:01:34 AM",
         "parentCode": "HOPI03"
+    },
+    {
+        "tradingPartner": "ARCONICTP",
+        "missingLocations": [
+            "ARLADU",
+            "ARLAEU",
+            "HOLAH9"
+        ],
+        "file": "ARCONICTP_HJBT 06.15.2020",
+        "sheet": "t1-BTC",
+        "parentCode": "ALKN8",
+        "dateTime": "8/27/2020, 3:44:56 PM"
+    },
+    {
+        "tradingPartner": "ARCONICTP",
+        "missingLocations": [
+            "ALTE56",
+            "AMCAFL",
+            "ASROAM",
+            "THAUBR"
+        ],
+        "file": "ARCONICTP_HJBT 06.15.2020",
+        "sheet": "t1-BTC",
+        "parentCode": "HOPI03",
+        "dateTime": "8/27/2020, 3:47:50 PM"
+    },
+    {
+        "tradingPartner": "99CENTS",
+        "missingLocations": [
+            "GGGG"
+        ],
+        "file": "K",
+        "sheet": "t1-BTC",
+        "parentCode": "KIKN15",
+        "dateTime": "8/27/2020, 8:13:10 PM"
+    },
+    {
+        "tradingPartner": "99CENTS",
+        "missingLocations": [
+            "DDDD",
+            "EEEE"
+        ],
+        "file": "K",
+        "sheet": "t1-BTC",
+        "parentCode": "KIKN25",
+        "dateTime": "8/27/2020, 8:13:42 PM"
+    },
+    {
+        "tradingPartner": "99CENTS",
+        "missingLocations": [
+            "FFFF"
+        ],
+        "file": "K",
+        "sheet": "t1-BTC",
+        "parentCode": "KIKN58",
+        "dateTime": "8/27/2020, 8:14:11 PM"
+    },
+    {
+        "tradingPartner": "99CENTS",
+        "missingLocations": [
+            "K-"
+        ],
+        "file": "K",
+        "sheet": "t2-BTC",
+        "parentCode": "KIKN31",
+        "dateTime": "8/27/2020, 8:14:59 PM"
+    },
+    {
+        "tradingPartner": "99CENTS",
+        "missingLocations": [
+            "K-"
+        ],
+        "file": "K",
+        "sheet": "t2-BTC",
+        "parentCode": "KIKN50",
+        "dateTime": "8/27/2020, 8:16:38 PM"
     }
 ]

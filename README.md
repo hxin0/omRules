@@ -1,7 +1,8 @@
-# Version v1.9
-## modules (group by settings.xlsx tab name)
+# Version v1.10
+## modules (group by settings.xlsx sheet name)
   - ir  
-    - irCreatedBy.js: inactivate rules by users  
+    - irby.js: inactivate rules by users  
+    - irexcel: inactivare rules  
   - tier  
     - t1bt.js: tier 1 billing party rule  
     - t2bt.js: tier 2 billing party rule  
@@ -11,15 +12,20 @@
     - t2so.js: tier 2 service offering rule  
     - t1fl.js: tier 1 fleet code rule  
     - t2fl.js: tier 2 fleet code rule  
+    - t1cu.js: tier 1 customer rule
+    - t2cu.js: tier 2 customer rule
   - simpleton  
     - simpleton.js: simpleton rules  
   - missingCode  
-    - mcReplace.js relace codes with new ones  
+    - mlr.js relace codes with new ones  
   - none
-    - mcExport.js export missing code during rule creation to Excel
-    - irjson.js: inactivate all rules (json version)
+    - mle.js export missing code during rule creation to Excel
 
 # What's new
+## v1.10
+  - Add 'SKIP' function to all settings.xlsx worksheets
+    - settings, tier: run with first "not TRUE" row
+    - ir, simpleton, missingCode: run all "not True" rows
 ## v1.9
   - combine login.xlsx into settings
   - refactor tiers
@@ -36,10 +42,11 @@
 # Setup
 
 ## copy files
-Unzip downloaded file into a folder
+Unzip downloaded file (e.g. omrules-v1.10.zip) into a folder
 (or copy the following to a folder e.g. `C:\...\rules>`):
   - package.json
   - wdio.conf.js
+  - README.md
   - common/*
   - test/*
   - testdata/*
@@ -52,52 +59,79 @@ Unzip downloaded file into a folder
 1. settings:
     - url: rules page url  
     - tradingPartner: inactivate rules for the trading partner 
-    - delaySecond: delay how many seconds according to page elements load time 
+    - delaySecond: delay seconds for waiting on page elements loading 
     - username: your login username (not required)
     - password: your login password (not required)
-1. ir:  
-    - createdBy: user ids if any  
-      comma as delimiter  
-      UI should have created by column selected  
-      inactivate all if blank  
+    - SKIP: program will use the first 'not TRUE' row
 2. tier:  
+    - tradingPartner: trading partner
     - fileName: rules data file  
     - t1bt: tier 1 datasheet name in the excel data file  
     - t2bt: tier 2 datasheet name in the excel data file  
     - ...  
+    - SKIP: progarm will use the first 'not TRUE' row
+3. ir:  
+    - tradingPartner: trading partner
+    - createdBy: user ids if any  
+      - can set multiple users, comma as delimiter  
+      - UI should have created by column selected  
+      - leave this column blank regardless of created by  
+    - selectorTotal:total columns in the table without 'data-auto-id' attribute
+    - selectorNum: order number of 'Created By' column among columns without 'data-auto-id' attribute
+    - SKIP: program will run on all rows without 'TRUE'
 3. simpleton:
-    - fileName: simpleton data file  
-    - tabName: simpleton data file tab name
+    - tradingPartner: trading partner  
+    - SCAC: SCAC code if any
+    - BTC: billing party rule, leave blank if not applicable
+    - CorpAcct: customer rule, leave blank if not applicable
+    - BU: business unit rule, leave blank if not applicable
+    - SO: service offering rule, leave blank if not applicable
+    - Fleet: fleet rule, leave blank if not applicable
+    - SKIP: program will run on all rows without 'TRUE'
 4. missingCode:  
     - missingCodeFileName  
     - ruleDataFileName: rules data file  
     - newDataFileName  
     - rules data sheet tab names - t1bt, t2bt ... t2fl  
       leave blank if not exist  
+    - SKIP: program will run on all rows without 'TRUE'
 ## data files  
 1. tiered data file - different types of rules on each datasheet  
-2. simpleton file - create simple rules on all rows on a datasheet by tabName 
-3. missingData file - one missingData file, one rules data file  
+2. missingData files - one missingData file, one rules data file  
 ## specify which rules to run
 *  wdio.conf.js  
-  specify which rule to run in specs section. This will run irCreateBy.js:  
-
-        specs: [
-          './test/irCreatedBy.js',
-          // './test/t1bt.js'
-        ],
-
+  specify which rule to run in `specs` section, don't change anything else    
+  comment the lines if you don't want to run, or delete them  
+  for example, this will run `simpleton.js`:
+```javascript
+  specs: [
+      // './test/irby.js',
+      './test/simpleton.js',
+      // './test/t1bt.js',
+      // './test/t2bt.js',
+      // './test/t1bu.js',
+      // './test/t2bu.js',
+      // './test/t1so.js',
+      // './test/t2so.js',
+      // './test/t1fl.js',
+      // './test/t2fl.js',
+      // './test/t1cu.js',
+      // './test/t2cu.js',        
+  ],
+```
 ## run
-`C:\...\rules>npm test`
+`C:\...\rules>npm test`  
 
-## mcReplace.js
+## mlr.js replacing missing location codes with new codes in rules datasheets
 ### specify in settings.xlsx missingCode tab
 ### run:
-`C:\...\rules>node test\mcReplace.js [options] `
+`C:\...\rules>node test\mlr.js [options] `  
+(`C:\...\rules>node test\mlr -h` to see the options)
 
-## mcExport.js
+## mle.js export missing location codes recorded during creation from json to excel
 ### run
-`C:\...\rules>node test\mcExport.js [opotions] [file [worksheet]]`
+`C:\...\rules>node test\mle.js [options] [file [worksheet]]`  
+(`C:\...\rules>node test\mle -h` to see the options)
 
 # Issues
 - Element still not existing after xxxx ms  

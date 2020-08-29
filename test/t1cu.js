@@ -6,12 +6,15 @@ describe('tier 1 default customer rules rules', function () {
     const xlsxRead = require('read-excel-file/node');
 
     var input = {};
+    var setEnv = {};
+    var setData = [];
     var delaySecond = 1000;
     var tExcel = [];
     var ml = {};
 
     before('read file first', async function () {
-        (input = await actions.readDataSheets(input));
+        ({ setEnv, setData } = await actions.readDataSheets(setEnv, setData));
+        input = setData[0];
         ml.tradingPartner = input.tradingPartner;
         ml.missingLocations = [];
         ml.file = input.fileName;
@@ -33,11 +36,11 @@ describe('tier 1 default customer rules rules', function () {
 
     it('should add t1 customer rule for the trading partner', () => {
         const resultantType = 1;
-        delaySecond = input.delaySecond * 1000;
-        browser.url(input.url);
+        delaySecond = setEnv.delaySecond * 1000;
+        browser.url(setEnv.url);
         browser.pause(delaySecond);
         // login page
-        actions.clickLoginButtonWhileExisting(input);
+        actions.clickLoginButtonWhileExisting(setEnv);
         browser.pause(delaySecond);
 
         actions.tier1(input, tExcel, ruleNames.customerRule, resultantType, ml, delaySecond);

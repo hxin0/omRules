@@ -3,33 +3,21 @@ const { locators, ruleNames, soAbbr } = require('../common/locators');
 const actions = require('../common/actions');
 
 describe('simpleton rules', function () {
-    const xlsxRead = require('read-excel-file/node');
 
-    var input = {};
+    var setEnv = {};
     var delaySecond = 1000;
-    var sExcel = [];
+    var setData = [];
 
     before('read file first', async function () {
-        (input = await actions.readDataSheets(input)); // only need login info
-
-        var fileFullName = 'testdata/settings.xlsx';
-        // browser.debug();
-        await xlsxRead(fileFullName, { schema: schemaSimpletonData, sheet: 'simpleton' }).then(({ rows }) => {
-            sExcel = rows.filter(row=>!(row.skip));
-            console.log(sExcel);
-        });
-        if ((sExcel.length == 0) || ((!sExcel[0].code) && (!sExcel[0].businessUnit) && (!sExcel[0].serviceOffering) && (!sExcel[0].corpAcct) && (!sExcel[0].fleet))) {
-            console.log('No data - skipped')
-            this.skip();
-        }
+        ({ setEnv, setData } = await actions.readDataSheets(setEnv, setData, schemaSimpletonData, 'simpleton'));
     });
 
     it('should add simpeton rules for the trading partner', () => {
-        delaySecond = input.delaySecond * 1000;
-        browser.url(input.url);
+        delaySecond = setEnv.delaySecond * 1000;
+        browser.url(setEnv.url);
         browser.pause(delaySecond);
         // login page
-        actions.clickLoginButtonWhileExisting(input);
+        actions.clickLoginButtonWhileExisting(setEnv);
 
         browser.pause(delaySecond);
         // actions.searchTradingPartner(input);
@@ -38,33 +26,33 @@ describe('simpleton rules', function () {
         // browser.pause(delaySecond);
 
         var i;
-
         var createdRule = {};
         var skipClickNewRuleButton = false;
-        for (i = 0; i < sExcel.length; i++) {
-            if (sExcel[i].corpAcct != undefined) { // customer rule
+        for (i = 0; i < setData.length; i++) {
+            console.log(`Start simpleton rules on row ${i+1}: ${setData[i].tradingPartner}`);
+            if (setData[i].corpAcct != undefined) { // customer rule
                 // start a new rule
                 console.log('Customer rule');
                 if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
 
                 createdRule.rule = ruleNames.customerRule;
-                createdRule.tradingPartner = sExcel[i].tradingPartner;
+                createdRule.tradingPartner = setData[i].tradingPartner;
 
                 actions.createRule(ruleNames.customerRule, delaySecond);
                 // configure new rule page -- TP
                 browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
                 browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
-                if (sExcel[i].scac != undefined) {
+                if (setData[i].scac != undefined) {
                     // Add scac
-                    createdRule.scsc = sExcel[i].scac;
-                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
+                    createdRule.scsc = setData[i].scac;
+                    actions.setAttributeScac(setData[i].scac, delaySecond);
                 }
 
-                createdRule.corpAcct = sExcel[i].corpAcct;
+                createdRule.corpAcct = setData[i].corpAcct;
 
-                actions.setResultant(sExcel[i].corpAcct, delaySecond);
+                actions.setResultant(setData[i].corpAcct, delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
@@ -74,28 +62,28 @@ describe('simpleton rules', function () {
                 createdRule = {};
             }
 
-            if (sExcel[i].code != undefined) { // billing party rule
+            if (setData[i].code != undefined) { // billing party rule
                 // start a new rule
                 console.log('Billing Party rule');
                 if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
 
                 createdRule.rule = ruleNames.billingParty;
-                createdRule.tradingPartner = sExcel[i].tradingPartner;
+                createdRule.tradingPartner = setData[i].tradingPartner;
 
                 actions.createRule(ruleNames.billingParty, delaySecond);
                 // configure new rule page -- TP
                 browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
                 browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
-                if (sExcel[i].scac != undefined) {
+                if (setData[i].scac != undefined) {
                     // Add scac
-                    createdRule.scsc = sExcel[i].scac;
-                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
+                    createdRule.scsc = setData[i].scac;
+                    actions.setAttributeScac(setData[i].scac, delaySecond);
                 }
 
-                createdRule.billtoCode = sExcel[i].code;
-                actions.setResultant(sExcel[i].code, delaySecond);
+                createdRule.billtoCode = setData[i].code;
+                actions.setResultant(setData[i].code, delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
@@ -105,29 +93,29 @@ describe('simpleton rules', function () {
                 createdRule = {};
             }
 
-            if (sExcel[i].businessUnit != undefined) { // business unit rule
+            if (setData[i].businessUnit != undefined) { // business unit rule
                 // start a new rule
                 console.log('Business Unit rule');
                 if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
 
                 createdRule.rule = ruleNames.businessUnit;
-                createdRule.tradingPartner = sExcel[i].tradingPartner;
+                createdRule.tradingPartner = setData[i].tradingPartner;
 
                 actions.createRule(ruleNames.businessUnit, delaySecond);
                 // configure new rule page -- TP
                 browser.waitForExist(locators.resultantActionValue2, delaySecond * 30);
                 browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
-                if (sExcel[i].scac != undefined) {
+                if (setData[i].scac != undefined) {
                     // Add scac
-                    createdRule.scsc = sExcel[i].scac;
-                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
+                    createdRule.scsc = setData[i].scac;
+                    actions.setAttributeScac(setData[i].scac, delaySecond);
                 }
 
-                createdRule.businessUnit = sExcel[i].businessUnit.substring(0,3);
+                createdRule.businessUnit = setData[i].businessUnit.substring(0,3);
 
-                actions.setResultant2(sExcel[i].businessUnit.substring(0,3), delaySecond);
+                actions.setResultant2(setData[i].businessUnit.substring(0,3), delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
@@ -137,29 +125,29 @@ describe('simpleton rules', function () {
                 createdRule = {};
             }
 
-            if (sExcel[i].serviceOffering != undefined) { // service offering rule
+            if (setData[i].serviceOffering != undefined) { // service offering rule
                 // start a new rule
                 console.log('Service Offering rule');
                 if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
 
                 createdRule.rule = ruleNames.serviceOffering;
-                createdRule.tradingPartner = sExcel[i].tradingPartner;
+                createdRule.tradingPartner = setData[i].tradingPartner;
 
                 actions.createRule(ruleNames.serviceOffering, delaySecond);
                 // configure new rule page -- TP
                 browser.waitForExist(locators.resultantActionValue2, delaySecond * 30);
                 browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
-                if (sExcel[i].scac != undefined) {
+                if (setData[i].scac != undefined) {
                     // Add scac
-                    createdRule.scsc = sExcel[i].scac;
-                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
+                    createdRule.scsc = setData[i].scac;
+                    actions.setAttributeScac(setData[i].scac, delaySecond);
                 }
 
-                createdRule.serviceOffering = sExcel[i].serviceOffering;
+                createdRule.serviceOffering = setData[i].serviceOffering;
 
-                let so = sExcel[i].serviceOffering.toUpperCase();
+                let so = setData[i].serviceOffering.toUpperCase();
                 actions.setResultant2(soAbbr[so], delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
@@ -170,29 +158,29 @@ describe('simpleton rules', function () {
                 createdRule = {};
             }
 
-            if ((sExcel[i].fleet != undefined) && (sExcel[i].fleet.toUpperCase() != 'NA') && (sExcel[i].fleet.toUpperCase != 'N/A')) { 
+            if ((setData[i].fleet != undefined) && (setData[i].fleet.toUpperCase() != 'NA') && (setData[i].fleet.toUpperCase != 'N/A')) { 
                 // start a new rule
                 console.log('Fleet Code rule');
                 if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
 
                 createdRule.rule = ruleNames.fleetCode;
-                createdRule.tradingPartner = sExcel[i].tradingPartner;
+                createdRule.tradingPartner = setData[i].tradingPartner;
 
                 actions.createRule(ruleNames.fleetCode, delaySecond);
                 // configure new rule page -- TP
                 browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
                 browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(sExcel[i].tradingPartner, delaySecond);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
-                if (sExcel[i].scac != undefined) {
+                if (setData[i].scac != undefined) {
                     // Add scac
-                    createdRule.scsc = sExcel[i].scac;
-                    actions.setAttributeScac(sExcel[i].scac, delaySecond);
+                    createdRule.scsc = setData[i].scac;
+                    actions.setAttributeScac(setData[i].scac, delaySecond);
                 }
 
-                createdRule.fleet = sExcel[i].fleet;
+                createdRule.fleet = setData[i].fleet;
 
-                actions.setResultant(sExcel[i].fleet, delaySecond);
+                actions.setResultant(setData[i].fleet, delaySecond);
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 

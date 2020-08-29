@@ -21,17 +21,13 @@ program
   .option('-l, --list', 'list missing codes json and exit')
   .option('-d, --delete', 'delete exported data from json file')
   .option('-t, --trading-partner <list>', 'trading partner list')
-  .option('-r, --date-range <a>..<b>', 'date range', range)
+  .option('-r, --date-range <mm/dd/yy>..<mm/dd/yy>', 'date range', range)
   .option('-s, --sort <list>', 'sorting columnes', list); // not implemented
 
 program.parse(process.argv);
 
-var ml = require('../testdata/missingLocations');
+var ml = require('../testdata/ml');
 const xlsxWrite = require("excel4node");
-if(program.list) {
-  console.log(ml);
-  process.exit(0);
-}
 
 var fileName = '', sheetName = ''; 
 var dateRange = [], tpArray = '';
@@ -51,7 +47,7 @@ if (!sheetName) sheetName = 'Sheet1';
 var mlExport = ml;
 var mlKeep = [];
 if(program.tradingPartner) {
-  tpArray = (program.tradingPartner).split(",");
+  tpArray = (program.tradingPartner.toUpperCase()).split(",");
   mlExport = ml.filter(x=>tpArray.includes(x.tradingPartner));
 }
 
@@ -66,6 +62,11 @@ if(program.sort) {
   console.log(mlExport);
   _.sortBy(mlExport, sortArray);
   console.log(mlExport);
+}
+
+if(program.list) {
+  console.log(mlExport);
+  process.exit(0);
 }
 
 var wb = new xlsxWrite.Workbook();
@@ -119,12 +120,12 @@ console.log(process.cwd());
 console.log()
 
 if (program.delete) {
-  const fs = require('fs');
+  // const fs = require('fs');
   mlKeep = ml.filter(x=>!mlExport.includes(x));
 
   console.log('remained in json file:')
   console.log(mlKeep);
-  // fs.writeFile("./testdata/missingLocations.json", JSON.stringify(mlKeep, null, 4), (err) => {
+  // fs.writeFile("./testdata/ml.json", JSON.stringify(mlKeep, null, 4), (err) => {
   //   if (err) {
   //       console.error(err);
   //       return;

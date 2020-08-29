@@ -14,6 +14,10 @@ const schemaInactivateRules = {
     "selectorNum": {
         prop: 'selectorNum',
         type: String
+    },
+    "SKIP": {
+        prop: 'skip',
+        type: Boolean
     }
 };
 
@@ -69,19 +73,23 @@ const schemaTier = {
     "t2cu": {
         prop: 't2cu',
         type: String
+    },
+    "SKIP": {
+        prop: 'skip',
+        type: Boolean
     }
 };
 
-const schemaSimpleton = {
-    "fileName": {
-        prop: 'fileName',
-        type: String
-    },
-    "tabName": {
-        prop: 'tabName',
-        type: String
-    }
-};
+// const schemaSimpleton = { // delete? no longer applied?
+//     "fileName": {
+//         prop: 'fileName',
+//         type: String
+//     },
+//     "tabName": {
+//         prop: 'tabName',
+//         type: String
+//     }
+// };
 
 const schemaTierData = {
     "PARENT(Bill To, Fleet, Service Offering)": {
@@ -122,6 +130,10 @@ const schemaSettings = {
     "password": {
         prop: 'password',
         type: String
+    },
+    "SKIP": {
+        prop: 'skip',
+        type: Boolean
     }
 }
 
@@ -205,6 +217,10 @@ const schemaMissingCode = {
         prop: 't2fl',
         type: String
     },
+    "SKIP": {
+        prop: 'skip',
+        type: Boolean
+    }
 }
 
 const schemaMissingCodeData = {
@@ -216,6 +232,10 @@ const schemaMissingCodeData = {
       prop: "newLocationCode",
       type: String,
     },
+    "SKIP": {
+        prop: 'skip',
+        type: Boolean
+    }
   };
 
 module.exports = {
@@ -223,7 +243,7 @@ module.exports = {
   schemaInactivateRules,
   schemaTier,
   schemaTierData,
-  schemaSimpleton,
+//   schemaSimpleton, // delete?
   schemaSimpletonData,
   schemaMissingCode,
   schemaMissingCodeData,
