@@ -42,7 +42,7 @@ if(program.worksheet) sheetName = program.worksheet;
 if(program.output) fileName = program.output;
 
 if (!fileName) fileName = 'ml';
-if (!sheetName) sheetName = 'Sheet1';
+if (!sheetName) sheetName = 'ml';
 
 var mlExport = ml;
 var mlKeep = [];
@@ -56,7 +56,6 @@ if(program.dateRange) {
   mlExport = mlExport.filter(x=>(dayjs(x.dateTime) >= dateRange[0]) && (dayjs(x.dateTime) <= dateRange[1]));
 }
 
-console.log(program.sort);
 if(program.sort) {
   sortArray = program.sort.map(x=>_.camelCase(x));
   console.log(mlExport);
@@ -73,28 +72,31 @@ var wb = new xlsxWrite.Workbook();
 var ws = wb.addWorksheet(sheetName);
 const styleHeader = wb.createStyle({
   alignment: {
-    wrapText: true
+    wrapText: true,
+    vertical: 'center'
   },
   font: {
-    color: "#145A32",
-    bold: true,
     wrapText: true,
+  },
+  fill: {
+    type: 'pattern',
+    patternType: 'solid',
+    fgColor: '#70AD47',
   },
 });
   
 const styleMissingCode = wb.createStyle({
   font: {
     color: "#FF0000",
-    bold: true,
   },
 });
 
 const addHeader = () => {
   ws.column(1).setWidth(17);
-  ws.column(2).setWidth(17);
-  ws.column(3).setWidth(17);
+  ws.column(2).setWidth(20);
+  ws.column(3).setWidth(20);
   ws.column(4).setWidth(17);
-  ws.column(5).setWidth(25);
+  ws.column(5).setWidth(22);
   ws.cell(1, 1).string("TRADING PARTNER").style(styleHeader);
   ws.cell(1, 2).string("MISSING LOCATIONS").style(styleHeader);
   ws.cell(1, 3).string("FILE").style(styleHeader);
@@ -115,22 +117,26 @@ for (let i=0; i < mlExport.length; i++) {
     k++;
   }
 }
-// wb.write("./testdata/".concat(fileName).concat('.xlsx'));
-console.log(process.cwd());
-console.log()
+var newFile;
+if (process.cwd().split('/').pop() == 'test') {
+  newFile = "../testdata/".concat(fileName).concat('.xlsx');
+} else {
+  newFile = "./testdata/".concat(fileName).concat('.xlsx');
+}
+wb.write(newFile);
 
 if (program.delete) {
-  // const fs = require('fs');
+  const fs = require('fs');
   mlKeep = ml.filter(x=>!mlExport.includes(x));
 
   console.log('remained in json file:')
   console.log(mlKeep);
-  // fs.writeFile("./testdata/ml.json", JSON.stringify(mlKeep, null, 4), (err) => {
-  //   if (err) {
-  //       console.error(err);
-  //       return;
-  //   }
-  //   console.log("json objects have been exported and deleted from json file:");
-  //   console.log(mlExport);
-  // }); 
+  fs.writeFile("./testdata/ml.json", JSON.stringify(mlKeep, null, 4), (err) => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log("json objects have been exported and deleted from json file:");
+    console.log(mlExport);
+  }); 
 }

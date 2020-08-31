@@ -155,7 +155,10 @@ const processingAll = async () => {
 
     let fileFullName1 = "testdata/" + setData[j].missingCodeFileName + ".xlsx";
     let fileFullName2 = "testdata/" + setData[j].ruleDataFileName + ".xlsx";
-    let newFileName = "testdata/" + setData[j].newRulesDataFileName + ".xlsx";
+    var newFileName = "testdata/" + setData[j].newRulesDataFileName + ".xlsx";
+    if (process.cwd().split('/').pop() == 'test') {
+      newFileName = "../testdata/" + setData[j].newRulesDataFileName + ".xlsx";
+    }
 
     var wb = new xlsxWrite.Workbook();
 
@@ -164,10 +167,14 @@ const processingAll = async () => {
         wrapText: true
       },
       font: {
-        color: "#145A32",
-        bold: true,
         wrapText: true,
       },
+      fill: {
+        type: 'pattern',
+        patternType: 'solid',
+        // bgColor: '#FFFF00',
+        fgColor: '#70AD47',
+      }
     });
     
     const styleNewCode = wb.createStyle({
@@ -175,6 +182,12 @@ const processingAll = async () => {
         color: "#154360",
         bold: true,
       },
+      fill: {
+        type: 'pattern',
+        patternType: 'solid',
+        bgColor: '#FFFF00',
+        fgColor: '#FFFF00',
+      }
     });
     
     addHeader(ws, styleHeader);

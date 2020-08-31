@@ -25,7 +25,8 @@ describe('inactivate rules', function () {
         browser.pause(delaySecond);
         // loop start
         for (let j = 0; j < setData.length; j++) {
-            console.log(`Start ir: row ${j + 1}: ${setData[j].tradingPartner}`);
+            console.log(`Start settings.xlsx/ir: row ${j + 1}: ${setData[j].tradingPartner}`);
+            console.log(Date().toLocaleString());
             actions.searchTradingPartner(setEnv, setData[j]);
             actions.waitForLoadingDotsDisappearIfAny(delaySecond);
 
@@ -69,8 +70,7 @@ describe('inactivate rules', function () {
                     browser.pause(delaySecond);
                     browser.click(locators.inactivateMenu);
                     browser.pause(delaySecond);
-                    console.log(i);
-                    console.log($$(locators.array3dots).length);
+                    console.log(`${i+1} of ${$$(locators.array3dots).length}`);
                     // if can inactivate, "i" will stay, otherwise i++
                     try {
                         browser.click(locators.yesButton);
@@ -95,6 +95,6 @@ describe('inactivate rules', function () {
             }
             console.log(count + ' rules have been inactivated')
         }
-        // loop end
+        console.log(Date().toLocaleString());
     });
 });

@@ -29,7 +29,8 @@ describe('simpleton rules', function () {
         var createdRule = {};
         var skipClickNewRuleButton = false;
         for (i = 0; i < setData.length; i++) {
-            console.log(`Start simpleton rules on row ${i+1}: ${setData[i].tradingPartner}`);
+            console.log(`Start settings.xlsx/simpleton on row ${i+1}: ${setData[i].tradingPartner}`);
+            console.log(Date().toLocaleString());
             if (setData[i].corpAcct != undefined) { // customer rule
                 // start a new rule
                 console.log('Customer rule');
@@ -190,5 +191,6 @@ describe('simpleton rules', function () {
                 createdRule = {};
             }
         }
+        console.log(Date().toLocaleString());
     });
 });
