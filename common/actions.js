@@ -282,6 +282,7 @@ exports.tier1 = function tier1(
         if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
         createdRule.shipperCode = selectedShp;
         console.log("Tier 1 " + ruleName + " rule is saved:");
+        console.log(Date().toLocaleString());
         console.log(createdRule);
         selectedShp.length = 0;
         createdRule = {};
@@ -448,6 +449,7 @@ exports.tier2 = function tier2(
         createdRule.shipperCode = selectedShp;
         createdRule.receiverCode = selectedRec;
         console.log("Tier 2 " + ruleName + " rule is saved:");
+        console.log(Date().toLocaleString());
         console.log(createdRule);
         selectedShp.length = 0;
         selectedRec.length = 0;
@@ -459,7 +461,7 @@ exports.tier2 = function tier2(
   }
 };
 
- // this function has a problem that later call will overwite the previous ml object
+ // this old function has a problem that later call will overwite the previous ml object
  // the json file ends up with duplicate appending ml objects
  // for example if there are 3 objects, it will show the last object 3 times after finish running
  // leave here for later understanding of this 
