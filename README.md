@@ -1,4 +1,4 @@
-# Version v1.10
+# Version v1.10.1
 ## modules (group by settings.xlsx sheet name)
   - ir  
     - irby.js: inactivate rules by users  
@@ -22,6 +22,8 @@
     - mle.js export missing code during rule creation to Excel
 
 # What's new
+## v1.10.1
+  - bug fix, uncomment lines for debugging
 ## v1.10
   - Add 'SKIP' function to all settings.xlsx worksheets
     - settings, tier: run with first "not TRUE" row
