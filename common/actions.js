@@ -10,15 +10,36 @@ const _ = require("lodash/core");
 const fs = require("fs");
 
 exports.clickLoginButtonWhileExisting = function (login) {
-  while (browser.isExisting(locators.loginButton)) {
-    if (login.username != undefined)
-      browser.setValue(locators.username, login.username);
-    if (login.password != undefined)
-      browser.setValue(locators.password, login.password);
-    if (login.username != undefined && login.password != undefined)
-      browser.click(locators.loginButton);
-    else {
-      browser.pause(consts.delaySecond * 30);
+  if (login.newLoginPage) {
+    while (browser.isExisting(locators.loginNextButton)) {
+      if (login.username != undefined)
+        browser.setValue(locators.username, login.username);
+      else {
+        browser.pause(consts.delaySecond * 5000)
+      }
+      browser.click(locators.loginNextButton);
+    }
+    browser.pause(consts.delaySecond);
+    while (browser.isExisting(locators.loginButton)) {
+      if (login.password != undefined)
+        browser.setValue(locators.password, login.password);
+      else {
+          browser.pause(consts.delaySecond * 5000);
+      }
+      if (login.username != undefined && login.password != undefined)
+        browser.click(locators.loginButton);
+    }
+  } else {
+    while (browser.isExisting(locators.loginButton)) {
+      if (login.username != undefined)
+        browser.setValue(locators.username, login.username);
+      if (login.password != undefined)
+        browser.setValue(locators.password, login.password);
+      if (login.username != undefined && login.password != undefined)
+        browser.click(locators.loginButton);
+      else {
+        browser.pause(consts.delaySecond * 30);
+      }
     }
   }
 };
