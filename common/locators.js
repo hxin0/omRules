@@ -1,6 +1,7 @@
 const locators = {
     username: '[id="username"]',
     password: '[id="password"]',
+    loginNextButton: 'input[name="login"][value="Next"]',
     loginButton: 'input[value="Log In"]',
     searchMenuDropdown: '[id="searchMenuItems"]',
     searchMenu1TradingPartner: '[id="ui-select-choices-id-1"]',

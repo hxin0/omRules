@@ -134,6 +134,10 @@ const schemaSettings = {
     "SKIP": {
         prop: 'skip',
         type: Boolean
+    },
+    "newLoginPage": {
+        prop: 'newLoginPage',
+        type: Boolean
     }
 }
 

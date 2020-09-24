@@ -1,4 +1,4 @@
-# Version v1.10.1
+# Version v1.11
 ## modules (group by settings.xlsx sheet name)
   - ir  
     - irby.js: inactivate rules by users  
@@ -22,6 +22,8 @@
     - mle.js export missing code during rule creation to Excel
 
 # What's new
+## v 1.11
+  - handle new login page, changed schemaSettings, locators and actions, backward compatible
 ## v1.10.1
   - bug fix, uncomment lines for debugging
 ## v1.10
