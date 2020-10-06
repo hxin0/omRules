@@ -67,24 +67,31 @@ const soAbbr = {
     ICS: 'Brokerage',
     BROK: 'Brokerage',
     BRO: 'Brokerage',
+    BR: 'Brokerage',
 
     INTERMODAL: 'Intermodal',
     JBI: 'Intermodal',
     IM: 'Intermodal',
     INT: 'Intermodal',
+    IN: 'Intermodal',
 
     DEDICATED: 'Dedicated',
     DCS: 'Dedicated',
     DEDI: 'Dedicated',
     DED: 'Dedicated',
+    DE: 'Dedicated',
 
     'OVER THE ROAD': 'Over the Road',
     JBT: 'Over the Road',
     OTR: 'Over the Road',
+    OV: 'Over the Road',
+    OR: 'Over the Road',
 
     REFRIGERATED: 'Refrigerated',
     REEFER: 'Refrigerated',
-    REF: 'Refrigerated'
+    REEF: 'Refrigerated',
+    REF: 'Refrigerated',
+    RE: 'Refrigerated'
 };
 
 module.exports = { locators, consts, ruleNames, soAbbr };

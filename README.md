@@ -1,8 +1,7 @@
-# Version v1.11
+# Version v1.11.1
 ## modules (group by settings.xlsx sheet name)
   - ir  
     - irby.js: inactivate rules by users  
-    - irexcel: inactivare rules  
   - tier  
     - t1bt.js: tier 1 billing party rule  
     - t2bt.js: tier 2 billing party rule  
@@ -22,7 +21,10 @@
     - mle.js export missing code during rule creation to Excel
 
 # What's new
-## v 1.11
+## v1.11.1
+  - bug fix, receiver sorting for tier 2 rules  
+  - add more Service Offering acronyms  
+## v1.11
   - handle new login page, changed schemaSettings, locators and actions, backward compatible
 ## v1.10.1
   - bug fix, uncomment lines for debugging

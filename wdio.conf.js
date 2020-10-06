@@ -14,10 +14,10 @@ exports.config = {
         '--inspect=127.0.0.1:5859'
     ],
     specs: [
-        './test/irby.js',
-        './test/simpleton.js',
+        // './test/irby.js',
+        // './test/simpleton.js',
         // './test/t1bt.js',
-        // './test/t2bt.js',
+        './test/t2bt.js',
         // './test/t1bu.js',
         // './test/t2bu.js',
         // './test/t1so.js',
@@ -73,7 +73,7 @@ exports.config = {
     sync: true,
     //
     // Level of logging verbosity: silent | verbose | command | data | result | error
-    logLevel: 'error',
+    logLevel: 'verbose',
     //
     // Enables colors for log output.
     coloredLogs: true,
