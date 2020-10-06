@@ -259,5 +259,55 @@
         "sheet": "t2-BTC",
         "parentCode": "KIKN50",
         "dateTime": "8/27/2020, 8:16:38 PM"
+    },
+    {
+        "tradingPartner": "CHRMAUSER",
+        "missingLocations": [
+            "UNELBA"
+        ],
+        "file": "CHRMAUSER_HJBB",
+        "sheet": "t2-btc-2",
+        "parentCode": "BWBL31",
+        "dateTime": "10/6/2020, 10:01:30 AM"
+    },
+    {
+        "tradingPartner": "CHRMAUSER",
+        "missingLocations": [
+            "MUEB1"
+        ],
+        "file": "CHRMAUSER_HJBB",
+        "sheet": "t2-btc-2",
+        "parentCode": "BWBL31",
+        "dateTime": "10/6/2020, 10:02:30 AM"
+    },
+    {
+        "tradingPartner": "CHRMAUSER",
+        "missingLocations": [
+            "CAPAGM"
+        ],
+        "file": "CHRMAUSER_HJBB",
+        "sheet": "t2-btc-2",
+        "parentCode": "BWBL31",
+        "dateTime": "10/6/2020, 10:03:39 AM"
+    },
+    {
+        "tradingPartner": "CHRMAUSER",
+        "missingLocations": [
+            "MUEB1"
+        ],
+        "file": "CHRMAUSER_HJBB",
+        "sheet": "t2-btc-2",
+        "parentCode": "BWBL31",
+        "dateTime": "10/6/2020, 10:22:50 AM"
+    },
+    {
+        "tradingPartner": "CHRMAUSER",
+        "missingLocations": [
+            "MUEB1"
+        ],
+        "file": "CHRMAUSER_HJBB",
+        "sheet": "t2-btc-2",
+        "parentCode": "BWBL31",
+        "dateTime": "10/6/2020, 11:58:06 AM"
     }
 ]

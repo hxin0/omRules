@@ -32,7 +32,7 @@ describe('tier 2 default business unit rules', function () {
         tExcel.sort((a, b) => (a.scac > b.scac) 
         ? 1 : (a.scac === b.scac) ? ((a.code > b.code) 
         ? 1 : (a.code === b.code) ? ((a.shipper > b.shipper) 
-        ? 1 : (a.receiver === b.receiver) ? ((a.receiver > b.receiver)
+        ? 1 : (a.shipper === b.shipper) ? ((a.receiver > b.receiver)
         ? 1 : -1) : -1 ) : -1) : -1 ); // sort by scac then code then shipper then receiver
 
     });

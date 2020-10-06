@@ -23,9 +23,10 @@
             "args":[
                 "wdio.conf.js",
                 // "--spec", "test/irjson.js",
-                "--spec", "test/irby.js",
+                // "--spec", "test/irby.js",
                 // "--spec", "test/simpleton.js"
                 // "--spec", "test/t1bt.js"
+                "--spec", "test/t2bt.js"
                 // To run a specific file, you can use:
                 //"--spec", "test/specs/foo.spec.js"
             ]

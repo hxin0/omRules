@@ -266,7 +266,7 @@ exports.tier1 = function tier1(
       if (!eleExists) {
         ml.missingLocations.push(tExcel[i].shipper);
         ml.parentCode = tExcel[i].code;
-        console.log(ml);
+        console.log(`missing shipper location: ${tExcel[i].shipper}`);
       }
       // browser.pause(delaySecond);
     }
@@ -388,7 +388,7 @@ exports.tier2 = function tier2(
         if (!eleExists) {
           ml.missingLocations.push(tExcel[i].shipper);
           ml.parentCode = tExcel[i].code;
-          console.log(ml);
+          console.log(`missing shipper location: ${tExcel[i].shipper}`);
         }
         // browser.pause(delaySecond);
       }
@@ -431,7 +431,7 @@ exports.tier2 = function tier2(
         if (!eleExists) {
           ml.missingLocations.push(tExcel[i].receiver);
           ml.parentCode = tExcel[i].code;
-          console.log(ml);
+          console.log(`missing receiver location: ${tExcel[i].receiver}`);
         }
         // browser.pause(delaySecond);
       }
@@ -520,9 +520,10 @@ function missingLocationsFileUpdate(ml) {
             return;
           }
           console.log('*********************');
-          console.log(ml);
           ml.missingLocations.length = 0;
-          console.log("missing location codes have been written back.");
+          console.log("missing location codes appended to ml.json file:");
+          console.log(ml);
+          console.log('*********************');
         }
       );
     })
