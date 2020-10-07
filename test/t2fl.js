@@ -1,5 +1,5 @@
 const { schemaTierData } = require('../common/schema');
-const { locators, consts, ruleNames } = require('../common/locators');
+const { ruleNames } = require('../common/locators');
 const actions = require('../common/actions');
 
 describe('tier 2 default fleet code rules', function () {

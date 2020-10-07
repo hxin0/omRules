@@ -72,6 +72,7 @@ const soAbbr = {
     INTERMODAL: 'Intermodal',
     JBI: 'Intermodal',
     IM: 'Intermodal',
+    INTE: 'Intermodal',
     INT: 'Intermodal',
     IN: 'Intermodal',
 
@@ -84,8 +85,9 @@ const soAbbr = {
     'OVER THE ROAD': 'Over the Road',
     JBT: 'Over the Road',
     OTR: 'Over the Road',
+    OVER: 'Over the Road',
+    OVE: 'Over the Road',
     OV: 'Over the Road',
-    OR: 'Over the Road',
 
     REFRIGERATED: 'Refrigerated',
     REEFER: 'Refrigerated',

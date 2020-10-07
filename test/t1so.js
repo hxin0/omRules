@@ -28,6 +28,9 @@ describe('tier 1 default service offering rules', function () {
             console.log('Tier 1 ' + ruleNames.serviceOffering + 'Rule has no data - skipped')
             this.skip();
         }
+        // replace acronyms
+        for (let i=0; i<tExcel.length; i++)
+            tExcel[i].code = soAbbr[tExcel[i].code.toUpperCase()];
         tExcel.sort((a, b) => (a.scac > b.scac) 
         ? 1 : (a.scac === b.scac) ? ((a.code > b.code) 
         ? 1 : (a.code === b.code) ? ((a.shipper > b.shipper) 
