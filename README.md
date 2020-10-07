@@ -1,4 +1,4 @@
-# Version v1.11.1
+# Version v1.12
 ## modules (group by settings.xlsx sheet name)
   - ir  
     - irby.js: inactivate rules by users  
@@ -21,6 +21,8 @@
     - mle.js export missing code during rule creation to Excel
 
 # What's new
+## v1.12
+  - apply service offering acronyms to tiers 
 ## v1.11.1
   - bug fix, receiver sorting for tier 2 rules  
   - add more Service Offering acronyms  

@@ -1,4 +1,3 @@
-// const { schemaTieraLogin } = require('../common/schema');
 const { locators } = require('../common/locators');
 const actions = require('../common/actions');
 const { schemaInactivateRules } = require('../common/schema');
@@ -32,7 +31,6 @@ describe('inactivate rules', function () {
 
             if ($(locators.rulesNotFound).isVisible()) {
                 console.log('No Rules Found... Skip');
-                // this.skip();
                 continue;
             }
 

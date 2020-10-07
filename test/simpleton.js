@@ -20,10 +20,6 @@ describe('simpleton rules', function () {
         actions.clickLoginButtonWhileExisting(setEnv);
 
         browser.pause(delaySecond);
-        // actions.searchTradingPartner(input);
-        // browser.pause(delaySecond);
-        // actions.waitForLoadingDotsDisappearIfAny(delaySecond * 30);
-        // browser.pause(delaySecond);
 
         var i;
         var createdRule = {};

@@ -1,11 +1,8 @@
 const {
   schemaSettings,
   schemaTier,
-  schemaTierData,
-  schemaSimpleton,
-  schemaSimpletonData,
 } = require("../common/schema");
-const { locators, consts, ruleNames } = require("../common/locators");
+const { locators, consts } = require("../common/locators");
 const _ = require("lodash/core");
 const fs = require("fs");
 
@@ -56,9 +53,6 @@ exports.searchTradingPartner = function (setEnv, input) {
 };
 
 exports.clickNewRuleButton = function (delaySecond) {
-  // browser.waitForExist(locators.configureNewRuleButton, consts.delaySecond);
-  // browser.waitForExist(locators.searchMenuDropdown, consts.delaySecond);
-  // browser.click(locators.configureNewRuleButton);
   $(locators.configureNewRuleButton).waitForExist(delaySecond);
   $(locators.searchMenuDropdown).waitForExist(delaySecond);
   $(locators.configureNewRuleButton).click();
@@ -87,7 +81,6 @@ exports.createRule = function (ruleName, delaySecond) {
 };
 
 exports.setAttributeTradingPartner = function (tradingPartner, delaySecond) {
-  // browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
   browser.waitForExist(locators.selectAttributeDropdown, delaySecond);
 
   browser.click(locators.selectAttributeDropdown);
@@ -482,29 +475,6 @@ exports.tier2 = function tier2(
   }
 };
 
- // this old function has a problem that later call will overwite the previous ml object
- // the json file ends up with duplicate appending ml objects
- // for example if there are 3 objects, it will show the last object 3 times after finish running
- // leave here for later understanding of this 
-function missingLocationsFileUpdateOld(ml) {
-  let missingLocationsFile = require("../testdata/ml");
-  if (ml.missingLocations.length > 0) {
-    ml.dateTime = new Date().toLocaleString();
-    missingLocationsFile.push(ml);
-    fs.writeFile(
-      "./testdata/ml.json",
-      JSON.stringify(missingLocationsFile, null, 4),
-      (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        console.log("missing location codes have been written back.");
-      }
-    );
-  }
-}
-
 function missingLocationsFileUpdate(ml) {
   if (ml.missingLocations.length > 0) {
     fs.readFile('./testdata/ml.json', function (errR, data) {
@@ -527,5 +497,29 @@ function missingLocationsFileUpdate(ml) {
         }
       );
     })
+  }
+}
+
+
+ // this old function has a problem that later call will overwite the previous ml object
+ // the json file ends up with duplicate appending ml objects
+ // for example if there are 3 objects, it will show the last object 3 times after finish running
+ // leave here for later understanding of this 
+ function missingLocationsFileUpdateOld(ml) {
+  let missingLocationsFile = require("../testdata/ml");
+  if (ml.missingLocations.length > 0) {
+    ml.dateTime = new Date().toLocaleString();
+    missingLocationsFile.push(ml);
+    fs.writeFile(
+      "./testdata/ml.json",
+      JSON.stringify(missingLocationsFile, null, 4),
+      (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log("missing location codes have been written back.");
+      }
+    );
   }
 }
