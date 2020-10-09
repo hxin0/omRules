@@ -4,7 +4,8 @@
   "description": "inactivate rules",
   "main": "index.js",
   "scripts": {
-    "test": "wdio"
+    "test": "wdio",
+    "tee": "wdio|tee testReport.log"
   },
   "keywords": [],
   "author": "",
