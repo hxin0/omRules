@@ -63,6 +63,7 @@ exports.waitForLoadingDotsDisappearIfAny = function (delaySecond) {
   if ($(locators.loadingDots).isVisible()) {
     $(locators.loadingDots).waitForVisible(delaySecond * 60, true);
   }
+  browser.pause(2000);
   browser.pause(delaySecond);
 };
 
