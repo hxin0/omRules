@@ -65,7 +65,7 @@ describe('inactivate rules', function () {
 
                 if ((doAll) || (arrayCreatedBy.includes(createdBy.toUpperCase()))) {
                     // try to fix Element is not clickable at point, Other element would receive the click exception
-                    let count =0;
+                    let countTries =0;
                     let maxTries = 3;
                     while (true) {
                         try {
@@ -74,10 +74,9 @@ describe('inactivate rules', function () {
                         } catch (e) {
                             console.log(e);
                             $$(locators.array3dots)[i].scroll();
-                            if (count++ >= maxTries) throw e;
+                            if (countTries++ >= maxTries) throw e;
                         }
                     }       
-                    // $$(locators.array3dots)[i].click();
                     browser.pause(delaySecond);
                     browser.click(locators.inactivateMenu);
                     browser.pause(delaySecond);

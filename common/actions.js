@@ -81,7 +81,7 @@ exports.createRule = function (ruleName, delaySecond) {
   // browser.pause(delaySecond / 2);
   // browser.click(locators.ruleNameRow);
   // try to fix Element is not clickable at point, Other element would receive the click exception
-  let count =0;
+  let countTries =0;
   let maxTries = 3;
   while (true) {
       try {
@@ -90,7 +90,7 @@ exports.createRule = function (ruleName, delaySecond) {
       } catch (e) {
         console.log(e);
         browser.scroll(locators.ruleNameRow);
-        if (count++ >= maxTries) throw e;
+        if (countTries++ >= maxTries) throw e;
       }
   }   
 };
