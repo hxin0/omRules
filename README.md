@@ -1,4 +1,4 @@
-# Version v1.12.1
+# Version v1.12.2
 
 # Install
 
@@ -103,6 +103,8 @@ run from code root folder:
   try again. nothing else we can do about it
 
 # What's new
+## v1.12.2
+  - retry when resultant action section not loading
 ## v1.12.1
   - handle not clickable at point exceptions
   - fix so acronym bug
