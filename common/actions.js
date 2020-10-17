@@ -59,11 +59,11 @@ exports.clickNewRuleButton = function (delaySecond) {
 };
 
 exports.waitForLoadingDotsDisappearIfAny = function (delaySecond) {
-  browser.pause(delaySecond);
+  // browser.pause(delaySecond);
   if ($(locators.loadingDots).isVisible()) {
     $(locators.loadingDots).waitForVisible(delaySecond * 60, true);
   }
-  browser.pause(2000);
+  // browser.pause(2000);
   browser.pause(delaySecond);
 };
 
@@ -77,8 +77,22 @@ exports.createRule = function (ruleName, delaySecond) {
   browser.click(locators.ruleNameDropdownValue);
   // browser.pause(delaySecond);
   browser.waitForExist(locators.ruleNameRow, delaySecond);
-  browser.pause(delaySecond / 2);
-  browser.click(locators.ruleNameRow);
+  this.waitForLoadingDotsDisappearIfAny(delaySecond);
+  // browser.pause(delaySecond / 2);
+  // browser.click(locators.ruleNameRow);
+  // try to fix Element is not clickable at point, Other element would receive the click exception
+  let countTries =0;
+  let maxTries = 3;
+  while (true) {
+      try {
+        browser.click(locators.ruleNameRow);
+        break;
+      } catch (e) {
+        console.log(e);
+        browser.scroll(locators.ruleNameRow);
+        if (countTries++ >= maxTries) throw e;
+      }
+  }   
 };
 
 exports.setAttributeTradingPartner = function (tradingPartner, delaySecond) {
@@ -232,7 +246,8 @@ exports.tier1 = function tier1(
     browser.waitForExist(locators.attributeValue2, delaySecond);
     browser.click(locators.attributeValue2);
     browser.setValue(locators.attributeValue2, tExcel[i].shipper + " "); // Shipper code
-    browser.pause(delaySecond);
+    // browser.pause(delaySecond);
+    this.waitForLoadingDotsDisappearIfAny(delaySecond);
     if (browser.isExisting(locators.firstAttributeDropdownValue)) {
       // browser.pause(delaySecond);
       let eleExists = false;
@@ -354,7 +369,8 @@ exports.tier2 = function tier2(
       browser.waitForExist(locators.attributeValue2, delaySecond);
       browser.click(locators.attributeValue2);
       browser.setValue(locators.attributeValue2, tExcel[i].shipper + " "); // Shipper code
-      browser.pause(delaySecond);
+      // browser.pause(delaySecond);
+      this.waitForLoadingDotsDisappearIfAny(delaySecond);
       if (browser.isExisting(locators.firstAttributeDropdownValue)) {
         // browser.pause(delaySecond);
         let eleExists = false;
@@ -397,7 +413,8 @@ exports.tier2 = function tier2(
       receiverField.waitForExist(delaySecond);
       receiverField.click();
       receiverField.setValue(tExcel[i].receiver + " ");
-      browser.pause(delaySecond);
+      // browser.pause(delaySecond);
+      this.waitForLoadingDotsDisappearIfAny(delaySecond);
       if (browser.isExisting(locators.firstAttributeDropdownValue)) {
         // browser.pause(delaySecond);
         let eleExists = false;
