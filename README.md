@@ -1,4 +1,4 @@
-# Version v1.12
+# Version v1.12.1
 
 # Install
 
@@ -103,6 +103,9 @@ run from code root folder:
   try again. nothing else we can do about it
 
 # What's new
+## v1.12.1
+  - handle not clickable at point exceptions
+  - fix so acronym bug
 ## v1.12
   - apply service offering acronyms to tiers 
   - fine tune moving dots delay

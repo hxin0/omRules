@@ -64,7 +64,20 @@ describe('inactivate rules', function () {
                 console.log(createdBy);
 
                 if ((doAll) || (arrayCreatedBy.includes(createdBy.toUpperCase()))) {
-                    $$(locators.array3dots)[i].click();
+                    // try to fix Element is not clickable at point, Other element would receive the click exception
+                    let count =0;
+                    let maxTries = 3;
+                    while (true) {
+                        try {
+                            $$(locators.array3dots)[i].click();
+                            break;
+                        } catch (e) {
+                            console.log(e);
+                            $$(locators.array3dots)[i].scroll();
+                            if (count++ >= maxTries) throw e;
+                        }
+                    }       
+                    // $$(locators.array3dots)[i].click();
                     browser.pause(delaySecond);
                     browser.click(locators.inactivateMenu);
                     browser.pause(delaySecond);

@@ -144,8 +144,12 @@ describe('simpleton rules', function () {
 
                 createdRule.serviceOffering = setData[i].serviceOffering;
 
-                let so = setData[i].serviceOffering.toUpperCase();
-                actions.setResultant2(soAbbr[so], delaySecond);
+                var so = setData[i].serviceOffering
+                let soSource = so.toUpperCase();
+                if (soAbbr[soSource]) 
+                    so = soAbbr[soSource];
+                actions.setResultant2(so, delaySecond);
+
                 browser.pause(delaySecond/2);
                 browser.click(locators.saveButton);
 
