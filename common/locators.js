@@ -44,6 +44,7 @@ const locators = {
     datatablePager: 'datatable-pager[class="datatable-pager"]',
     arrayCreatedBy: 'datatable-body-cell > div > span:not([data-auto-id])',
     array3dots: '#span-3dots',
+    goBack: '[id="a-goback"]',
 };
 
 const consts = {

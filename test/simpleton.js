@@ -37,7 +37,31 @@ describe('simpleton rules', function () {
 
                 actions.createRule(ruleNames.customerRule, delaySecond);
                 // configure new rule page -- TP
-                browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
+
+                // if resultant action section not loaded, try to wait ${maxTries} times
+                // if still not existing, navigate back and try again
+                // if tried back 3 times, still not existing, throw error
+                let countTries = 0;
+                let maxTries = 3;
+                let backTries = 0;
+                while (true) {
+                    try {
+                        browser.waitForExist(locators.resultantActionValue, delaySecond * 10);
+                        break;
+                    } catch (e) {
+                        if (backTries < 3) {
+                            if (countTries++ > maxTries) { //navigate back and try max 3 times
+                            browser.click(locators.goBack);
+                            this.createRule(ruleName, delaySecond);
+                            backTries++;
+                            countTries = 0;
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+
                 browser.pause(delaySecond/2);
                 actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
@@ -69,7 +93,30 @@ describe('simpleton rules', function () {
 
                 actions.createRule(ruleNames.billingParty, delaySecond);
                 // configure new rule page -- TP
-                browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
+
+                // if resultant action section not loaded, try to wait ${maxTries} times
+                // if still not existing, navigate back and try again
+                // if tried back 3 times, still not existing, throw error
+                let countTries = 0;
+                let maxTries = 3;
+                let backTries = 0;
+                while (true) {
+                    try {
+                        browser.waitForExist(locators.resultantActionValue, delaySecond * 10);
+                        break;
+                    } catch (e) {
+                        if (backTries < 3) {
+                            if (countTries++ > maxTries) { //navigate back and try max 3 times
+                            browser.click(locators.goBack);
+                            this.createRule(ruleName, delaySecond);
+                            backTries++;
+                            countTries = 0;
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
                 browser.pause(delaySecond/2);
                 actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
@@ -100,7 +147,30 @@ describe('simpleton rules', function () {
 
                 actions.createRule(ruleNames.businessUnit, delaySecond);
                 // configure new rule page -- TP
-                browser.waitForExist(locators.resultantActionValue2, delaySecond * 30);
+
+                // if resultant action section not loaded, try to wait ${maxTries} times
+                // if still not existing, navigate back and try again
+                // if tried back 3 times, still not existing, throw error
+                let countTries = 0;
+                let maxTries = 3;
+                let backTries = 0;
+                while (true) {
+                    try {
+                        browser.waitForExist(locators.resultantActionValue2, delaySecond * 10);
+                        break;
+                    } catch (e) {
+                        if (backTries < 3) {
+                            if (countTries++ > maxTries) { //navigate back and try max 3 times
+                            browser.click(locators.goBack);
+                            this.createRule(ruleName, delaySecond);
+                            backTries++;
+                            countTries = 0;
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
                 browser.pause(delaySecond/2);
                 actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
@@ -132,7 +202,30 @@ describe('simpleton rules', function () {
 
                 actions.createRule(ruleNames.serviceOffering, delaySecond);
                 // configure new rule page -- TP
-                browser.waitForExist(locators.resultantActionValue2, delaySecond * 30);
+
+                // if resultant action section not loaded, try to wait ${maxTries} times
+                // if still not existing, navigate back and try again
+                // if tried back 3 times, still not existing, throw error
+                let countTries = 0;
+                let maxTries = 3;
+                let backTries = 0;
+                while (true) {
+                    try {
+                        browser.waitForExist(locators.resultantActionValue2, delaySecond * 10);
+                        break;
+                    } catch (e) {
+                        if (backTries < 3) {
+                            if (countTries++ > maxTries) { //navigate back and try max 3 times
+                            browser.click(locators.goBack);
+                            this.createRule(ruleName, delaySecond);
+                            backTries++;
+                            countTries = 0;
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
                 browser.pause(delaySecond/2);
                 actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
@@ -169,7 +262,30 @@ describe('simpleton rules', function () {
 
                 actions.createRule(ruleNames.fleetCode, delaySecond);
                 // configure new rule page -- TP
-                browser.waitForExist(locators.resultantActionValue, delaySecond * 30);
+
+                // if resultant action section not loaded, try to wait ${maxTries} times
+                // if still not existing, navigate back and try again
+                // if tried back 3 times, still not existing, throw error
+                let countTries = 0;
+                let maxTries = 3;
+                let backTries = 0;
+                while (true) {
+                    try {
+                        browser.waitForExist(locators.resultantActionValue, delaySecond * 10);
+                        break;
+                    } catch (e) {
+                        if (backTries < 3) {
+                            if (countTries++ > maxTries) { //navigate back and try max 3 times
+                            browser.click(locators.goBack);
+                            this.createRule(ruleName, delaySecond);
+                            backTries++;
+                            countTries = 0;
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
                 browser.pause(delaySecond/2);
                 actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
 
