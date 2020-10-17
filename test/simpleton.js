@@ -51,10 +51,11 @@ describe('simpleton rules', function () {
                     } catch (e) {
                         if (backTries < 3) {
                             if (countTries++ > maxTries) { //navigate back and try max 3 times
-                            browser.click(locators.goBack);
-                            this.createRule(ruleName, delaySecond);
-                            backTries++;
-                            countTries = 0;
+                                console.log(`resultant action fields not appear, retry ${backTries + 1}`);
+                                browser.click(locators.goBack);
+                                this.createRule(ruleName, delaySecond);
+                                backTries++;
+                                countTries = 0;
                             }
                         } else {
                             throw e;
@@ -107,10 +108,11 @@ describe('simpleton rules', function () {
                     } catch (e) {
                         if (backTries < 3) {
                             if (countTries++ > maxTries) { //navigate back and try max 3 times
-                            browser.click(locators.goBack);
-                            this.createRule(ruleName, delaySecond);
-                            backTries++;
-                            countTries = 0;
+                                console.log(`resultant action fields not appear, retry ${backTries + 1}`);
+                                browser.click(locators.goBack);
+                                this.createRule(ruleName, delaySecond);
+                                backTries++;
+                                countTries = 0;
                             }
                         } else {
                             throw e;
@@ -161,10 +163,11 @@ describe('simpleton rules', function () {
                     } catch (e) {
                         if (backTries < 3) {
                             if (countTries++ > maxTries) { //navigate back and try max 3 times
-                            browser.click(locators.goBack);
-                            this.createRule(ruleName, delaySecond);
-                            backTries++;
-                            countTries = 0;
+                                console.log(`resultant action fields not appear, retry ${backTries + 1}`);
+                                browser.click(locators.goBack);
+                                this.createRule(ruleName, delaySecond);
+                                backTries++;
+                                countTries = 0;
                             }
                         } else {
                             throw e;
@@ -216,10 +219,11 @@ describe('simpleton rules', function () {
                     } catch (e) {
                         if (backTries < 3) {
                             if (countTries++ > maxTries) { //navigate back and try max 3 times
-                            browser.click(locators.goBack);
-                            this.createRule(ruleName, delaySecond);
-                            backTries++;
-                            countTries = 0;
+                                console.log(`resultant action fields not appear, retry ${backTries + 1}`);
+                                browser.click(locators.goBack);
+                                this.createRule(ruleName, delaySecond);
+                                backTries++;
+                                countTries = 0;
                             }
                         } else {
                             throw e;
@@ -276,10 +280,11 @@ describe('simpleton rules', function () {
                     } catch (e) {
                         if (backTries < 3) {
                             if (countTries++ > maxTries) { //navigate back and try max 3 times
-                            browser.click(locators.goBack);
-                            this.createRule(ruleName, delaySecond);
-                            backTries++;
-                            countTries = 0;
+                                console.log(`resultant action fields not appear, retry ${backTries + 1}`);
+                                browser.click(locators.goBack);
+                                this.createRule(ruleName, delaySecond);
+                                backTries++;
+                                countTries = 0;
                             }
                         } else {
                             throw e;

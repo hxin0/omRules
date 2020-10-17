@@ -78,9 +78,9 @@ exports.createRule = function (ruleName, delaySecond) {
   // browser.pause(delaySecond);
   browser.waitForExist(locators.ruleNameRow, delaySecond);
   this.waitForLoadingDotsDisappearIfAny(delaySecond);
-  // browser.pause(delaySecond / 2);
-  // browser.click(locators.ruleNameRow);
-  // try to fix Element is not clickable at point, Other element would receive the click exception
+
+  // try again if the error occurs: 
+  // Element is not clickable at point, Other element would receive the click
   let countTries =0;
   let maxTries = 3;
   while (true) {
@@ -88,6 +88,7 @@ exports.createRule = function (ruleName, delaySecond) {
         browser.click(locators.ruleNameRow);
         break;
       } catch (e) {
+        console.log(`"Element is not clickable" exception was thrown, retry ${countTries}`);
         console.log(e);
         browser.scroll(locators.ruleNameRow);
         if (countTries++ >= maxTries) throw e;
@@ -251,6 +252,7 @@ exports.tier1 = function tier1(
         } catch (e) {
           if (backTries < 3) {
             if (countTries++ > maxTries) { //navigate back and try max 3 times
+              console.log(`resultant action fields not appear, retry ${backTries + 1}`);
               browser.click(locators.goBack);
               this.createRule(ruleName, delaySecond);
               backTries++;
@@ -398,6 +400,7 @@ exports.tier2 = function tier2(
         } catch (e) {
           if (backTries < 3) {
             if (countTries++ > maxTries) { //navigate back and try max 3 times
+              console.log(`resultant action fields not appear, retry ${backTries + 1}`);
               browser.click(locators.goBack);
               this.createRule(ruleName, delaySecond);
               backTries++;
