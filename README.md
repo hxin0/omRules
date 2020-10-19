@@ -1,4 +1,4 @@
-# Version v1.12.1
+# Version v1.13
 
 # Install
 
@@ -103,6 +103,11 @@ run from code root folder:
   try again. nothing else we can do about it
 
 # What's new
+## v1.13
+  - retry when go into a wrong rule page
+  - retry when resultant action section not appear
+  - refactor waitForResultantWithRetry
+  - remove legacy js codes: ir, irjson, irexcel
 ## v1.12.1
   - handle not clickable at point exceptions
   - fix so acronym bug

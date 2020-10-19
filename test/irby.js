@@ -57,21 +57,34 @@ describe('inactivate rules', function () {
             }
             while (($$(locators.array3dots)[i] != undefined) && ($$(locators.array3dots)[i].isExisting())) {
                 browser.pause(delaySecond);
-                $$(locators.array3dots)[i].waitForEnabled(delaySecond * 2);
-                // browser.pause(delaySecond);
+                var countTries = 0;
+                var maxTries = 3;
+                while (true) {
+                    try {
+                        $$(locators.array3dots)[i].waitForEnabled(delaySecond * 2);
+                        break;
+                    } catch (e) {
+                        if (countTries++ >= maxTries) {
+                            console.log('3dots array error, retry');
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+
                 // check createBy colume, if == setData.createdBy then try to delete, otherwise skip to the next row
                 createdBy = $$(locators.arrayCreatedBy)[i * sTotal + sNum].getText();
                 console.log(createdBy);
 
                 if ((doAll) || (arrayCreatedBy.includes(createdBy.toUpperCase()))) {
                     // try to fix Element is not clickable at point, Other element would receive the click exception
-                    let countTries =0;
-                    let maxTries = 3;
+                    countTries =0;
                     while (true) {
                         try {
                             $$(locators.array3dots)[i].click();
                             break;
                         } catch (e) {
+                            console.log('span-3dots is not clickable. Retry...');
                             console.log(e);
                             $$(locators.array3dots)[i].scroll();
                             if (countTries++ >= maxTries) throw e;
