@@ -1,7 +1,4 @@
-const {
-  schemaSettings,
-  schemaTier,
-} = require("../common/schema");
+const { schemaSettings, schemaTier } = require("../common/schema");
 const { locators, consts } = require("../common/locators");
 const _ = require("lodash/core");
 const fs = require("fs");
@@ -12,7 +9,7 @@ exports.clickLoginButtonWhileExisting = function (login) {
       if (login.username != undefined)
         browser.setValue(locators.username, login.username);
       else {
-        browser.pause(consts.delaySecond * 5000)
+        browser.pause(consts.delaySecond * 5000);
       }
       browser.click(locators.loginNextButton);
     }
@@ -21,7 +18,7 @@ exports.clickLoginButtonWhileExisting = function (login) {
       if (login.password != undefined)
         browser.setValue(locators.password, login.password);
       else {
-          browser.pause(consts.delaySecond * 5000);
+        browser.pause(consts.delaySecond * 5000);
       }
       if (login.username != undefined && login.password != undefined)
         browser.click(locators.loginButton);
@@ -59,11 +56,9 @@ exports.clickNewRuleButton = function (delaySecond) {
 };
 
 exports.waitForLoadingDotsDisappearIfAny = function (delaySecond) {
-  // browser.pause(delaySecond);
   if ($(locators.loadingDots).isVisible()) {
     $(locators.loadingDots).waitForVisible(delaySecond * 60, true);
   }
-  // browser.pause(2000);
   browser.pause(delaySecond);
 };
 
@@ -79,21 +74,23 @@ exports.createRule = function (ruleName, delaySecond) {
   browser.waitForExist(locators.ruleNameRow, delaySecond);
   this.waitForLoadingDotsDisappearIfAny(delaySecond);
 
-  // try again if the error occurs: 
+  // try again if the error occurs:
   // Element is not clickable at point, Other element would receive the click
-  let countTries =0;
+  let countTries = 0;
   let maxTries = 3;
   while (true) {
-      try {
-        browser.click(locators.ruleNameRow);
-        break;
-      } catch (e) {
-        console.log(`"Element is not clickable" exception was thrown, retry ${countTries}`);
-        console.log(e);
-        browser.scroll(locators.ruleNameRow);
-        if (countTries++ >= maxTries) throw e;
-      }
-  }   
+    try {
+      browser.click(locators.ruleNameRow);
+      break;
+    } catch (e) {
+      console.log(
+        `"Element is not clickable" exception was thrown, retry ${countTries + 1}`
+      );
+      console.log(e);
+      browser.scroll(locators.ruleNameRow);
+      if (countTries++ >= maxTries) throw e;
+    }
+  }
 };
 
 exports.setAttributeTradingPartner = function (tradingPartner, delaySecond) {
@@ -187,7 +184,7 @@ exports.readDataSheets = async function readDataSheets(
     schema: schemaSettings,
     sheet: "settings",
   }).then(({ rows }) => {
-    for (let i=0; i<rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       if (!rows[i].skip) {
         setEnv = rows[i];
         break;
@@ -199,7 +196,7 @@ exports.readDataSheets = async function readDataSheets(
     schema: schema,
     sheet: tabName,
   }).then(({ rows }) => {
-    setData = rows.filter(row=>!(row.skip));
+    setData = rows.filter((row) => !row.skip);
   });
 
   if (_.size(login) > 0) {
@@ -209,6 +206,49 @@ exports.readDataSheets = async function readDataSheets(
 
   return { setEnv, setData };
 };
+
+exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries, delaySecond) {
+  let countTries = 0;
+  // if it goes to a wrong rule name page, retry
+  while (browser.getText(locators.textRuleName).toUpperCase() != ruleName.toUpperCase()) {
+    // go back
+    browser.click(locators.goBack);
+    this.createRule(ruleName, delaySecond);
+    countTries++;
+    if (countTries >= maxTries) break;
+  }
+
+  // if resultant section not appear, wait max maxTries times
+  // if still not appear, go back to revisit the page
+  // if go back maxTries times still not appear, throw error
+  countTries = 0;
+  let backTries = 0;
+  while (true) {
+    try {
+      if (resultantType === 1) {
+        browser.waitForExist(locators.resultantActionValue, delaySecond * 10);
+      } else {
+        browser.waitForExist(locators.resultantActionValue2, delaySecond * 10);
+      }
+      break;
+    } catch (e) {
+      if (backTries < maxTries) {
+        if (countTries++ >= maxTries) {
+          //then navigate back and try maxTries times
+          console.log(
+            `resultant action fields not appear, retry ${backTries + 1}`
+          );
+          browser.click(locators.goBack);
+          this.createRule(ruleName, delaySecond);
+          backTries++;
+          countTries = 0;
+        }
+      } else {
+        throw e;
+      }
+    }
+  }
+}
 
 exports.tier1 = function tier1(
   input,
@@ -238,32 +278,7 @@ exports.tier1 = function tier1(
       // if resultant action section not loaded, try to wait ${maxTries} times
       // if still not existing, navigate back and try again
       // if tried back 3 times, still not existing, throw error
-      let countTries = 0;
-      let maxTries = 3;
-      let backTries = 0;
-      while (true) {
-        try {
-          if (resultantType === 1) {
-            browser.waitForExist(locators.resultantActionValue, delaySecond * 10);
-          } else {
-            browser.waitForExist(locators.resultantActionValue2, delaySecond * 10);
-          }
-          break;
-        } catch (e) {
-          if (backTries < 3) {
-            if (countTries++ > maxTries) { //navigate back and try max 3 times
-              console.log(`resultant action fields not appear, retry ${backTries + 1}`);
-              browser.click(locators.goBack);
-              this.createRule(ruleName, delaySecond);
-              backTries++;
-              countTries = 0;
-            }
-          } else {
-            throw e;
-          }
-        }
-      }
-
+      this.waitForResultantWithRetry(ruleName, resultantType, 2, delaySecond);
       browser.pause(delaySecond / 2);
       this.setAttributeTradingPartner(input.tradingPartner, delaySecond);
 
@@ -383,35 +398,7 @@ exports.tier2 = function tier2(
       this.createRule(ruleName, delaySecond);
       // configure new rule page -- TP
 
-      // if resultant action section not loaded, try to wait ${maxTries} times
-      // if still not existing, navigate back and try again
-      // if tried back 3 times, still not existing, throw error
-      let countTries = 0;
-      let maxTries = 3;
-      let backTries = 0;
-      while (true) {
-        try {
-          if (resultantType === 1) {
-            browser.waitForExist(locators.resultantActionValue, delaySecond * 10);
-          } else {
-            browser.waitForExist(locators.resultantActionValue2, delaySecond * 10);
-          }
-          break;
-        } catch (e) {
-          if (backTries < 3) {
-            if (countTries++ > maxTries) { //navigate back and try max 3 times
-              console.log(`resultant action fields not appear, retry ${backTries + 1}`);
-              browser.click(locators.goBack);
-              this.createRule(ruleName, delaySecond);
-              backTries++;
-              countTries = 0;
-            }
-          } else {
-            throw e;
-          }
-        }
-      }
-
+      this.waitForResultantWithRetry(ruleName, resultantType, 2, delaySecond);
 
       this.setAttributeTradingPartner(input.tradingPartner, delaySecond);
 
@@ -546,7 +533,7 @@ exports.tier2 = function tier2(
 
 function missingLocationsFileUpdate(ml) {
   if (ml.missingLocations.length > 0) {
-    fs.readFile('./testdata/ml.json', function (errR, data) {
+    fs.readFile("./testdata/ml.json", function (errR, data) {
       var missingLocationsFile = JSON.parse(data);
       ml.dateTime = new Date().toLocaleString();
       missingLocationsFile.push(ml);
@@ -558,23 +545,22 @@ function missingLocationsFileUpdate(ml) {
             console.error(err);
             return;
           }
-          console.log('*********************');
-          ml.missingLocations.length = 0;
+          console.log("*********************");
           console.log("missing location codes appended to ml.json file:");
           console.log(ml);
-          console.log('*********************');
+          console.log("*********************");
+          ml.missingLocations.length = 0;
         }
       );
-    })
+    });
   }
 }
 
-
- // this old function has a problem that later call will overwite the previous ml object
- // the json file ends up with duplicate appending ml objects
- // for example if there are 3 objects, it will show the last object 3 times after finish running
- // leave here for later understanding of this 
- function missingLocationsFileUpdateOld(ml) {
+// this old function has a problem that later call will overwite the previous ml object
+// the json file ends up with duplicate appending ml objects
+// for example if there are 3 objects, it will show the last object 3 times after finish running
+// leave here for more understanding on this later
+function missingLocationsFileUpdateOld(ml) {
   let missingLocationsFile = require("../testdata/ml");
   if (ml.missingLocations.length > 0) {
     ml.dateTime = new Date().toLocaleString();
