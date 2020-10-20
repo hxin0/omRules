@@ -92,8 +92,9 @@ to for example
 ```
 ## 4. run
 run from code root folder:  
+
 `C:\...\omRules>npm test`  
-`C:\...\omRules>npm test | tee testReport (Powershell/bash)  
+`C:\...\omRules>npm test | tee testReport` (Powershell/bash)  
 `$ npm run tee` (bash only)  
 
 ## 5. mlr.js replacing missing location codes with new codes in rules datasheets
