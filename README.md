@@ -1,4 +1,4 @@
-# Version v1.13
+# Version v1.13.1
 
 # Install
 
@@ -16,7 +16,13 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
 `C:\...\omRules>npm install`
 
 # Setup
-## 1. settings.xlsx
+
+## 1. data files  
+1. copy Dwayne's data files (as is) into testdata folder:  
+    1. tiered data file - different types of rules on each datasheet  
+    2. missingData files - one missingData file, one rules data file 
+2. adjust datasheets names in settings.xlsx if necessary 
+## 2. settings.xlsx
 1. settings:
     - url: rules page url  
     - tradingPartner: inactivate rules for the trading partner  
@@ -56,10 +62,7 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
     - rules data sheet tab names - t1bt, t2bt ... t2fl  
       leave blank if not exist  
     - SKIP: program will run on all rows without 'TRUE'
-## 2. data files  
-copy data files into testdata folder:  
-1. tiered data file - different types of rules on each datasheet  
-2. missingData files - one missingData file, one rules data file  
+ 
 ## 3. specify which rules to run
 *  wdio.conf.js  
   specify which rule to run in `specs` section    
@@ -71,19 +74,28 @@ copy data files into testdata folder:
       './test/simpleton.js',
       // './test/t1bt.js',
       // './test/t2bt.js',
-      // './test/t1bu.js',
-      // './test/t2bu.js',
-      // './test/t1so.js',
-      // './test/t2so.js',
-      // './test/t1fl.js',
-      // './test/t2fl.js',
-      // './test/t1cu.js',
-      // './test/t2cu.js',        
+      // './test/t1bu.js',      
   ],
 ```
+
+  in case you want to run multiple instances, copy unzipped code into another folder and change the port number in execArgv section:
+```
+    execArgv: [
+        '--inspect=127.0.0.1:5859'
+    ],
+```  
+to for example
+```
+    execArgv: [
+        '--inspect=127.0.0.1:5860'
+    ],
+```
 ## 4. run
-run from code root folder:
+run from code root folder:  
+
 `C:\...\omRules>npm test`  
+`C:\...\omRules>npm test | tee testReport` (Powershell/bash)  
+`$ npm run tee` (bash only)  
 
 ## 5. mlr.js replacing missing location codes with new codes in rules datasheets
 - specify in settings.xlsx missingCode tab
@@ -99,14 +111,14 @@ run from code root folder:
 # Issues
 - Element still not existing after xxxx ms  
   try to increase delaySecond in settings
-- OM doesn't load resultant action section  
-  try again. nothing else we can do about it
 
 # What's new
+## v1.13.1
+  - retry when elements not exist
+  - retry when elements not clickable
 ## v1.13
   - retry when go into a wrong rule page
   - retry when resultant action section not appear
-  - refactor waitForResultantWithRetry
   - remove legacy js codes: ir, irjson, irexcel
 ## v1.12.1
   - handle not clickable at point exceptions

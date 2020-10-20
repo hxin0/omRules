@@ -14,6 +14,7 @@ const locators = {
     cancelYesButton: '[data-auto-id="btn-Yes"]',
     ruleNameDropdownValue: '[class="dropdown-menu ng-star-inserted"]',
     ruleNameRow: '[class="datatable-row-center datatable-row-group ng-star-inserted"]',
+    ruleNameColumn: '.datatable-row-center.datatable-row-group.ng-star-inserted .datatable-body-cell .datatable-body-cell-label .ng-star-inserted',
     selectAttributeDropdown: 'span=Select Attribute',
     // selectAttributeDropdown: '[id="orderRuleCriteria"] > div > div[class="ui-select-match ng-star-inserted"] > span',
     attributeDropdown: '[class="ui-select-placeholder text-muted ng-star-inserted"]',

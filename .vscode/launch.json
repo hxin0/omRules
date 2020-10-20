@@ -22,9 +22,9 @@
             // (e.g., a file in test/spec/):
             "args":[
                 "wdio.conf.js",
-                // "--spec", "test/irby.js",
+                "--spec", "test/irby.js",
                 // "--spec", "test/simpleton.js"
-                "--spec", "test/t1bt.js"
+                // "--spec", "test/t1bt.js"
                 // "--spec", "test/t2so.js"
                 // To run a specific file, you can use:
                 //"--spec", "test/specs/foo.spec.js"
