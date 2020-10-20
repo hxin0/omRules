@@ -2,6 +2,7 @@ const { schemaSettings, schemaTier } = require("../common/schema");
 const { locators, consts } = require("../common/locators");
 const _ = require("lodash/core");
 const fs = require("fs");
+const { lookupService } = require("dns");
 
 exports.clickLoginButtonWhileExisting = function (login) {
   if (login.newLoginPage) {
@@ -40,8 +41,9 @@ exports.clickLoginButtonWhileExisting = function (login) {
 
 exports.searchTradingPartner = function (setEnv, input) {
   const delaySecond = setEnv.delaySecond * 1000;
-  browser.waitForExist(locators.searchMenuDropdown, delaySecond);
-  browser.click(locators.searchMenuDropdown);
+  // browser.waitForExist(locators.searchMenuDropdown, delaySecond);
+  // browser.click(locators.searchMenuDropdown);
+  this.waitForExistThenClick(locators.searchMenuDropdown, delaySecond);
   browser.click(locators.searchMenu1TradingPartner);
   browser.setValue(locators.searchRuleName, input.tradingPartner);
   browser.pause(delaySecond);
@@ -50,7 +52,9 @@ exports.searchTradingPartner = function (setEnv, input) {
 };
 
 exports.clickNewRuleButton = function (delaySecond) {
-  $(locators.configureNewRuleButton).waitForExist(delaySecond);
+  // $(locators.configureNewRuleButton).waitForExist(delaySecond);
+  this.waitForExistWithRetry(locators.configureNewRuleButton, delaySecond);
+
   $(locators.searchMenuDropdown).waitForExist(delaySecond);
   $(locators.configureNewRuleButton).click();
 };
@@ -69,10 +73,22 @@ exports.createRule = function (ruleName, delaySecond) {
   browser.setValue(locators.searchRuleName, ruleName);
   browser.waitForExist(locators.ruleNameDropdownValue, delaySecond);
   browser.pause(delaySecond / 2);
-  browser.click(locators.ruleNameDropdownValue);
+  // browser.click(locators.ruleNameDropdownValue);
+  while (browser.isVisible(locators.ruleNameDropdownValue)) {
+    this.clickWithRetry(locators.ruleNameDropdownValue);
+    browser.pause(delaySecond);
+  }
+
+  this.waitForLoadingDotsDisappearIfAny(delaySecond);
   // browser.pause(delaySecond);
   browser.waitForExist(locators.ruleNameRow, delaySecond);
-  this.waitForLoadingDotsDisappearIfAny(delaySecond);
+  while (true) {
+    // console.log($(locators.ruleNameColumn).getText().toUpperCase());
+    if ($(locators.ruleNameColumn).getText().toUpperCase() == ruleName.toUpperCase()) {
+      break;
+    }
+    browser.pause(delaySecond);
+  }
 
   // try again if the error occurs:
   // Element is not clickable at point, Other element would receive the click
@@ -80,14 +96,15 @@ exports.createRule = function (ruleName, delaySecond) {
   let maxTries = 3;
   while (true) {
     try {
-      browser.click(locators.ruleNameRow);
+      // browser.click(locators.ruleNameRow);
+      browser.click(locators.ruleNameColumn);      
       break;
     } catch (e) {
       console.log(
         `"Element is not clickable" exception was thrown, retry ${countTries + 1}`
       );
       console.log(e);
-      browser.scroll(locators.ruleNameRow);
+      browser.scroll(locators.ruleNameColumn);
       if (countTries++ >= maxTries) throw e;
     }
   }
@@ -147,8 +164,9 @@ exports.setResultant = function (code, delaySecond) {
   browser.click(locators.resultantActionValue);
   browser.setValue(locators.resultantActionValue, code);
   browser.pause(delaySecond);
-  browser.waitForExist(locators.resultantActionValueDropdownItem, delaySecond);
-  browser.click(locators.resultantActionValueDropdownItem);
+  // browser.waitForExist(locators.resultantActionValueDropdownItem, delaySecond);
+  // browser.click(locators.resultantActionValueDropdownItem);
+  this.waitForExistThenClick(locators.resultantActionValueDropdownItem, delaySecond);
 };
 
 exports.setResultant2 = function (code, delaySecond) {
@@ -156,8 +174,9 @@ exports.setResultant2 = function (code, delaySecond) {
   browser.click(locators.resultantActionValue2);
   browser.setValue(locators.resultantActionValue2Input, code);
   browser.pause(delaySecond);
-  browser.waitForExist(locators.resultantActionValue2DropdownItem, delaySecond);
-  browser.click(locators.resultantActionValue2DropdownItem);
+  // browser.waitForExist(locators.resultantActionValue2DropdownItem, delaySecond);
+  // browser.click(locators.resultantActionValue2DropdownItem);
+  this.waitForExistThenClick(locators.resultantActionValue2DropdownItem, delaySecond);
 };
 
 exports.readDataSheets = async function readDataSheets(
@@ -250,6 +269,40 @@ exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries,
   }
 }
 
+exports.waitForExistThenClick = function (element, delaySecond) {
+  this.waitForExistWithRetry(element, delaySecond);
+  this.clickWithRetry(element);
+}
+
+exports.waitForExistWithRetry = function (element, delaySecond) {
+  let countTries = 0;
+  let maxTries = 3;
+  while (true) {
+    try {
+      $(element).waitForExist(delaySecond);
+      break;
+    } catch (e) {
+      if (countTries++ >= maxTries) throw e;
+      console.log(`"Element ${element} is not existing" after ${delaySecond} second. Retry ${countTries}`);
+    }
+  }
+}
+
+exports.clickWithRetry = function (element) {
+  let countTries = 0;
+  let maxTries = 2;
+  while (true) {
+    try {
+      $(element).click();
+      break;
+    } catch (e) {
+      if (countTries++ >= maxTries) throw e;
+      console.log(`"Element ${element} is not clickable". Retry ${countTries + 1}`);
+      $(element).scroll();
+    }
+  }
+}
+
 exports.tier1 = function tier1(
   input,
   tExcel,
@@ -289,6 +342,7 @@ exports.tier1 = function tier1(
     browser.setValue(locators.attributeValue2, tExcel[i].shipper + " "); // Shipper code
     // browser.pause(delaySecond);
     this.waitForLoadingDotsDisappearIfAny(delaySecond);
+    this.waitForExistWithRetry(locators.firstAttributeDropdownValue, delaySecond);
     if (browser.isExisting(locators.firstAttributeDropdownValue)) {
       // browser.pause(delaySecond);
       let eleExists = false;
@@ -297,7 +351,8 @@ exports.tier1 = function tier1(
         tExcel[i].shipper
       ) {
         eleExists = true;
-        browser.click(locators.firstAttributeDropdownValue); // existing but not clickable if fitst dropdown item is blank
+        // browser.click(locators.firstAttributeDropdownValue); // existing but not clickable if fitst dropdown item is blank
+        this.clickWithRetry(locators.firstAttributeDropdownValue);
         selectedShp.push(tExcel[i].shipper);
       } else {
         for (let k = 0; k < $$(locators.siteCodeDropdownArray).length; k++) {
@@ -409,6 +464,7 @@ exports.tier2 = function tier2(
       browser.setValue(locators.attributeValue2, tExcel[i].shipper + " "); // Shipper code
       // browser.pause(delaySecond);
       this.waitForLoadingDotsDisappearIfAny(delaySecond);
+      this.waitForExistWithRetry(locators.firstAttributeDropdownValue, delaySecond);
       if (browser.isExisting(locators.firstAttributeDropdownValue)) {
         // browser.pause(delaySecond);
         let eleExists = false;
@@ -417,7 +473,8 @@ exports.tier2 = function tier2(
           tExcel[i].shipper
         ) {
           eleExists = true;
-          browser.click(locators.firstAttributeDropdownValue); // existing but not clickable if fitst dropdown item is blank
+          // browser.click(locators.firstAttributeDropdownValue); // existing but not clickable if fitst dropdown item is blank
+          this.clickWithRetry(locators.firstAttributeDropdownValue);
           selectedShp.push(tExcel[i].shipper);
         } else {
           for (let k = 0; k < $$(locators.siteCodeDropdownArray).length; k++) {
@@ -453,6 +510,7 @@ exports.tier2 = function tier2(
       receiverField.setValue(tExcel[i].receiver + " ");
       // browser.pause(delaySecond);
       this.waitForLoadingDotsDisappearIfAny(delaySecond);
+      this.waitForExistWithRetry(locators.firstAttributeDropdownValue, delaySecond);
       if (browser.isExisting(locators.firstAttributeDropdownValue)) {
         // browser.pause(delaySecond);
         let eleExists = false;
@@ -461,7 +519,8 @@ exports.tier2 = function tier2(
           tExcel[i].receiver
         ) {
           eleExists = true;
-          browser.click(locators.firstAttributeDropdownValue); // existing but not clickable if fitst dropdown item is blank
+          // browser.click(locators.firstAttributeDropdownValue); // existing but not clickable if fitst dropdown item is blank
+          this.clickWithRetry(locators.firstAttributeDropdownValue);
           selectedRec.push(tExcel[i].receiver);
         } else {
           for (let k = 0; k < $$(locators.siteCodeDropdownArray).length; k++) {
@@ -512,12 +571,12 @@ exports.tier2 = function tier2(
           : this.setResultant2(ruleCode, delaySecond);
         browser.pause(delaySecond / 2);
         browser.click(locators.saveButton);
-        this.waitForLoadingDotsDisappearIfAny(delaySecond);
-
+        browser.pause(delaySecond);
         createdRule.parentCode = ruleCode;
         if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
         createdRule.shipperCode = selectedShp;
         createdRule.receiverCode = selectedRec;
+        this.waitForLoadingDotsDisappearIfAny(delaySecond);
         console.log("Tier 2 " + ruleName + " rule is saved:");
         console.log(Date().toLocaleString());
         console.log(createdRule);
@@ -525,7 +584,7 @@ exports.tier2 = function tier2(
         selectedRec.length = 0;
         createdRule = {};
         skipClickNewRuleButton = false;
-        browser.pause(delaySecond);
+        browser.waitForVisible(locators.saveButton, delaySecond * 10, true);
       }
     }
   }

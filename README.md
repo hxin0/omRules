@@ -1,4 +1,4 @@
-# Version v1.13
+# Version v1.13.1
 
 # Install
 
@@ -99,14 +99,14 @@ run from code root folder:
 # Issues
 - Element still not existing after xxxx ms  
   try to increase delaySecond in settings
-- OM doesn't load resultant action section  
-  try again. nothing else we can do about it
 
 # What's new
+## v1.13.1
+  - retry when elements not exist
+  - retry when elements not clickable
 ## v1.13
   - retry when go into a wrong rule page
   - retry when resultant action section not appear
-  - refactor waitForResultantWithRetry
   - remove legacy js codes: ir, irjson, irexcel
 ## v1.12.1
   - handle not clickable at point exceptions

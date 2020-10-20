@@ -29,17 +29,21 @@ describe('inactivate rules', function () {
             actions.searchTradingPartner(setEnv, setData[j]);
             actions.waitForLoadingDotsDisappearIfAny(delaySecond);
 
+            var ele = locators.datatablePager;
+            var countTries = 0;
+            var maxTries = 2;
+            while (true) {
+                try {
+                    $(ele).waitForExist(delaySecond * 2);
+                    break;
+                } catch (err) {
+                    if (countTries++ >= maxTries) break;
+                }
+            }
+
             if ($(locators.rulesNotFound).isVisible()) {
                 console.log('No Rules Found... Skip');
                 continue;
-            }
-
-            var ele = locators.datatablePager;
-            try {
-                $(ele).waitForExist(delaySecond * 30);
-            } catch (err) {
-                console.log('Time out');
-                throw 'Time out';
             }
 
             var i = 0;
@@ -57,11 +61,12 @@ describe('inactivate rules', function () {
             }
             while (($$(locators.array3dots)[i] != undefined) && ($$(locators.array3dots)[i].isExisting())) {
                 browser.pause(delaySecond);
-                var countTries = 0;
-                var maxTries = 3;
+                countTries = 0;
+                maxTries = 50;
+
                 while (true) {
                     try {
-                        $$(locators.array3dots)[i].waitForEnabled(delaySecond * 2);
+                        $$(locators.array3dots)[i].waitForExist(delaySecond * 2);
                         break;
                     } catch (e) {
                         if (countTries++ >= maxTries) {
@@ -77,7 +82,7 @@ describe('inactivate rules', function () {
                 console.log(createdBy);
 
                 if ((doAll) || (arrayCreatedBy.includes(createdBy.toUpperCase()))) {
-                    // try to fix Element is not clickable at point, Other element would receive the click exception
+
                     countTries =0;
                     while (true) {
                         try {
@@ -115,6 +120,7 @@ describe('inactivate rules', function () {
                     i++;
                     console.log(`skip a rule on row ${i} by ${createdBy}`);
                 }
+                browser.pause(delaySecond);
             }
             console.log(count + ' rules have been inactivated')
         }
