@@ -71,19 +71,14 @@ copy data files into testdata folder:
       './test/simpleton.js',
       // './test/t1bt.js',
       // './test/t2bt.js',
-      // './test/t1bu.js',
-      // './test/t2bu.js',
-      // './test/t1so.js',
-      // './test/t2so.js',
-      // './test/t1fl.js',
-      // './test/t2fl.js',
-      // './test/t1cu.js',
-      // './test/t2cu.js',        
+      // './test/t1bu.js',      
   ],
 ```
 ## 4. run
-run from code root folder:
+run from code root folder:  
 `C:\...\omRules>npm test`  
+`C:\...\omRules>npm test | tee testReport (Powershell/bash)  
+`$ npm run tee` (bash only)  
 
 ## 5. mlr.js replacing missing location codes with new codes in rules datasheets
 - specify in settings.xlsx missingCode tab
