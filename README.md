@@ -16,7 +16,13 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
 `C:\...\omRules>npm install`
 
 # Setup
-## 1. settings.xlsx
+
+## 1. data files  
+1. copy Dwayne's data files (as is) into testdata folder:  
+    1. tiered data file - different types of rules on each datasheet  
+    2. missingData files - one missingData file, one rules data file 
+2. adjust datasheets names in settings.xlsx if necessary 
+## 2. settings.xlsx
 1. settings:
     - url: rules page url  
     - tradingPartner: inactivate rules for the trading partner  
@@ -56,10 +62,7 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
     - rules data sheet tab names - t1bt, t2bt ... t2fl  
       leave blank if not exist  
     - SKIP: program will run on all rows without 'TRUE'
-## 2. data files  
-copy data files into testdata folder:  
-1. tiered data file - different types of rules on each datasheet  
-2. missingData files - one missingData file, one rules data file  
+ 
 ## 3. specify which rules to run
 *  wdio.conf.js  
   specify which rule to run in `specs` section    
@@ -73,6 +76,19 @@ copy data files into testdata folder:
       // './test/t2bt.js',
       // './test/t1bu.js',      
   ],
+```
+
+  in case you want to run multiple instances, copy unzipped code into another folder and change the port number in execArgv section:
+```
+    execArgv: [
+        '--inspect=127.0.0.1:5859'
+    ],
+```  
+to for example
+```
+    execArgv: [
+        '--inspect=127.0.0.1:5860'
+    ],
 ```
 ## 4. run
 run from code root folder:  
