@@ -14,7 +14,7 @@ describe('simpleton rules', function () {
 
     it('should add simpeton rules for the trading partner', () => {
         delaySecond = setEnv.delaySecond * 1000;
-        browser.url(setEnv.url);
+        $(setEnv.url).url();
         browser.pause(delaySecond);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);
@@ -54,7 +54,7 @@ describe('simpleton rules', function () {
 
                 actions.setResultant(setData[i].corpAcct, delaySecond);
                 browser.pause(delaySecond/2);
-                browser.click(locators.saveButton);
+                $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
                 console.log(createdRule);
@@ -87,7 +87,7 @@ describe('simpleton rules', function () {
                 createdRule.billtoCode = setData[i].code;
                 actions.setResultant(setData[i].code, delaySecond);
                 browser.pause(delaySecond/2);
-                browser.click(locators.saveButton);
+                $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
                 console.log(createdRule);
@@ -121,7 +121,7 @@ describe('simpleton rules', function () {
 
                 actions.setResultant2(setData[i].businessUnit.substring(0,3), delaySecond);
                 browser.pause(delaySecond/2);
-                browser.click(locators.saveButton);
+                $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
                 console.log(createdRule);
@@ -160,7 +160,7 @@ describe('simpleton rules', function () {
                 actions.setResultant2(so, delaySecond);
 
                 browser.pause(delaySecond/2);
-                browser.click(locators.saveButton);
+                $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
                 console.log(createdRule);
@@ -194,7 +194,7 @@ describe('simpleton rules', function () {
 
                 actions.setResultant(setData[i].fleet, delaySecond);
                 browser.pause(delaySecond/2);
-                browser.click(locators.saveButton);
+                $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
                 console.log(createdRule);

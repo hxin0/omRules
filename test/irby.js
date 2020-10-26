@@ -16,7 +16,7 @@ describe('inactivate rules', function () {
     it('should inactivate rules by user for a trading partner', function () {
         delaySecond = setEnv.delaySecond * 1000;
 
-        browser.url(setEnv.url);
+        $(setEnv.url).url();
         browser.pause(delaySecond);
 
         actions.clickLoginButtonWhileExisting(setEnv);
@@ -41,7 +41,7 @@ describe('inactivate rules', function () {
                 }
             }
 
-            if ($(locators.rulesNotFound).isVisible()) {
+            if ($(locators.rulesNotFound).isDisplayed()) {
                 console.log('No Rules Found... Skip');
                 continue;
             }
@@ -91,17 +91,17 @@ describe('inactivate rules', function () {
                         } catch (e) {
                             console.log('span-3dots is not clickable. Retry...');
                             console.log(e);
-                            $$(locators.array3dots)[i].scroll();
+                            $$(locators.array3dots)[i].scrollIntoView();
                             if (countTries++ >= maxTries) throw e;
                         }
                     }       
                     browser.pause(delaySecond);
-                    browser.click(locators.inactivateMenu);
+                    $(locators.inactivateMenu).click();
                     browser.pause(delaySecond);
                     console.log(`${i+1} of ${$$(locators.array3dots).length}`);
                     // if can inactivate, "i" will stay, otherwise i++
                     try {
-                        browser.click(locators.yesButton);
+                        $(locators.yesButton).click();
                     } catch (err) {
                         if (i < $$(locators.array3dots).length) {
                             i++;

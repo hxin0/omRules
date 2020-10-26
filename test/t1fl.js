@@ -38,7 +38,7 @@ describe('tier 1 default fleet code rules', function () {
     it('should add t1 fleet code rule for the trading partner', () => {
         const resultantType = 1;
         delaySecond = setEnv.delaySecond * 1000;
-        browser.url(setEnv.url);
+        $(setEnv.url).url();
         browser.pause(delaySecond);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);

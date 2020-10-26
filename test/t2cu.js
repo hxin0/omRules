@@ -40,7 +40,7 @@ describe('tier 2 default customer rules', function () {
     it('should add t2 btc for the trading partner', () => {
         const resultantType = 1;
         delaySecond = setEnv.delaySecond * 1000;
-        browser.url(setEnv.url);
+        $(setEnv.url).url();
         browser.pause(delaySecond);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);

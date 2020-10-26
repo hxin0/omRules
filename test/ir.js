@@ -2,12 +2,12 @@ describe('test upgrade to 5', function() {
   it('should run test', function() {
       var tradingPartner = 'BESTTRA';
       var url = 'https://order-tst.nonprod.jbhunt.com/order/automationrules';
-      browser.url(url);
+      $(url).url();
       browser.pause(2000);
 
       while ($('input[name="login"][value="Next"]').isExisting()) {
           browser.pause(40000);
-          // browser.click('input[value="Log In"]');
+          // $().click('input[value="Log In"]');
       }
 
       $('[id="searchMenuItems"]').waitForExist(5000);
