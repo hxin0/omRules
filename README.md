@@ -1,4 +1,4 @@
-# Version v1.13.1
+# Version v2.0
 
 # Install
 
@@ -113,6 +113,9 @@ run from code root folder:
   try to increase delaySecond in settings
 
 # What's new
+## v2.0
+  - upgrade webdriverio from v4 to v5
+  - upgrade all tests to comply with new syntax
 ## v1.13.1
   - retry when elements not exist
   - retry when elements not clickable

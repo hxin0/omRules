@@ -6,6 +6,7 @@ const { lookupService } = require("dns");
 
 exports.clickLoginButtonWhileExisting = function (login) {
   if (login.newLoginPage) {
+    browser.pause(consts.delaySecond * 30);
     while ($(locators.loginNextButton).isExisting()) {
       if (login.username != undefined)
         $(locators.username).setValue(login.username);
@@ -14,7 +15,7 @@ exports.clickLoginButtonWhileExisting = function (login) {
       }
       $(locators.loginNextButton).click();
     }
-    browser.pause(consts.delaySecond * 1000);
+    browser.pause(consts.delaySecond * 30);
     while ($(locators.loginButton).isExisting()) {
       if (login.password != undefined)
         $(locators.password).setValue(login.password);

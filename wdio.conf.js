@@ -23,12 +23,12 @@ exports.config = {
     specs: [
         './test/irby.js',
         './test/simpleton.js',
-        './test/t1bt.js',
-        './test/t2bt.js',
-        './test/t1bu.js',
-        './test/t2bu.js',
-        './test/t1so.js',
-        './test/t2so.js',
+        // './test/t1bt.js',
+        // './test/t2bt.js',
+        // './test/t1bu.js',
+        // './test/t2bu.js',
+        // './test/t1so.js',
+        // './test/t2so.js',
         // './test/t1fl.js',
         // './test/t2fl.js',
         // './test/t1cu.js',
@@ -69,7 +69,7 @@ exports.config = {
         //
         browserName: 'chrome',
         acceptInsecureCerts: true,
-        outputDir: __dirname
+        outputDir: __dirname,
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -98,6 +98,7 @@ exports.config = {
     //     '@wdio/applitools-service': 'info'
     // },
     //
+    // outputDir: __dirname,
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).
     bail: 0,
@@ -146,8 +147,6 @@ exports.config = {
     // see also: https://webdriver.io/docs/dot-reporter.html
     reporters: ['dot'],
 
-
-    
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
