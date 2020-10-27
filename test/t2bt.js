@@ -40,7 +40,7 @@ describe('tier 2 default billing party rules', function () {
     it('should add t2 btc for the trading partner', () => {
         const resultantType = 1;
         delaySecond = setEnv.delaySecond * 1000;
-        $(setEnv.url).url();
+        browser.url(setEnv.url);
         browser.pause(delaySecond);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);

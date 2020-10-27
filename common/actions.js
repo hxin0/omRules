@@ -14,7 +14,7 @@ exports.clickLoginButtonWhileExisting = function (login) {
       }
       $(locators.loginNextButton).click();
     }
-    browser.pause(consts.delaySecond);
+    browser.pause(consts.delaySecond * 1000);
     while ($(locators.loginButton).isExisting()) {
       if (login.password != undefined)
         $(locators.password).setValue(login.password);
@@ -413,7 +413,8 @@ exports.tier1 = function tier1(
         selectedShp.length = 0;
         createdRule = {};
         skipClickNewRuleButton = false;
-        browser.pause(delaySecond);
+        // browser.pause(delaySecond);
+        $(locators.saveButton).waitForDisplayed({timeout: delaySecond * 10, reverse: true});
       }
     }
   }
@@ -584,7 +585,7 @@ exports.tier2 = function tier2(
         selectedRec.length = 0;
         createdRule = {};
         skipClickNewRuleButton = false;
-        $(locators.saveButton).waitForDisplayed(delaySecond * 10, true);
+        $(locators.saveButton).waitForDisplayed({timeout: delaySecond * 10, reverse: true});
       }
     }
   }

@@ -3,3 +3,7 @@ errorShots/
 testdata/*Test.*
 testdataArchive
 note.md
+test/pageObjects/
+test/specs/
+wdio.log
+*_backup*

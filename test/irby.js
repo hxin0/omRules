@@ -16,7 +16,7 @@ describe('inactivate rules', function () {
     it('should inactivate rules by user for a trading partner', function () {
         delaySecond = setEnv.delaySecond * 1000;
 
-        $(setEnv.url).url();
+        browser.url(setEnv.url);
         browser.pause(delaySecond);
 
         actions.clickLoginButtonWhileExisting(setEnv);

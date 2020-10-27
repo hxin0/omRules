@@ -37,7 +37,7 @@ describe('tier 1 default business unit rules', function () {
     it('should add t1 business unit for the trading partner', () => {
         const resultantType =2;
         delaySecond = setEnv.delaySecond * 1000;
-        $(setEnv.url).url();
+        browser.url(setEnv.url);
         browser.pause(delaySecond);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);

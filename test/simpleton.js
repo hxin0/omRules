@@ -14,7 +14,7 @@ describe('simpleton rules', function () {
 
     it('should add simpeton rules for the trading partner', () => {
         delaySecond = setEnv.delaySecond * 1000;
-        $(setEnv.url).url();
+        browser.url(setEnv.url);
         browser.pause(delaySecond);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);
