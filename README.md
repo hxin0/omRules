@@ -1,16 +1,17 @@
-# Version v1.13.1
+# Version v2.0
 
 # Install
 
 ## 1. Copy files
-Unzip downloaded file (omRules.zip) into a folder (code root folder)  
-(or copy the following to a folder e.g. `C:\...\omRules>`):
-  - package.json
-  - wdio.conf.js
-  - README.md
-  - common/*
-  - test/*
-  - testdata/settings.xlsx
+  - Download ADO Repo: https://jbhunt.visualstudio.com/EngAndTech/_git/omRules  
+  - Unzip downloaded file (omRules.zip) into a folder (code root folder)  
+  - (or copy the following to a folder e.g. `C:\...\omRules>`):
+    - package.json
+    - wdio.conf.js
+    - README.md
+    - common/*
+    - test/*
+    - testdata/settings.xlsx
 
 ## 2. Install dependencies
 `C:\...\omRules>npm install`
@@ -19,12 +20,12 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
 
 ## 1. data files  
 1. copy Dwayne's data files (as is) into testdata folder:  
-    1. tiered data file - different types of rules on each datasheet  
-    2. missingData files - one missingData file, one rules data file 
+    - tiered data file - different types of rules on each datasheet  
+    - missingData files - one missingData file, one rules data file 
 2. adjust datasheets names in settings.xlsx if necessary 
 ## 2. settings.xlsx
 1. settings:
-    - url: rules page url  
+    - url: rules page url (prod, test, profs, etc.) 
     - tradingPartner: inactivate rules for the trading partner  
     - delaySecond: delay seconds waiting on page elements  
     - username: your login username (not required)
@@ -42,7 +43,7 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
     - createdBy: user ids if any  
       - can set multiple users, comma as delimiter  
       - UI should have created by column selected  
-      - leave this column blank regardless of created by  
+      - leave this column blank will delete rules by all users  
     - selectorTotal:total columns in the table without 'data-auto-id' attribute
     - selectorNum: order number of 'Created By' column among columns without 'data-auto-id' attribute
     - SKIP: program will run on all rows without 'TRUE'
@@ -65,30 +66,27 @@ Unzip downloaded file (omRules.zip) into a folder (code root folder)
  
 ## 3. specify which rules to run
 *  wdio.conf.js  
-  specify which rule to run in `specs` section    
-  comment the lines if you don't want to run, or delete them  
-  for example, this will run `simpleton.js`:
+  specify which "tests" to run in `specs` section    
+  comment or remove the lines if you don't want the tests to run  
+  for example, this will run `simpleton.js`, `t1bt.js`, and `t2bt.js` simultaneously:
 ```javascript
   specs: [
       // './test/irby.js',
       './test/simpleton.js',
-      // './test/t1bt.js',
-      // './test/t2bt.js',
+      './test/t1bt.js',
+      './test/t2bt.js',
       // './test/t1bu.js',      
   ],
 ```
 
-  in case you want to run multiple instances, copy unzipped code into another folder and change the port number in execArgv section:
-```
-    execArgv: [
-        '--inspect=127.0.0.1:5859'
-    ],
-```  
-to for example
-```
-    execArgv: [
-        '--inspect=127.0.0.1:5860'
-    ],
+capabilities maxInstances value determines how many tests to be run simutaneously.  
+This will run 5 instances with chrome capability:
+```javascript
+  capabilities: [{
+    maxInstances: 5,
+    browserName: 'chrome',
+    acceptInsecureCerts: true,
+  }],
 ```
 ## 4. run
 run from code root folder:  
@@ -113,6 +111,10 @@ run from code root folder:
   try to increase delaySecond in settings
 
 # What's new
+## v2.0
+  - upgrade webdriverio from v4 to v6
+  - upgrade all tests to comply with new syntax
+  - utilize timeline reporter
 ## v1.13.1
   - retry when elements not exist
   - retry when elements not clickable
@@ -151,7 +153,7 @@ run from code root folder:
     - selectorTotal: rules page columns that its span element doesn't have 'data-auto-id' attribute.
     - selectorNum: the order of 'Created By' column in those no 'data-auto-id' attribute columns.
 
-## modules (group by settings.xlsx sheet name)
+## modules (group by settings.xlsx sheet)
 - ir  
   - irby.js: inactivate rules by users  
 - tier  

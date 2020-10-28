@@ -34,14 +34,14 @@ describe('inactivate rules', function () {
             var maxTries = 2;
             while (true) {
                 try {
-                    $(ele).waitForExist(delaySecond * 2);
+                    $(ele).waitForExist({ timeout: delaySecond * 2 });
                     break;
                 } catch (err) {
                     if (countTries++ >= maxTries) break;
                 }
             }
 
-            if ($(locators.rulesNotFound).isVisible()) {
+            if ($(locators.rulesNotFound).isDisplayed()) {
                 console.log('No Rules Found... Skip');
                 continue;
             }
@@ -66,7 +66,7 @@ describe('inactivate rules', function () {
 
                 while (true) {
                     try {
-                        $$(locators.array3dots)[i].waitForExist(delaySecond * 2);
+                        $$(locators.array3dots)[i].waitForExist({ timeout: delaySecond * 2 });
                         break;
                     } catch (e) {
                         if (countTries++ >= maxTries) {
@@ -91,17 +91,17 @@ describe('inactivate rules', function () {
                         } catch (e) {
                             console.log('span-3dots is not clickable. Retry...');
                             console.log(e);
-                            $$(locators.array3dots)[i].scroll();
+                            $$(locators.array3dots)[i].scrollIntoView();
                             if (countTries++ >= maxTries) throw e;
                         }
                     }       
                     browser.pause(delaySecond);
-                    browser.click(locators.inactivateMenu);
+                    $(locators.inactivateMenu).click();
                     browser.pause(delaySecond);
                     console.log(`${i+1} of ${$$(locators.array3dots).length}`);
                     // if can inactivate, "i" will stay, otherwise i++
                     try {
-                        browser.click(locators.yesButton);
+                        $(locators.yesButton).click();
                     } catch (err) {
                         if (i < $$(locators.array3dots).length) {
                             i++;
