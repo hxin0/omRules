@@ -23,8 +23,8 @@ exports.config = {
     //     '--inspect=127.0.0.1:5859'
     // ],
     specs: [
-        './test/irby.js',
-        // './test/simpleton.js',
+        // './test/irby.js',
+        './test/simpleton.js',
         // './test/t1bt.js',
         // './test/t2bt.js',
         // './test/t1bu.js',

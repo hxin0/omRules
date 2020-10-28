@@ -1,34 +1,39 @@
 const { schemaSettings, schemaTier } = require("../common/schema");
-const { locators, consts } = require("../common/locators");
+const { locators, consts, platformName } = require("../common/locators");
 const _ = require("lodash/core");
 const fs = require("fs");
 
 exports.clickLoginButtonWhileExisting = function (login) {
+  let platform = browser.capabilities.platformName;
   if (login.newLoginPage) {
-    $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 *10 });
-    if (login.username != undefined) {
-      $(locators.username).setValue(login.username);
-      $(locators.loginNextButton).click();
-    } else {
-      $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
-    }
-    $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 10 });
-    if (login.password != undefined) {
-      $(locators.password).setValue(login.password);
-      $(locators.loginButton).click();
-    } else {
-      $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
+    if (platform == platformName.mac) {
+      $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 *10 });
+      if (login.username != undefined) {
+        $(locators.username).setValue(login.username);
+        $(locators.loginNextButton).click();
+      } else {
+        $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
+      }
+      $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 10 });
+      if (login.password != undefined) {
+        $(locators.password).setValue(login.password);
+        $(locators.loginButton).click();
+      } else {
+        $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
+      }     
     }
   } else {
-    while ($(locators.loginButton).isExisting()) {
-      if (login.username != undefined)
-         $(locators.username).setValue(login.username);
-      if (login.password != undefined)
-        $(locators.password).setValue(login.password);
-      if (login.username != undefined && login.password != undefined)
-        $(locators.loginButton).click();
-      else {
-        browser.pause(consts.delaySecond * 30);
+    if (platform == platformName.mac) {    
+      while ($(locators.loginButton).isExisting()) {
+        if (login.username != undefined)
+          $(locators.username).setValue(login.username);
+        if (login.password != undefined)
+          $(locators.password).setValue(login.password);
+        if (login.username != undefined && login.password != undefined)
+          $(locators.loginButton).click();
+        else {
+          browser.pause(consts.delaySecond * 30);
+        }
       }
     }
   }

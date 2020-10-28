@@ -99,5 +99,10 @@ const soAbbr = {
     RE: 'Refrigerated'
 };
 
-module.exports = { locators, consts, ruleNames, soAbbr };
+const platformName = {
+    "mac": "mac os x",
+    "windows": "windows"
+}
+
+module.exports = { locators, consts, ruleNames, soAbbr, platformName };
 
