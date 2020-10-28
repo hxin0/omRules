@@ -34,7 +34,7 @@ describe('inactivate rules', function () {
             var maxTries = 2;
             while (true) {
                 try {
-                    $(ele).waitForExist(delaySecond * 2);
+                    $(ele).waitForExist({ timeout: delaySecond * 2 });
                     break;
                 } catch (err) {
                     if (countTries++ >= maxTries) break;
@@ -66,7 +66,7 @@ describe('inactivate rules', function () {
 
                 while (true) {
                     try {
-                        $$(locators.array3dots)[i].waitForExist(delaySecond * 2);
+                        $$(locators.array3dots)[i].waitForExist({ timeout: delaySecond * 2 });
                         break;
                     } catch (e) {
                         if (countTries++ >= maxTries) {

@@ -6,24 +6,19 @@ const { lookupService } = require("dns");
 
 exports.clickLoginButtonWhileExisting = function (login) {
   if (login.newLoginPage) {
-    browser.pause(consts.delaySecond * 30);
-    while ($(locators.loginNextButton).isExisting()) {
-      if (login.username != undefined)
-        $(locators.username).setValue(login.username);
-      else {
-        browser.pause(consts.delaySecond * 5000);
-      }
+    $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 *10 });
+    if (login.username != undefined) {
+      $(locators.username).setValue(login.username);
       $(locators.loginNextButton).click();
+    } else {
+      $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
     }
-    browser.pause(consts.delaySecond * 30);
-    while ($(locators.loginButton).isExisting()) {
-      if (login.password != undefined)
-        $(locators.password).setValue(login.password);
-      else {
-        browser.pause(consts.delaySecond * 5000);
-      }
-      if (login.username != undefined && login.password != undefined)
-        $(locators.loginButton).click();
+    $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 10 });
+    if (login.password != undefined) {
+      $(locators.password).setValue(login.password);
+      $(locators.loginButton).click();
+    } else {
+      $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
     }
   } else {
     while ($(locators.loginButton).isExisting()) {
@@ -42,37 +37,37 @@ exports.clickLoginButtonWhileExisting = function (login) {
 
 exports.searchTradingPartner = function (setEnv, input) {
   const delaySecond = setEnv.delaySecond * 1000;
-  // $(locators.searchMenuDropdown).waitForExist(delaySecond);
+  // $(locators.searchMenuDropdown).waitForExist({ timeout: delaySecond });
   // $(locators.searchMenuDropdown).click();
   this.waitForExistThenClick(locators.searchMenuDropdown, delaySecond);
   $(locators.searchMenu1TradingPartner).click();
   $(locators.searchRuleName).setValue(input.tradingPartner);
   browser.pause(delaySecond);
-  $("=".concat(input.tradingPartner)).waitForExist(delaySecond);
+  $("=".concat(input.tradingPartner)).waitForExist({ timeout: delaySecond });
   $("=".concat(input.tradingPartner)).click();
 };
 
 exports.clickNewRuleButton = function (delaySecond) {
-  // $(locators.configureNewRuleButton).waitForExist(delaySecond);
+  // $(locators.configureNewRuleButton).waitForExist({ timeout: delaySecond });
   this.waitForExistWithRetry(locators.configureNewRuleButton, delaySecond);
 
-  $(locators.searchMenuDropdown).waitForExist(delaySecond);
+  $(locators.searchMenuDropdown).waitForExist({ timeout: delaySecond });
   $(locators.configureNewRuleButton).click();
 };
 
 exports.waitForLoadingDotsDisappearIfAny = function (delaySecond) {
   if ($(locators.loadingDots).isDisplayed()) {
-    $(locators.loadingDots).waitForDisplayed(delaySecond * 60, true);
+    $(locators.loadingDots).waitForDisplayed({ timeout: delaySecond * 60 , reverse: true });
   }
   browser.pause(delaySecond);
 };
 
 exports.createRule = function (ruleName, delaySecond) {
   browser.pause(delaySecond / 2);
-  $(locators.searchRuleName).waitForExist(delaySecond);
+  $(locators.searchRuleName).waitForExist({ timeout: delaySecond });
   browser.pause(delaySecond / 2);
   $(locators.searchRuleName).setValue(ruleName);
-  $(locators.ruleNameDropdownValue).waitForExist(delaySecond);
+  $(locators.ruleNameDropdownValue).waitForExist({ timeout: delaySecond });
   browser.pause(delaySecond / 2);
   // $(locators.ruleNameDropdownValue).click();
   while ($(locators.ruleNameDropdownValue).isDisplayed()) {
@@ -82,7 +77,7 @@ exports.createRule = function (ruleName, delaySecond) {
 
   this.waitForLoadingDotsDisappearIfAny(delaySecond);
   // browser.pause(delaySecond);
-  $(locators.ruleNameRow).waitForExist(delaySecond);
+  $(locators.ruleNameRow).waitForExist({ timeout: delaySecond });
   while (true) {
     // console.log($(locators.ruleNameColumn).getText().toUpperCase());
     if ($(locators.ruleNameColumn).getText().toUpperCase() == ruleName.toUpperCase()) {
@@ -105,49 +100,49 @@ exports.createRule = function (ruleName, delaySecond) {
         `"Element is not clickable" exception was thrown, retry ${countTries + 1}`
       );
       console.log(e);
-      $(locators.ruleNameColumn).scrollIntoView()();
+      $(locators.ruleNameColumn).scrollIntoView();
       if (countTries++ >= maxTries) throw e;
     }
   }
 };
 
 exports.setAttributeTradingPartner = function (tradingPartner, delaySecond) {
-  $(locators.selectAttributeDropdown).waitForExist(delaySecond);
+  $(locators.selectAttributeDropdown).waitForExist({ timeout: delaySecond });
 
   $(locators.selectAttributeDropdown).click();
-  // browser.pause(delaySecond);
-  $(locators.inputAttribute).waitForExist(delaySecond);
+  browser.pause(delaySecond);
+  $(locators.inputAttribute).waitForExist({ timeout: delaySecond });
   $(locators.inputAttribute).setValue(consts.ucrTradingPartner); // UCR Trading Partner
   browser.pause(delaySecond);
 
-  $(locators.dropdownItem).waitForExist(delaySecond);
+  $(locators.dropdownItem).waitForExist({ timeout: delaySecond });
   $(locators.dropdownItem).click();
 
-  $(locators.selectOperatorDropdown).waitForExist(delaySecond);
+  $(locators.selectOperatorDropdown).waitForExist({ timeout: delaySecond });
   $(locators.selectOperatorDropdown).click();
   $(locators.operatorEquals).click(); // Equals
 
-  $(locators.attributeValue).waitForExist(delaySecond);
+  $(locators.attributeValue).waitForExist({ timeout: delaySecond });
   $(locators.attributeValue).click();
   $(locators.attributeValue).setValue(tradingPartner + " "); // Trading Partner
   browser.pause(delaySecond);
-  $(locators.firstAttributeDropdownValue).waitForExist(delaySecond);
+  $(locators.firstAttributeDropdownValue).waitForExist({ timeout: delaySecond });
   $(locators.firstAttributeDropdownValue).click();
 };
 
 exports.setAttribute2 = function (attribute, delaySecond) {
   $(locators.addAttributeButton).click();
-  $(locators.selectAttributeDropdown).waitForExist(delaySecond);
+  $(locators.selectAttributeDropdown).waitForExist({ timeout: delaySecond });
 
   $(locators.selectAttributeDropdown).click();
 
   $(locators.inputAttribute).setValue(attribute); // UCR SCAC
   browser.pause(delaySecond);
-  $(locators.dropdownItem).waitForExist(delaySecond);
+  $(locators.dropdownItem).waitForExist({ timeout: delaySecond });
   // browser.pause(delaySecond);
   $(locators.dropdownItem).click();
 
-  $(locators.selectOperatorDropdown).waitForExist(delaySecond);
+  $(locators.selectOperatorDropdown).waitForExist({ timeout: delaySecond });
   $(locators.selectOperatorDropdown).click();
   $(locators.operatorEquals2).click(); // Equals
 };
@@ -155,27 +150,27 @@ exports.setAttribute2 = function (attribute, delaySecond) {
 exports.setAttributeScac = function (scac, delaySecond) {
   this.setAttribute2(consts.ucrScac, delaySecond);
 
-  $(locators.orderRuleCriteriaValue2).waitForExist(delaySecond);
+  $(locators.orderRuleCriteriaValue2).waitForExist({ timeout: delaySecond });
   $(locators.orderRuleCriteriaValue2).click();
   $(locators.orderRuleCriteriaValue2).setValue(scac);
 };
 
 exports.setResultant = function (code, delaySecond) {
-  $(locators.resultantActionValue).waitForExist(delaySecond);
+  $(locators.resultantActionValue).waitForExist({ timeout: delaySecond });
   $(locators.resultantActionValue).click();
   $(locators.resultantActionValue).setValue(code);
   browser.pause(delaySecond);
-  // $(locators.resultantActionValueDropdownItem).waitForExist(delaySecond);
+  // $(locators.resultantActionValueDropdownItem).waitForExist({ timeout: delaySecond });
   // $(locators.resultantActionValueDropdownItem).click();
   this.waitForExistThenClick(locators.resultantActionValueDropdownItem, delaySecond);
 };
 
 exports.setResultant2 = function (code, delaySecond) {
-  $(locators.resultantActionValue2).waitForExist(delaySecond);
+  $(locators.resultantActionValue2).waitForExist({ timeout: delaySecond });
   $(locators.resultantActionValue2).click();
   $(locators.resultantActionValue2Input).setValue(code);
   browser.pause(delaySecond);
-  // $(locators.resultantActionValue2DropdownItem).waitForExist(delaySecond);
+  // $(locators.resultantActionValue2DropdownItem).waitForExist({ timeout: delaySecond });
   // $(locators.resultantActionValue).click(2DropdownItem);
   this.waitForExistThenClick(locators.resultantActionValue2DropdownItem, delaySecond);
 };
@@ -246,9 +241,9 @@ exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries,
   while (true) {
     try {
       if (resultantType === 1) {
-        $(locators.resultantActionValue).waitForExist(delaySecond * 10);
+        $(locators.resultantActionValue).waitForExist({ timeout: delaySecond * 10 });
       } else {
-        $(locators.resultantActionValue2).waitForExist(delaySecond * 10);
+        $(locators.resultantActionValue2).waitForExist({ timeout: delaySecond * 10 });
       }
       break;
     } catch (e) {
@@ -280,7 +275,7 @@ exports.waitForExistWithRetry = function (element, delaySecond) {
   let maxTries = 3;
   while (true) {
     try {
-      $(element).waitForExist(delaySecond);
+      $(element).waitForExist({ timeout: delaySecond });
       break;
     } catch (e) {
       if (countTries++ >= maxTries) throw e;
@@ -338,7 +333,7 @@ exports.tier1 = function tier1(
 
       this.setAttribute2(consts.pickupSiteCode, delaySecond);
     }
-    $(locators.attributeValue2).waitForExist(delaySecond);
+    $(locators.attributeValue2).waitForExist({ timeout: delaySecond });
     $(locators.attributeValue2).click();
     $(locators.attributeValue2).setValue(tExcel[i].shipper + " "); // Shipper code
     // browser.pause(delaySecond);
@@ -387,7 +382,7 @@ exports.tier1 = function tier1(
         // check if shipper field is blank? cancel : continue
         missingLocationsFileUpdate(ml);
         $(locators.cancelButton).click();
-        $(locators.cancelYesButton).waitForExist(delaySecond);
+        $(locators.cancelYesButton).waitForExist({ timeout: delaySecond });
         browser.pause(delaySecond);
         $(locators.cancelYesButton).click();
         skipClickNewRuleButton = true;
@@ -461,7 +456,7 @@ exports.tier2 = function tier2(
 
       this.setAttribute2(consts.pickupSiteCode, delaySecond);
 
-      $(locators.attributeValue2).waitForExist(delaySecond);
+      $(locators.attributeValue2).waitForExist({ timeout: delaySecond });
       $(locators.attributeValue2).click();
       $(locators.attributeValue2).setValue(tExcel[i].shipper + " "); // Shipper code
       // browser.pause(delaySecond);
@@ -507,7 +502,7 @@ exports.tier2 = function tier2(
 
     if (selectedShp.length > 0) {
       var receiverField = $$(locators.attributeValue)[2];
-      receiverField.waitForExist(delaySecond);
+      receiverField.waitForExist({ timeout: delaySecond });
       receiverField.click();
       receiverField.setValue(tExcel[i].receiver + " ");
       // browser.pause(delaySecond);
@@ -557,7 +552,7 @@ exports.tier2 = function tier2(
         // check if shipper field is blank? cancel : continue
         missingLocationsFileUpdate(ml);
         $(locators.cancelButton).click();
-        $(locators.cancelYesButton).waitForExist(delaySecond);
+        $(locators.cancelYesButton).waitForExist({ timeout: delaySecond });
         browser.pause(delaySecond);
         $(locators.cancelYesButton).click();
         skipClickNewRuleButton = true;

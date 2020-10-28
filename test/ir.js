@@ -2,15 +2,15 @@ describe('test upgrade to 5', function() {
   it('should run test', function() {
       var tradingPartner = 'BESTTRA';
       var url = 'https://order-tst.nonprod.jbhunt.com/order/automationrules';
-      $(url).url();
+      browser.url(url);
       browser.pause(2000);
 
       while ($('input[name="login"][value="Next"]').isExisting()) {
           browser.pause(40000);
-          // $().click('input[value="Log In"]');
+          // $('input[value="Log In"]').click();
       }
 
-      $('[id="searchMenuItems"]').waitForExist(5000);
+      $('[id="searchMenuItems"]').waitForExist({ timeout: 5000 });
       $('[id="searchMenuItems"]').click();
       $('[id="ui-select-choices-id-1"]').click();
       $('[id="searchRuleName"]').setValue(tradingPartner);

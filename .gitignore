@@ -6,3 +6,6 @@ note.md
 test/pageObjects/
 test/specs/
 wdio.log
+log/
+timeline/
+*.log
