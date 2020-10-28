@@ -2,7 +2,6 @@ const { schemaSettings, schemaTier } = require("../common/schema");
 const { locators, consts } = require("../common/locators");
 const _ = require("lodash/core");
 const fs = require("fs");
-const { lookupService } = require("dns");
 
 exports.clickLoginButtonWhileExisting = function (login) {
   if (login.newLoginPage) {

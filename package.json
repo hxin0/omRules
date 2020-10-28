@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "clean": "shx rm -rf ./timeline ./testReport.log",
-    "lint": "eslint wdio.conf.js ./test/*.js ./common/*.js",
     "test": "wdio",
     "tee": "wdio|tee testReport.log",
     "pretest": "npm run clean"
