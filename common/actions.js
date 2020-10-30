@@ -7,19 +7,19 @@ exports.clickLoginButtonWhileExisting = function (login) {
   let platform = browser.capabilities.platformName;
   if (login.newLoginPage) {
     if (platform == platformName.mac) {
-      $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 *10 });
+      $(locators.loginNextButton).waitForExist({timeout: consts.delay * 10 });
       if (login.username != undefined) {
         $(locators.username).setValue(login.username);
         $(locators.loginNextButton).click();
       } else {
-        $(locators.loginNextButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
+        $(locators.loginNextButton).waitForExist({timeout: consts.delay * 30, reverse: true});
       }
-      $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 10 });
+      $(locators.loginButton).waitForExist({timeout: consts.delay * 10 });
       if (login.password != undefined) {
         $(locators.password).setValue(login.password);
         $(locators.loginButton).click();
       } else {
-        $(locators.loginButton).waitForExist({timeout: consts.delaySecond * 1000 * 30, reverse: true});
+        $(locators.loginButton).waitForExist({timeout: consts.delay * 30, reverse: true});
       }     
     }
   } else {
@@ -32,7 +32,7 @@ exports.clickLoginButtonWhileExisting = function (login) {
         if (login.username != undefined && login.password != undefined)
           $(locators.loginButton).click();
         else {
-          browser.pause(consts.delaySecond * 30);
+          browser.pause(consts.delay * 30);
         }
       }
     }
@@ -40,60 +40,63 @@ exports.clickLoginButtonWhileExisting = function (login) {
 };
 
 exports.searchTradingPartner = function (setEnv, input) {
-  const delaySecond = setEnv.delaySecond * 1000;
-  // $(locators.searchMenuDropdown).waitForExist({ timeout: delaySecond });
+  const waitRetry = {
+    delay: setEnv.delaySecond * 1000,
+    maxTries: setEnv.maxTries
+  }
+  // $(locators.searchMenuDropdown).waitForExist({ timeout: delay });
   // $(locators.searchMenuDropdown).click();
-  this.waitForExistThenClick(locators.searchMenuDropdown, delaySecond);
+  this.waitForExistThenClick(locators.searchMenuDropdown, waitRetry);
   $(locators.searchMenu1TradingPartner).click();
   $(locators.searchRuleName).setValue(input.tradingPartner);
-  browser.pause(delaySecond);
-  $("=".concat(input.tradingPartner)).waitForExist({ timeout: delaySecond });
+  browser.pause(waitRetry.delay);
+  $("=".concat(input.tradingPartner)).waitForExist({ timeout: waitRetry.delay });
   $("=".concat(input.tradingPartner)).click();
 };
 
-exports.clickNewRuleButton = function (delaySecond) {
-  // $(locators.configureNewRuleButton).waitForExist({ timeout: delaySecond });
-  this.waitForExistWithRetry(locators.configureNewRuleButton, delaySecond);
+exports.clickNewRuleButton = function (waitRetry) {
+  // $(locators.configureNewRuleButton).waitForExist({ timeout: delay });
+  this.waitForExistWithRetry(locators.configureNewRuleButton, waitRetry);
 
-  $(locators.searchMenuDropdown).waitForExist({ timeout: delaySecond });
+  $(locators.searchMenuDropdown).waitForExist({ timeout: waitRetry.delay });
   $(locators.configureNewRuleButton).click();
 };
 
-exports.waitForLoadingDotsDisappearIfAny = function (delaySecond) {
+exports.waitForLoadingDotsDisappearIfAny = function (delay) {
   if ($(locators.loadingDots).isDisplayed()) {
-    $(locators.loadingDots).waitForDisplayed({ timeout: delaySecond * 60 , reverse: true });
+    $(locators.loadingDots).waitForDisplayed({ timeout: delay * 60 , reverse: true });
   }
-  browser.pause(delaySecond);
+  browser.pause(delay);
 };
 
-exports.createRule = function (ruleName, delaySecond) {
-  browser.pause(delaySecond / 2);
-  $(locators.searchRuleName).waitForExist({ timeout: delaySecond });
-  browser.pause(delaySecond / 2);
+exports.createRule = function (ruleName, { delay=1000, maxTries=50 } = {}) {
+  browser.pause(delay / 2);
+  $(locators.searchRuleName).waitForExist({ timeout: delay });
+  browser.pause(delay / 2);
   $(locators.searchRuleName).setValue(ruleName);
-  $(locators.ruleNameDropdownValue).waitForExist({ timeout: delaySecond });
-  browser.pause(delaySecond / 2);
+  // $(locators.ruleNameDropdownValue).waitForExist({ timeout: delay });
+  this.waitForExistWithRetry(locators.ruleNameDropdownValue, { delay, maxTries });
+  browser.pause(delay / 2);
   // $(locators.ruleNameDropdownValue).click();
   while ($(locators.ruleNameDropdownValue).isDisplayed()) {
-    this.clickWithRetry(locators.ruleNameDropdownValue);
-    browser.pause(delaySecond);
+    this.clickWithRetry(locators.ruleNameDropdownValue, maxTries);
+    browser.pause(delay);
   }
 
-  this.waitForLoadingDotsDisappearIfAny(delaySecond);
-  // browser.pause(delaySecond);
-  $(locators.ruleNameRow).waitForExist({ timeout: delaySecond });
+  this.waitForLoadingDotsDisappearIfAny(delay);
+  // browser.pause(delay);
+  $(locators.ruleNameRow).waitForExist({ timeout: delay });
   while (true) {
     // console.log($(locators.ruleNameColumn).getText().toUpperCase());
     if ($(locators.ruleNameColumn).getText().toUpperCase() == ruleName.toUpperCase()) {
       break;
     }
-    browser.pause(delaySecond);
+    browser.pause(delay);
   }
 
   // try again if the error occurs:
   // Element is not clickable at point, Other element would receive the click
   let countTries = 0;
-  let maxTries = 3;
   while (true) {
     try {
       // $(locators.ruleNameRow).click();
@@ -110,73 +113,80 @@ exports.createRule = function (ruleName, delaySecond) {
   }
 };
 
-exports.setAttributeTradingPartner = function (tradingPartner, delaySecond) {
-  $(locators.selectAttributeDropdown).waitForExist({ timeout: delaySecond });
-
-  $(locators.selectAttributeDropdown).click();
-  browser.pause(delaySecond);
-  $(locators.inputAttribute).waitForExist({ timeout: delaySecond });
+exports.setAttributeTradingPartner = function (tradingPartner, { delay=1000, maxTries=50 } = {}) {
+  // $(locators.selectAttributeDropdown).waitForExist({ timeout: delay });
+  // $(locators.selectAttributeDropdown).click();
+  const waitRetry = { delay, maxTries };
+  this.waitForExistThenClick(locators.selectAttributeDropdown, waitRetry);
+  // browser.pause(delay);
+  // $(locators.inputAttribute).waitForExist({ timeout: delay });
+  this.waitForExistWithRetry(locators.inputAttribute, waitRetry);
   $(locators.inputAttribute).setValue(consts.ucrTradingPartner); // UCR Trading Partner
-  browser.pause(delaySecond);
+  // browser.pause(delay);
 
-  $(locators.dropdownItem).waitForExist({ timeout: delaySecond });
-  $(locators.dropdownItem).click();
+  // $(locators.dropdownItem).waitForExist({ timeout: delay });
+  // $(locators.dropdownItem).click();
+  this.waitForExistThenClick(locators.dropdownItem, waitRetry);
 
-  $(locators.selectOperatorDropdown).waitForExist({ timeout: delaySecond });
+  $(locators.selectOperatorDropdown).waitForExist({ timeout: delay });
   $(locators.selectOperatorDropdown).click();
   $(locators.operatorEquals).click(); // Equals
 
-  $(locators.attributeValue).waitForExist({ timeout: delaySecond });
+  $(locators.attributeValue).waitForExist({ timeout: delay });
   $(locators.attributeValue).click();
   $(locators.attributeValue).setValue(tradingPartner + " "); // Trading Partner
-  browser.pause(delaySecond);
-  $(locators.firstAttributeDropdownValue).waitForExist({ timeout: delaySecond });
-  $(locators.firstAttributeDropdownValue).click();
+  // browser.pause(delay);
+  // $(locators.firstAttributeDropdownValue).waitForExist({ timeout: delay });
+  // $(locators.firstAttributeDropdownValue).click();
+  this.waitForExistThenClick(locators.firstAttributeDropdownValue, waitRetry);
 };
 
-exports.setAttribute2 = function (attribute, delaySecond) {
+exports.setAttribute2 = function (attribute, { delay=1000, maxTries=50 } = {}) {
+  const waitRetry = { delay, maxTries };
   $(locators.addAttributeButton).click();
-  $(locators.selectAttributeDropdown).waitForExist({ timeout: delaySecond });
+  $(locators.selectAttributeDropdown).waitForExist({ timeout: delay });
 
   $(locators.selectAttributeDropdown).click();
 
   $(locators.inputAttribute).setValue(attribute); // UCR SCAC
-  browser.pause(delaySecond);
-  $(locators.dropdownItem).waitForExist({ timeout: delaySecond });
-  // browser.pause(delaySecond);
-  $(locators.dropdownItem).click();
+  browser.pause(delay);
+  // $(locators.dropdownItem).waitForExist({ timeout: delay });
+  // // browser.pause(delay);
+  // $(locators.dropdownItem).click();
+  this.waitForExistThenClick(locators.dropdownItem, waitRetry);
 
-  $(locators.selectOperatorDropdown).waitForExist({ timeout: delaySecond });
+  $(locators.selectOperatorDropdown).waitForExist({ timeout: delay });
   $(locators.selectOperatorDropdown).click();
   $(locators.operatorEquals2).click(); // Equals
 };
 
-exports.setAttributeScac = function (scac, delaySecond) {
-  this.setAttribute2(consts.ucrScac, delaySecond);
+exports.setAttributeScac = function (scac, { delay=1000, maxTries=50 } = {}) {
+  const waitRetry = { delay, maxTries };
+  this.setAttribute2(consts.ucrScac, waitRetry);
 
-  $(locators.orderRuleCriteriaValue2).waitForExist({ timeout: delaySecond });
+  $(locators.orderRuleCriteriaValue2).waitForExist({ timeout: delay });
   $(locators.orderRuleCriteriaValue2).click();
   $(locators.orderRuleCriteriaValue2).setValue(scac);
 };
 
-exports.setResultant = function (code, delaySecond) {
-  $(locators.resultantActionValue).waitForExist({ timeout: delaySecond });
+exports.setResultant = function (code, { delay=1000, maxTries=50 } = {}) {
+  $(locators.resultantActionValue).waitForExist({ timeout: delay });
   $(locators.resultantActionValue).click();
   $(locators.resultantActionValue).setValue(code);
-  browser.pause(delaySecond);
-  // $(locators.resultantActionValueDropdownItem).waitForExist({ timeout: delaySecond });
+  browser.pause(delay);
+  // $(locators.resultantActionValueDropdownItem).waitForExist({ timeout: delay });
   // $(locators.resultantActionValueDropdownItem).click();
-  this.waitForExistThenClick(locators.resultantActionValueDropdownItem, delaySecond);
+  this.waitForExistThenClick(locators.resultantActionValueDropdownItem, { delay, maxTries });
 };
 
-exports.setResultant2 = function (code, delaySecond) {
-  $(locators.resultantActionValue2).waitForExist({ timeout: delaySecond });
+exports.setResultant2 = function (code, { delay=1000, maxTries=50 } = {}) {
+  $(locators.resultantActionValue2).waitForExist({ timeout: delay });
   $(locators.resultantActionValue2).click();
   $(locators.resultantActionValue2Input).setValue(code);
-  browser.pause(delaySecond);
-  // $(locators.resultantActionValue2DropdownItem).waitForExist({ timeout: delaySecond });
+  browser.pause(delay);
+  // $(locators.resultantActionValue2DropdownItem).waitForExist({ timeout: delay });
   // $(locators.resultantActionValue).click(2DropdownItem);
-  this.waitForExistThenClick(locators.resultantActionValue2DropdownItem, delaySecond);
+  this.waitForExistThenClick(locators.resultantActionValue2DropdownItem, { delay, maxTries });
 };
 
 exports.readDataSheets = async function readDataSheets(
@@ -226,13 +236,13 @@ exports.readDataSheets = async function readDataSheets(
   return { setEnv, setData };
 };
 
-exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries, delaySecond) {
+exports.waitForResultantWithRetry = function (ruleName, resultantType, { delay=1000, maxTries=50 } = {}) {
   let countTries = 0;
   // if it goes to a wrong rule name page, retry
   while ($(locators.textRuleName).getText().toUpperCase() != ruleName.toUpperCase()) {
     // go back
     $(locators.goBack).click();
-    this.createRule(ruleName, delaySecond);
+    this.createRule(ruleName, { delay, maxTries });
     countTries++;
     if (countTries >= maxTries) break;
   }
@@ -245,9 +255,9 @@ exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries,
   while (true) {
     try {
       if (resultantType === 1) {
-        $(locators.resultantActionValue).waitForExist({ timeout: delaySecond * 10 });
+        $(locators.resultantActionValue).waitForExist({ timeout: delay * 10 });
       } else {
-        $(locators.resultantActionValue2).waitForExist({ timeout: delaySecond * 10 });
+        $(locators.resultantActionValue2).waitForExist({ timeout: delay * 10 });
       }
       break;
     } catch (e) {
@@ -258,7 +268,7 @@ exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries,
             `resultant action fields not appear, retry ${backTries + 1}`
           );
           $(locators.goBack).click();
-          this.createRule(ruleName, delaySecond);
+          this.createRule(ruleName, { delay, maxTries });
           backTries++;
           countTries = 0;
         }
@@ -269,28 +279,27 @@ exports.waitForResultantWithRetry = function (ruleName, resultantType, maxTries,
   }
 }
 
-exports.waitForExistThenClick = function (element, delaySecond) {
-  this.waitForExistWithRetry(element, delaySecond);
-  this.clickWithRetry(element);
+exports.waitForExistThenClick = function (element, { delay=1000, maxTries=50 } = {}) {
+  const waitRetry = { delay, maxTries };
+  this.waitForExistWithRetry(element, waitRetry);
+  this.clickWithRetry(element, maxTries);
 }
 
-exports.waitForExistWithRetry = function (element, delaySecond) {
+exports.waitForExistWithRetry = function (element, { delay=1000, maxTries=50 } = {}) {
   let countTries = 0;
-  let maxTries = 3;
   while (true) {
     try {
-      $(element).waitForExist({ timeout: delaySecond });
+      $(element).waitForExist({ timeout: delay });
       break;
     } catch (e) {
       if (countTries++ >= maxTries) throw e;
-      console.log(`"Element ${element} is not existing" after ${delaySecond} second. Retry ${countTries}`);
+      console.log(`"Element ${element} is not existing" after ${delay * countTries} milliseconds. Retry ${countTries}`);
     }
   }
 }
 
-exports.clickWithRetry = function (element) {
+exports.clickWithRetry = function (element, maxTries) {
   let countTries = 0;
-  let maxTries = 2;
   while (true) {
     try {
       $(element).click();
@@ -309,7 +318,7 @@ exports.tier1 = function tier1(
   ruleName,
   resultantType,
   ml,
-  delaySecond
+  { delay=1000, maxTries=50 }
 ) {
   var i;
   var ruleCode = "";
@@ -317,34 +326,35 @@ exports.tier1 = function tier1(
   var selectedShp = [];
   var createdRule = {};
   var skipClickNewRuleButton = false;
+  const waitRetry = { delay, maxTries };
   for (i = 0; i < tExcel.length; i++) {
     if (tExcel[i].code != ruleCode || tExcel[i].scac != scacCode) {
       // start a new rule
       console.log("Creating Tier 1 " + ruleName + " rule.");
       ruleCode = tExcel[i].code;
       scacCode = tExcel[i].scac;
-      if (!skipClickNewRuleButton) this.clickNewRuleButton(delaySecond);
+      if (!skipClickNewRuleButton) this.clickNewRuleButton(waitRetry);
 
-      this.createRule(ruleName, delaySecond);
+      this.createRule(ruleName, waitRetry);
       // configure new rule page -- TP
 
       // if resultant action section not loaded, try to wait ${maxTries} times
       // if still not existing, navigate back and try again
       // if tried back 3 times, still not existing, throw error
-      this.waitForResultantWithRetry(ruleName, resultantType, 2, delaySecond);
-      browser.pause(delaySecond / 2);
-      this.setAttributeTradingPartner(input.tradingPartner, delaySecond);
+      this.waitForResultantWithRetry(ruleName, resultantType, 2, waitRetry);
+      browser.pause(delay / 2);
+      this.setAttributeTradingPartner(input.tradingPartner, waitRetry);
 
-      this.setAttribute2(consts.pickupSiteCode, delaySecond);
+      this.setAttribute2(consts.pickupSiteCode, waitRetry);
     }
-    $(locators.attributeValue2).waitForExist({ timeout: delaySecond });
+    $(locators.attributeValue2).waitForExist({ timeout: delay });
     $(locators.attributeValue2).click();
     $(locators.attributeValue2).setValue(tExcel[i].shipper + " "); // Shipper code
-    // browser.pause(delaySecond);
-    this.waitForLoadingDotsDisappearIfAny(delaySecond);
-    this.waitForExistWithRetry(locators.firstAttributeDropdownValue, delaySecond);
+    // browser.pause(delay);
+    this.waitForLoadingDotsDisappearIfAny(delay);
+    this.waitForExistWithRetry(locators.firstAttributeDropdownValue, waitRetry);
     if ($(locators.firstAttributeDropdownValue).isExisting()) {
-      // browser.pause(delaySecond);
+      // browser.pause(delay);
       let eleExists = false;
       if (
         $(locators.firstAttributeDropdownValue).getText() ==
@@ -352,7 +362,7 @@ exports.tier1 = function tier1(
       ) {
         eleExists = true;
         // $(locators.firstAttributeDropdownValue).click(); // existing but not clickable if fitst dropdown item is blank
-        this.clickWithRetry(locators.firstAttributeDropdownValue);
+        this.clickWithRetry(locators.firstAttributeDropdownValue, maxTries);
         selectedShp.push(tExcel[i].shipper);
       } else {
         for (let k = 0; k < $$(locators.siteCodeDropdownArray).length; k++) {
@@ -373,7 +383,7 @@ exports.tier1 = function tier1(
         ml.parentCode = tExcel[i].code;
         console.log(`missing shipper location: ${tExcel[i].shipper}`);
       }
-      // browser.pause(delaySecond);
+      // browser.pause(delay);
     }
 
     // Save if billto code or scac on next row changes, or reached to the end
@@ -386,23 +396,23 @@ exports.tier1 = function tier1(
         // check if shipper field is blank? cancel : continue
         missingLocationsFileUpdate(ml);
         $(locators.cancelButton).click();
-        $(locators.cancelYesButton).waitForExist({ timeout: delaySecond });
-        browser.pause(delaySecond);
+        $(locators.cancelYesButton).waitForExist({ timeout: delay });
+        browser.pause(delay);
         $(locators.cancelYesButton).click();
         skipClickNewRuleButton = true;
-        browser.pause(delaySecond);
+        browser.pause(delay);
       } else {
         if (tExcel[i].scac != undefined) {
           // Add scac
-          this.setAttributeScac(tExcel[i].scac, delaySecond);
+          this.setAttributeScac(tExcel[i].scac, waitRetry);
         }
         missingLocationsFileUpdate(ml);
         resultantType === 1
-          ? this.setResultant(ruleCode, delaySecond)
-          : this.setResultant2(ruleCode, delaySecond);
-        browser.pause(delaySecond / 2);
+          ? this.setResultant(ruleCode, waitRetry)
+          : this.setResultant2(ruleCode, waitRetry);
+        browser.pause(delay / 2);
         $(locators.saveButton).click();
-        this.waitForLoadingDotsDisappearIfAny(delaySecond);
+        this.waitForLoadingDotsDisappearIfAny(delay);
 
         createdRule.parentCode = ruleCode;
         if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
@@ -413,8 +423,8 @@ exports.tier1 = function tier1(
         selectedShp.length = 0;
         createdRule = {};
         skipClickNewRuleButton = false;
-        // browser.pause(delaySecond);
-        $(locators.saveButton).waitForDisplayed({timeout: delaySecond * 10, reverse: true});
+        // browser.pause(delay);
+        $(locators.saveButton).waitForDisplayed({timeout: delay * 10, reverse: true});
       }
     }
   }
@@ -426,7 +436,7 @@ exports.tier2 = function tier2(
   ruleName,
   resultantType,
   ml,
-  delaySecond
+  { delay=1000, maxTries=50 }
 ) {
   var i;
   var ruleCode = "";
@@ -436,7 +446,7 @@ exports.tier2 = function tier2(
   var selectedRec = [];
   var createdRule = {};
   var skipClickNewRuleButton = false;
-
+  const waitRetry = { delay, maxTries };
   for (i = 0; i < tExcel.length; i++) {
     if (
       tExcel[i].code != ruleCode ||
@@ -449,25 +459,25 @@ exports.tier2 = function tier2(
       shpCode = tExcel[i].shipper;
       scacCode = tExcel[i].scac;
 
-      if (!skipClickNewRuleButton) this.clickNewRuleButton(delaySecond);
+      if (!skipClickNewRuleButton) this.clickNewRuleButton(waitRetry);
 
-      this.createRule(ruleName, delaySecond);
+      this.createRule(ruleName, waitRetry);
       // configure new rule page -- TP
 
-      this.waitForResultantWithRetry(ruleName, resultantType, 2, delaySecond);
+      this.waitForResultantWithRetry(ruleName, resultantType, 2, waitRetry);
 
-      this.setAttributeTradingPartner(input.tradingPartner, delaySecond);
+      this.setAttributeTradingPartner(input.tradingPartner, waitRetry);
 
-      this.setAttribute2(consts.pickupSiteCode, delaySecond);
+      this.setAttribute2(consts.pickupSiteCode, waitRetry);
 
-      $(locators.attributeValue2).waitForExist({ timeout: delaySecond });
+      $(locators.attributeValue2).waitForExist({ timeout: delay });
       $(locators.attributeValue2).click();
       $(locators.attributeValue2).setValue(tExcel[i].shipper + " "); // Shipper code
-      // browser.pause(delaySecond);
-      this.waitForLoadingDotsDisappearIfAny(delaySecond);
-      this.waitForExistWithRetry(locators.firstAttributeDropdownValue, delaySecond);
+      // browser.pause(delay);
+      this.waitForLoadingDotsDisappearIfAny(delay);
+      this.waitForExistWithRetry(locators.firstAttributeDropdownValue, waitRetry);
       if ($(locators.firstAttributeDropdownValue).isExisting()) {
-        // browser.pause(delaySecond);
+        // browser.pause(delay);
         let eleExists = false;
         if (
           $(locators.firstAttributeDropdownValue).getText() ==
@@ -475,7 +485,7 @@ exports.tier2 = function tier2(
         ) {
           eleExists = true;
           // $(locators.firstAttributeDropdownValue).click(); // existing but not clickable if fitst dropdown item is blank
-          this.clickWithRetry(locators.firstAttributeDropdownValue);
+          this.clickWithRetry(locators.firstAttributeDropdownValue, maxTries);
           selectedShp.push(tExcel[i].shipper);
         } else {
           for (let k = 0; k < $$(locators.siteCodeDropdownArray).length; k++) {
@@ -496,24 +506,24 @@ exports.tier2 = function tier2(
           ml.parentCode = tExcel[i].code;
           console.log(`missing shipper location: ${tExcel[i].shipper}`);
         }
-        // browser.pause(delaySecond);
+        // browser.pause(delay);
       }
       // configure new rule page - receiver
       if (selectedShp.length > 0) {
-        this.setAttribute2(consts.deliverySiteCode, delaySecond);
+        this.setAttribute2(consts.deliverySiteCode, waitRetry);
       }
     }
 
     if (selectedShp.length > 0) {
       var receiverField = $$(locators.attributeValue)[2];
-      receiverField.waitForExist({ timeout: delaySecond });
+      receiverField.waitForExist({ timeout: delay });
       receiverField.click();
       receiverField.setValue(tExcel[i].receiver + " ");
-      // browser.pause(delaySecond);
-      this.waitForLoadingDotsDisappearIfAny(delaySecond);
-      this.waitForExistWithRetry(locators.firstAttributeDropdownValue, delaySecond);
+      // browser.pause(delay);
+      this.waitForLoadingDotsDisappearIfAny(delay);
+      this.waitForExistWithRetry(locators.firstAttributeDropdownValue, waitRetry);
       if ($(locators.firstAttributeDropdownValue).isExisting()) {
-        // browser.pause(delaySecond);
+        // browser.pause(delay);
         let eleExists = false;
         if (
           $(locators.firstAttributeDropdownValue).getText() ==
@@ -521,7 +531,7 @@ exports.tier2 = function tier2(
         ) {
           eleExists = true;
           // $(locators.firstAttributeDropdownValue).click(); // existing but not clickable if fitst dropdown item is blank
-          this.clickWithRetry(locators.firstAttributeDropdownValue);
+          this.clickWithRetry(locators.firstAttributeDropdownValue, maxTries);
           selectedRec.push(tExcel[i].receiver);
         } else {
           for (let k = 0; k < $$(locators.siteCodeDropdownArray).length; k++) {
@@ -542,7 +552,7 @@ exports.tier2 = function tier2(
           ml.parentCode = tExcel[i].code;
           console.log(`missing receiver location: ${tExcel[i].receiver}`);
         }
-        // browser.pause(delaySecond);
+        // browser.pause(delay);
       }
     }
     // Save if billto code or shipper code or scac on next row changes, or reached to the end
@@ -556,28 +566,28 @@ exports.tier2 = function tier2(
         // check if shipper field is blank? cancel : continue
         missingLocationsFileUpdate(ml);
         $(locators.cancelButton).click();
-        $(locators.cancelYesButton).waitForExist({ timeout: delaySecond });
-        browser.pause(delaySecond);
+        $(locators.cancelYesButton).waitForExist({ timeout: delay });
+        browser.pause(delay);
         $(locators.cancelYesButton).click();
         skipClickNewRuleButton = true;
-        browser.pause(delaySecond);
+        browser.pause(delay);
       } else {
         if (tExcel[i].scac != undefined) {
           // Add scac
-          this.setAttributeScac(tExcel[i].scac, delaySecond);
+          this.setAttributeScac(tExcel[i].scac, waitRetry);
         }
         missingLocationsFileUpdate(ml);
         resultantType === 1
-          ? this.setResultant(ruleCode, delaySecond)
-          : this.setResultant2(ruleCode, delaySecond);
-        browser.pause(delaySecond / 2);
+          ? this.setResultant(ruleCode, waitRetry)
+          : this.setResultant2(ruleCode, waitRetry);
+        browser.pause(delay / 2);
         $(locators.saveButton).click();
-        browser.pause(delaySecond);
+        browser.pause(delay);
         createdRule.parentCode = ruleCode;
         if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
         createdRule.shipperCode = selectedShp;
         createdRule.receiverCode = selectedRec;
-        this.waitForLoadingDotsDisappearIfAny(delaySecond);
+        this.waitForLoadingDotsDisappearIfAny(delay);
         console.log("Tier 2 " + ruleName + " rule is saved:");
         console.log(Date().toLocaleString());
         console.log(createdRule);
@@ -585,7 +595,7 @@ exports.tier2 = function tier2(
         selectedRec.length = 0;
         createdRule = {};
         skipClickNewRuleButton = false;
-        $(locators.saveButton).waitForDisplayed({timeout: delaySecond * 10, reverse: true});
+        $(locators.saveButton).waitForDisplayed({timeout: delay * 10, reverse: true});
       }
     }
   }

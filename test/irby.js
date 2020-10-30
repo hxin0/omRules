@@ -6,7 +6,8 @@ describe('inactivate rules', function () {
 
     var setEnv = {};
     var setData = [];
-    var delaySecond = 1000;
+    var delay = 1000;
+    var maxTries = 50;
     var count = 0;
 
     before('read excel file first', async function () {
@@ -14,27 +15,30 @@ describe('inactivate rules', function () {
     })
 
     it('should inactivate rules by user for a trading partner', function () {
-        delaySecond = setEnv.delaySecond * 1000;
-
+        delay = setEnv.delaySecond * 1000;
+        TimelineReporter.addContext({
+            delay: delay,
+            maxTries: setEnv.maxTries
+        });
         browser.url(setEnv.url);
-        browser.pause(delaySecond);
+        browser.pause(delay);
 
         actions.clickLoginButtonWhileExisting(setEnv);
 
-        browser.pause(delaySecond);
+        browser.pause(delay);
         // loop start
         for (let j = 0; j < setData.length; j++) {
             console.log(`Start settings.xlsx/ir: row ${j + 1}: ${setData[j].tradingPartner}`);
             console.log(Date().toLocaleString());
             actions.searchTradingPartner(setEnv, setData[j]);
-            actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+            actions.waitForLoadingDotsDisappearIfAny(delay);
 
             var ele = locators.datatablePager;
             var countTries = 0;
-            var maxTries = 2;
+            maxTries = 5;
             while (true) {
                 try {
-                    $(ele).waitForExist({ timeout: delaySecond * 2 });
+                    $(ele).waitForExist({ timeout: delay * 2 });
                     break;
                 } catch (err) {
                     if (countTries++ >= maxTries) break;
@@ -59,14 +63,14 @@ describe('inactivate rules', function () {
                 sTotal = 1;
                 sNum = 0;
             }
+            maxTries = setEnv.maxTries;
+            actions.waitForExistWithRetry(locators.array3dots, { delay, maxTries });
             while (($$(locators.array3dots)[i] != undefined) && ($$(locators.array3dots)[i].isExisting())) {
-                browser.pause(delaySecond);
+                browser.pause(delay);
                 countTries = 0;
-                maxTries = 50;
-
                 while (true) {
                     try {
-                        $$(locators.array3dots)[i].waitForExist({ timeout: delaySecond * 2 });
+                        $$(locators.array3dots)[i].waitForExist({ timeout: delay * 2 });
                         break;
                     } catch (e) {
                         if (countTries++ >= maxTries) {
@@ -95,9 +99,9 @@ describe('inactivate rules', function () {
                             if (countTries++ >= maxTries) throw e;
                         }
                     }       
-                    browser.pause(delaySecond);
+                    browser.pause(delay);
                     $(locators.inactivateMenu).click();
-                    browser.pause(delaySecond);
+                    browser.pause(delay);
                     console.log(`${i+1} of ${$$(locators.array3dots).length}`);
                     // if can inactivate, "i" will stay, otherwise i++
                     try {
@@ -114,13 +118,13 @@ describe('inactivate rules', function () {
                     }
         
                     count++;
-                    actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                    actions.waitForLoadingDotsDisappearIfAny(delay);
                 } else {
                     // skip to the next row
                     i++;
                     console.log(`skip a rule on row ${i} by ${createdBy}`);
                 }
-                browser.pause(delaySecond);
+                browser.pause(delay);
             }
             console.log(count + ' rules have been inactivated')
         }

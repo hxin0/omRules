@@ -1,4 +1,4 @@
-# Version v2.0
+# Version v2.1
 
 # Install
 
@@ -111,6 +111,8 @@ run from code root folder:
   try to increase delaySecond in settings
 
 # What's new
+## v2.1
+  - add maxTries settings
 ## v2.0
   - upgrade webdriverio from v4 to v6
   - upgrade all tests to comply with new syntax

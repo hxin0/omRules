@@ -7,5 +7,5 @@ test/pageObjects/
 test/specs/
 wdio.log
 log/
-timeline/
+timeline*/
 *.log

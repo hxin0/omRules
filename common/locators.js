@@ -54,7 +54,7 @@ const consts = {
     pickupSiteCode: 'Pickup Site Code',
     deliverySiteCode: 'Delivery Site Code',
     ucrScac: 'UCR SCAC',
-    delaySecond: 3
+    delay: 3000
 };
 
 const ruleNames = {

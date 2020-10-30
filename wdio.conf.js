@@ -25,14 +25,14 @@ exports.config = {
     specs: [
         // './test/irby.js',
         './test/simpleton.js',
-        // './test/t1bt.js',
-        // './test/t2bt.js',
+        './test/t1bt.js',
+        './test/t2bt.js',
         // './test/t1bu.js',
         // './test/t2bu.js',
         // './test/t1so.js',
         // './test/t2so.js',
-        // './test/t1fl.js',
-        // './test/t2fl.js',
+        './test/t1fl.js',
+        './test/t2fl.js',
         // './test/t1cu.js',
         // './test/t2cu.js',        
     ],
@@ -56,7 +56,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 100,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -67,7 +67,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 15,
         //
         browserName: 'chrome',
         acceptInsecureCerts: true,
@@ -84,7 +84,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'error',
+    logLevel: 'warn',
     // outputDir: `${__dirname}/log`,
     //
     // Set specific log levels per logger
@@ -156,7 +156,7 @@ exports.config = {
             embedImages: true,
             images: {
                 quality: 80,
-                resize: false,
+                resize: true,
                 reductionRatio: 2
             },
             screenshotStrategy: 'on:error'
