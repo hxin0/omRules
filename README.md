@@ -1,4 +1,4 @@
-# Version v2.0
+# Version v2.1
 
 # Install
 
@@ -28,6 +28,7 @@
     - url: rules page url (prod, test, profs, etc.) 
     - tradingPartner: inactivate rules for the trading partner  
     - delaySecond: delay seconds waiting on page elements  
+    - maxTries: maximum times to try on page elements
     - username: your login username (not required)
     - password: your login password (not required)
     - SKIP: program will use the first 'not TRUE' row
@@ -111,6 +112,8 @@ run from code root folder:
   try to increase delaySecond in settings
 
 # What's new
+## v2.1
+  - add maxTries settings
 ## v2.0
   - upgrade webdriverio from v4 to v6
   - upgrade all tests to comply with new syntax

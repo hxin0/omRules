@@ -123,6 +123,10 @@ const schemaSettings = {
         prop: 'delaySecond',
         type: Number
     },
+    "maxTries": {
+        prop: 'maxTries',
+        type: Number
+    },
     "username": {
         prop: 'username',
         type: String

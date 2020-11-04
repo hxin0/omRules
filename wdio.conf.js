@@ -1,4 +1,5 @@
 const { TimelineService } = require('wdio-timeline-reporter/timeline-service');
+// const video = require('wdio-video-reporter');
 
 exports.config = {
     //
@@ -23,18 +24,19 @@ exports.config = {
     //     '--inspect=127.0.0.1:5859'
     // ],
     specs: [
-        // './test/irby.js',
-        './test/simpleton.js',
+        './test/irby.js',
+        // './test/simpleton.js',
         // './test/t1bt.js',
         // './test/t2bt.js',
-        // './test/t1bu.js',
-        // './test/t2bu.js',
-        // './test/t1so.js',
+
+        './test/t1so.js',
         // './test/t2so.js',
         // './test/t1fl.js',
         // './test/t2fl.js',
         // './test/t1cu.js',
-        // './test/t2cu.js',        
+        // './test/t2cu.js',    
+        // './test/t1bu.js',
+        // './test/t2bu.js',    
     ],
     // Patterns to exclude.
     exclude: [
@@ -67,7 +69,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 2,
         //
         browserName: 'chrome',
         acceptInsecureCerts: true,
@@ -84,7 +86,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'error',
+    logLevel: 'warn',
     // outputDir: `${__dirname}/log`,
     //
     // Set specific log levels per logger
@@ -126,7 +128,10 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone',[TimelineService]],
+    services: [
+        'selenium-standalone',
+        [TimelineService]
+    ],
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -151,7 +156,7 @@ exports.config = {
     reporters: [
         'spec',
         ['timeline', {
-            outputDir: `${__dirname}/timeline`,
+            outputDir: `${__dirname}/reporter/timeline`,
             fileName: 'timeline-reporter.html',
             embedImages: true,
             images: {
@@ -160,7 +165,13 @@ exports.config = {
                 reductionRatio: 2
             },
             screenshotStrategy: 'on:error'
-        }]
+        }],
+        // [video, {
+        //     outputDir: `${__dirname}/reporter/video`,
+        //     saveAllVideos: false,       // If true, also saves videos for successful test cases
+        //     videoSlowdownMultiplier: 10, // Higher to get slower videos, lower for faster videos [Value 1-100]
+        //     videoRenderTimeout: 5,      // Max seconds to wait for a video to finish rendering
+        //   }],
     ],
 
     //

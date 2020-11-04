@@ -5,7 +5,10 @@ const actions = require('../common/actions');
 describe('simpleton rules', function () {
 
     var setEnv = {};
-    var delaySecond = 1000;
+    const waitRetry = {
+        delay: 1000,
+        maxTries: 50
+    }
     var setData = [];
 
     before('read file first', async function () {
@@ -13,13 +16,16 @@ describe('simpleton rules', function () {
     });
 
     it('should add simpeton rules for the trading partner', () => {
-        delaySecond = setEnv.delaySecond * 1000;
+        waitRetry.delay = setEnv.delaySecond * 1000;
+        waitRetry.maxTries = setEnv.maxTries;
+        actions.timelineAddContext(waitRetry);
+
         browser.url(setEnv.url);
-        browser.pause(delaySecond);
+        browser.pause(waitRetry.delay);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);
 
-        browser.pause(delaySecond);
+        browser.pause(waitRetry.delay);
 
         var i;
         var createdRule = {};
@@ -31,124 +37,124 @@ describe('simpleton rules', function () {
             if (setData[i].corpAcct != undefined) { // customer rule
                 // start a new rule
                 console.log('Customer rule');
-                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(waitRetry);
 
                 createdRule.rule = ruleNames.customerRule;
                 createdRule.tradingPartner = setData[i].tradingPartner;
 
-                actions.createRule(ruleNames.customerRule, delaySecond);
+                actions.createRule(ruleNames.customerRule, waitRetry);
                 // configure new rule page -- TP
 
-                actions.waitForResultantWithRetry(ruleNames.customerRule, 1, 2, delaySecond);
+                actions.waitForResultantWithRetry(ruleNames.customerRule, 1, waitRetry);
 
-                browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
+                browser.pause(waitRetry.delay);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
 
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, delaySecond);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.corpAcct = setData[i].corpAcct;
 
-                actions.setResultant(setData[i].corpAcct, delaySecond);
-                browser.pause(delaySecond/2);
+                actions.setResultant(setData[i].corpAcct, waitRetry);
+                browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
             if (setData[i].code != undefined) { // billing party rule
                 // start a new rule
                 console.log('Billing Party rule');
-                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(waitRetry.delay);
 
                 createdRule.rule = ruleNames.billingParty;
                 createdRule.tradingPartner = setData[i].tradingPartner;
 
-                actions.createRule(ruleNames.billingParty, delaySecond);
+                actions.createRule(ruleNames.billingParty, waitRetry);
                 // configure new rule page -- TP
 
-                actions.waitForResultantWithRetry(ruleNames.billingParty, 1, 2, delaySecond);
+                actions.waitForResultantWithRetry(ruleNames.billingParty, 1, waitRetry);
 
-                browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
+                browser.pause(waitRetry.delay);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
 
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, delaySecond);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.billtoCode = setData[i].code;
-                actions.setResultant(setData[i].code, delaySecond);
-                browser.pause(delaySecond/2);
+                actions.setResultant(setData[i].code, waitRetry);
+                browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
             if (setData[i].businessUnit != undefined) { // business unit rule
                 // start a new rule
                 console.log('Business Unit rule');
-                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(waitRetry.delay);
 
                 createdRule.rule = ruleNames.businessUnit;
                 createdRule.tradingPartner = setData[i].tradingPartner;
 
-                actions.createRule(ruleNames.businessUnit, delaySecond);
+                actions.createRule(ruleNames.businessUnit, waitRetry);
                 // configure new rule page -- TP
 
-                actions.waitForResultantWithRetry(ruleNames.businessUnit, 2, 2, delaySecond);
+                actions.waitForResultantWithRetry(ruleNames.businessUnit, 2, waitRetry);
 
-                browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
+                browser.pause(waitRetry.delay);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
 
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, delaySecond);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.businessUnit = setData[i].businessUnit.substring(0,3);
 
-                actions.setResultant2(setData[i].businessUnit.substring(0,3), delaySecond);
-                browser.pause(delaySecond/2);
+                actions.setResultant2(setData[i].businessUnit.substring(0,3), waitRetry);
+                browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
             if (setData[i].serviceOffering != undefined) { // service offering rule
                 // start a new rule
                 console.log('Service Offering rule');
-                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(waitRetry.delay);
 
                 createdRule.rule = ruleNames.serviceOffering;
                 createdRule.tradingPartner = setData[i].tradingPartner;
 
-                actions.createRule(ruleNames.serviceOffering, delaySecond);
+                actions.createRule(ruleNames.serviceOffering, waitRetry);
                 // configure new rule page -- TP
 
-                actions.waitForResultantWithRetry(ruleNames.serviceOffering, 2, 2, delaySecond);
+                actions.waitForResultantWithRetry(ruleNames.serviceOffering, 2, waitRetry);
 
-                browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
+                browser.pause(waitRetry.delay);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
 
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, delaySecond);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.serviceOffering = setData[i].serviceOffering;
@@ -157,48 +163,48 @@ describe('simpleton rules', function () {
                 let soSource = so.toUpperCase();
                 if (soAbbr[soSource]) 
                     so = soAbbr[soSource];
-                actions.setResultant2(so, delaySecond);
+                actions.setResultant2(so, waitRetry);
 
-                browser.pause(delaySecond/2);
+                browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
             if ((setData[i].fleet != undefined) && (setData[i].fleet.toUpperCase() != 'NA') && (setData[i].fleet.toUpperCase != 'N/A')) { 
                 // start a new rule
                 console.log('Fleet Code rule');
-                if (!skipClickNewRuleButton) actions.clickNewRuleButton(delaySecond);
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(waitRetry.delay);
 
                 createdRule.rule = ruleNames.fleetCode;
                 createdRule.tradingPartner = setData[i].tradingPartner;
 
-                actions.createRule(ruleNames.fleetCode, delaySecond);
+                actions.createRule(ruleNames.fleetCode, waitRetry);
                 // configure new rule page -- TP
 
-                actions.waitForResultantWithRetry(ruleNames.fleetCode, 1, 2, delaySecond);
+                actions.waitForResultantWithRetry(ruleNames.fleetCode, 1, waitRetry);
 
-                browser.pause(delaySecond/2);
-                actions.setAttributeTradingPartner(setData[i].tradingPartner, delaySecond);
+                browser.pause(waitRetry.delay);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
 
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, delaySecond);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.fleet = setData[i].fleet;
 
-                actions.setResultant(setData[i].fleet, delaySecond);
-                browser.pause(delaySecond/2);
+                actions.setResultant(setData[i].fleet, waitRetry);
+                browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(delaySecond);
+                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
         }

@@ -1,11 +1,8 @@
 node_modules/
 errorShots/
 testdata/*Test.*
-testdataArchive
+testdataArchive/
 note.md
-test/pageObjects/
-test/specs/
-wdio.log
-log/
-timeline/
-*.log
+reporter/
+ignore/
+package-lock.json

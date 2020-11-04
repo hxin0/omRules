@@ -26,6 +26,7 @@
                 // "--spec", "test/simpleton.js"
                 // "--spec", "test/t1bt.js"
                 // "--spec", "test/t2so.js"
+                // "--spec", "test/t1fl.js"
                 // To run a specific file, you can use:
                 //"--spec", "test/specs/foo.spec.js"
             ]

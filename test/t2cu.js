@@ -8,7 +8,10 @@ describe('tier 2 default customer rules', function () {
     var input = {};
     var setEnv = {};
     var setData = [];
-    var delaySecond = 1000;
+    const waitRetry = {
+        delay: 1000,
+        maxTries: 50
+    }
     var tExcel = [];
     var ml = {};
 
@@ -39,13 +42,15 @@ describe('tier 2 default customer rules', function () {
 
     it('should add t2 btc for the trading partner', () => {
         const resultantType = 1;
-        delaySecond = setEnv.delaySecond * 1000;
+        waitRetry.delay = setEnv.delaySecond * 1000;
+        waitRetry.maxTries = setEnv.maxTries;
+        actions.timelineAddContext(waitRetry);
         browser.url(setEnv.url);
-        browser.pause(delaySecond);
+        browser.pause(waitRetry.delay);
         // login page
         actions.clickLoginButtonWhileExisting(setEnv);
-        browser.pause(delaySecond);
+        browser.pause(waitRetry.delay);
 
-        actions.tier2(input, tExcel, ruleNames.customerRule, resultantType, ml, delaySecond);
+        actions.tier2(input, tExcel, ruleNames.customerRule, resultantType, ml, waitRetry);
     });
 });
