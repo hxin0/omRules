@@ -45,8 +45,6 @@ exports.searchTradingPartner = function (setEnv, input) {
     delay: setEnv.delaySecond * 1000,
     maxTries: setEnv.maxTries
   }
-  // $(locators.searchMenuDropdown).waitForExist({ timeout: delay });
-  // $(locators.searchMenuDropdown).click();
   this.waitForExistThenClick(locators.searchMenuDropdown, waitRetry);
   $(locators.searchMenu1TradingPartner).click();
   $(locators.searchRuleName).setValue(input.tradingPartner);
@@ -56,7 +54,6 @@ exports.searchTradingPartner = function (setEnv, input) {
 };
 
 exports.clickNewRuleButton = function (waitRetry) {
-  // $(locators.configureNewRuleButton).waitForExist({ timeout: delay });
   this.waitForExistWithRetry(locators.configureNewRuleButton, waitRetry);
 
   $(locators.searchMenuDropdown).waitForExist({ timeout: waitRetry.delay });
@@ -76,23 +73,19 @@ exports.createRule = function (ruleName, { delay=1000, maxTries=10 } = {}) {
   $(locators.searchRuleName).waitForExist({ timeout: delay });
   browser.pause(delay / 2);
   $(locators.searchRuleName).setValue(ruleName);
-  // this.verifyValue(locators.searchRuleName, locators.searchRuleName, 0, ruleName, waitRetry);
-  // $(locators.ruleNameDropdownValue).waitForExist({ timeout: delay });
 
   this.waitForExistWithRetry(locators.ruleNameDropdownValue, { delay, maxTries });
   this.verifyDropdownList(locators.ruleNameDropdownValue, locators.searchRuleName, ruleName, waitRetry);
-  // browser.pause(delay / 2);
-  // $(locators.ruleNameDropdownValue).click();
+
   while ($(locators.ruleNameDropdownValue).isDisplayed()) {
     this.clickWithRetry(locators.ruleNameDropdownValue, maxTries);
     browser.pause(delay);
   }
 
   this.waitForLoadingDotsDisappearIfAny(delay);
-  // browser.pause(delay);
+
   $(locators.ruleNameRow).waitForExist({ timeout: delay });
   while (true) {
-    // console.log($(locators.ruleNameColumn).getText().toUpperCase());
     if ($(locators.ruleNameColumn).getText().toUpperCase() == ruleName.toUpperCase()) {
       break;
     }
@@ -108,9 +101,7 @@ exports.createRule = function (ruleName, { delay=1000, maxTries=10 } = {}) {
       $(locators.ruleNameColumn).click();      
       break;
     } catch (e) {
-      console.log(
-        `"Element is not clickable" exception was thrown, retry ${countTries + 1}`
-      );
+      console.log(`"Element is not clickable" exception was thrown, retry ${countTries + 1}`);
       console.log(e);
       $(locators.ruleNameColumn).scrollIntoView();
       if (countTries++ >= maxTries) throw e;
@@ -124,7 +115,6 @@ exports.setAttributeTradingPartner = function (tradingPartner, { delay=1000, max
   $(locators.inputAttribute).waitForExist({ timeout: delay });
   this.waitForExistWithRetry(locators.inputAttribute, waitRetry);
   $(locators.inputAttribute).setValue(consts.ucrTradingPartner); // UCR Trading Partner
-  // this.setValueWithRetry(locators.inputAttribute, consts.ucrTradingPartner, waitRetry);
 
   this.waitForExistThenClick(locators.dropdownItem, waitRetry);
   this.verifyValue(locators.inputAttribute, locators.inputAttributeText, 0, consts.ucrTradingPartner, waitRetry);
@@ -136,10 +126,7 @@ exports.setAttributeTradingPartner = function (tradingPartner, { delay=1000, max
   $(locators.attributeValue).waitForExist({ timeout: delay });
   $(locators.attributeValue).click();
   $(locators.attributeValue).setValue(tradingPartner + " "); // Trading Partner
-  // this.setValueWithRetry(locators.attributeValue, tradingPartner + " ", waitRetry);
   this.waitForExistThenClick(locators.firstAttributeDropdownValue, waitRetry);
-  // this.verifyValue(locators.attributeValue, )
-
 };
 
 exports.setAttribute2 = function (attribute, index, { delay=1000, maxTries=10 } = {}) {
@@ -174,8 +161,6 @@ exports.setResultant = function (code, { delay=1000, maxTries=10 } = {}) {
   $(locators.resultantActionValue).click();
   $(locators.resultantActionValue).setValue(code);
   browser.pause(delay);
-  // $(locators.resultantActionValueDropdownItem).waitForExist({ timeout: delay });
-  // $(locators.resultantActionValueDropdownItem).click();
   this.waitForExistThenClick(locators.resultantActionValueDropdownItem, { delay, maxTries });
 };
 
@@ -184,8 +169,6 @@ exports.setResultant2 = function (code, { delay=1000, maxTries=10 } = {}) {
   $(locators.resultantActionValue2).click();
   $(locators.resultantActionValue2Input).setValue(code);
   browser.pause(delay);
-  // $(locators.resultantActionValue2DropdownItem).waitForExist({ timeout: delay });
-  // $(locators.resultantActionValue).click(2DropdownItem);
   this.waitForExistThenClick(locators.resultantActionValue2DropdownItem, { delay, maxTries });
 };
 
@@ -264,9 +247,7 @@ exports.waitForResultantWithRetry = function (ruleName, resultantType, { delay=1
       if (backTries < maxTries) {
         if (countTries++ >= maxTries) {
           //then navigate back and try maxTries times
-          console.log(
-            `resultant action fields not appear, retry ${backTries + 1}`
-          );
+          console.log(`resultant action fields not appear, retry ${backTries + 1}`);
           $(locators.goBack).click();
           this.createRule(ruleName, { delay, maxTries });
           backTries++;
@@ -310,14 +291,12 @@ exports.clickWithRetry = function (element, { delay=1000, maxTries=10 } = {}) {
       if (countTries++ >= maxTries) throw e;
       console.log(`"Element ${element} is not clickable". Retry ${countTries}`);
       browser.pause(delay * countTries);
-      // $(element).scrollIntoView();
     }
   }
 }
 
 exports.verifyValue = function (elementSet, elementText, index, value, { delay=1000, maxTries=10 } = {}) {
   const waitRetry = { delay, maxTries };
-  // this.waitForExistThenClick(elementSet, waitRetry);
   let text = $$(elementText)[index].getText();
   let countTries = 0;
   while (text.toUpperCase() != value.toUpperCase()) {
@@ -330,23 +309,21 @@ exports.verifyValue = function (elementSet, elementText, index, value, { delay=1
 }
 
 exports.verifyDropdownList = function (element, elementSet, value, { delay=1000, maxTries=10 } = {}) {
-  let countTries = 1, countSet = 1, delayed = 0;
+  let countTries = 1, countSet = 1;
   while (true) {
     try {
       $(element).waitForExist({ timeout: delay * countTries * countSet });
       break;
     } catch (e) {
-      delayed+= delay * countTries * countSet;
-      console.log(`Dropdown Element ${element}: ${value} is not existing after ${delayed} milliseconds. Retry ${countTries + countTries * (countSet-1)}`);
+      console.log(`Dropdown Element ${element}: ${value} is not existing after ${delay * countTries * countSet} milliseconds. Retry ${countTries + maxTries * (countSet-1)}`);
       if (countSet >= 3) {
         throw e;
       }
-      // console.log(`Dropdown Element ${element} is not existing after ${delay * countTries * countSet} milliseconds. Retry ${countTries + (countSet - 1)* 3}`);
-      if (countTries++ < maxTries) {
+      if (countTries++ <= maxTries) {
         $(elementSet).setValue(value);
         browser.pause(delay * countTries * countSet);
       } else {
-        countTries = 0;
+        countTries = 1;
         countSet++;
       }
     }
@@ -393,10 +370,9 @@ exports.tier1 = function tier1(
     $(locators.attributeValue2).setValue(tExcel[i].shipper + " "); // Shipper code
     // browser.pause(delay);
     this.waitForLoadingDotsDisappearIfAny(delay);
-    // this.waitForExistWithRetry(locators.firstAttributeDropdownValue, waitRetry); // try to replace this line below
-    this.verifyDropdownList(locators.firstAttributeDropdownValue, locators.attributeValue2, tExcel[i].shipper, waitRetry); // trying to replace the line above
+    this.verifyDropdownList(locators.firstAttributeDropdownValue, locators.attributeValue2, tExcel[i].shipper, waitRetry);
     if ($(locators.firstAttributeDropdownValue).isExisting()) {
-      // browser.pause(delay);
+
       let eleExists = false;
       if (
         $(locators.firstAttributeDropdownValue).getText() ==
@@ -465,7 +441,7 @@ exports.tier1 = function tier1(
         selectedShp.length = 0;
         createdRule = {};
         skipClickNewRuleButton = false;
-        // browser.pause(delay);
+
         $(locators.saveButton).waitForDisplayed({timeout: delay * 10, reverse: true});
       }
     }

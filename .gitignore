@@ -3,9 +3,6 @@ errorShots/
 testdata/*Test.*
 testdataArchive/
 note.md
-test/pageObjects/
-test/specs/
-log/
-*.log
 reporter/
 ignore/
+package-lock.json

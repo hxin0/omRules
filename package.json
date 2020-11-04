@@ -29,6 +29,6 @@
     "bufferutil": "^4.0.1",
     "chai": "^4.2.0",
     "utf-8-validate": "^5.0.2",
-    "wdio-timeline-reporter": "^5.1.4",
+    "wdio-timeline-reporter": "^5.1.4"
   }
 }
