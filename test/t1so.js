@@ -47,10 +47,7 @@ describe('tier 1 default service offering rules', function () {
         const resultantType = 2;
         waitRetry.delay = setEnv.delaySecond * 1000;
         waitRetry.maxTries = setEnv.maxTries;
-        TimelineReporter.addContext({
-            delay: waitRetry.delay,
-            maxTries: waitRetry.maxTries
-        });
+        actions.timelineAddContext(waitRetry);
         browser.url(setEnv.url);
         browser.pause(waitRetry.delay);
         // login page

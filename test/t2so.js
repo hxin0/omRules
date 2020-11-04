@@ -48,10 +48,7 @@ describe('tier 2 default service offering rules', function () {
     it('should add t2 so for the trading partner', () => {
         waitRetry.delay = setEnv.delaySecond * 1000;
         waitRetry.maxTries = setEnv.maxTries;
-        TimelineReporter.addContext({
-            delay: waitRetry.delay,
-            maxTries: waitRetry.maxTries
-        });
+        actions.timelineAddContext(waitRetry);
         const resultantType = 2;
         browser.url(setEnv.url);
         browser.pause(waitRetry.delay);

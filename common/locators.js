@@ -19,6 +19,7 @@ const locators = {
     // selectAttributeDropdown: '[id="orderRuleCriteria"] > div > div[class="ui-select-match ng-star-inserted"] > span',
     attributeDropdown: '[class="ui-select-placeholder text-muted ng-star-inserted"]',
     inputAttribute: 'input[class="form-control ui-select-search ng-star-inserted"]',
+    inputAttributeText: 'span[class="ui-select-match-text pull-left ng-star-inserted"]',
     dropdownItem: 'a[class="dropdown-item"]',
     selectOperatorDropdown: 'span=Select Operator',
     operatorEquals: 'span=Equals',

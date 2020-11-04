@@ -9,8 +9,6 @@ describe('simpleton rules', function () {
         delay: 1000,
         maxTries: 50
     }
-    // var delay = 1000;
-    // var maxTries = 50;
     var setData = [];
 
     before('read file first', async function () {
@@ -20,10 +18,8 @@ describe('simpleton rules', function () {
     it('should add simpeton rules for the trading partner', () => {
         waitRetry.delay = setEnv.delaySecond * 1000;
         waitRetry.maxTries = setEnv.maxTries;
-        TimelineReporter.addContext({
-            delay: waitRetry.delay,
-            maxTries: waitRetry.maxTries
-        });
+        actions.timelineAddContext(waitRetry);
+
         browser.url(setEnv.url);
         browser.pause(waitRetry.delay);
         // login page
@@ -57,7 +53,7 @@ describe('simpleton rules', function () {
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, waitRetry);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.corpAcct = setData[i].corpAcct;
@@ -91,7 +87,7 @@ describe('simpleton rules', function () {
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, waitRetry);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.billtoCode = setData[i].code;
@@ -124,7 +120,7 @@ describe('simpleton rules', function () {
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, waitRetry);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.businessUnit = setData[i].businessUnit.substring(0,3);
@@ -158,7 +154,7 @@ describe('simpleton rules', function () {
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, waitRetry);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.serviceOffering = setData[i].serviceOffering;
@@ -197,7 +193,7 @@ describe('simpleton rules', function () {
                 if (setData[i].scac != undefined) {
                     // Add scac
                     createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, waitRetry);
+                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
                 }
 
                 createdRule.fleet = setData[i].fleet;

@@ -4,7 +4,7 @@
   "description": "inactivate rules and more",
   "main": "index.js",
   "scripts": {
-    "clean": "shx rm -rf ./timeline ./testReport.log",
+    "clean": "shx rm -rf ./reporter",
     "test": "wdio",
     "tee": "wdio|tee testReport.log",
     "pretest": "npm run clean"
@@ -26,7 +26,9 @@
     "shx": "^0.3.3"
   },
   "dependencies": {
+    "bufferutil": "^4.0.1",
     "chai": "^4.2.0",
-    "wdio-timeline-reporter": "^5.1.4"
+    "utf-8-validate": "^5.0.2",
+    "wdio-timeline-reporter": "^5.1.4",
   }
 }

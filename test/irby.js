@@ -6,8 +6,10 @@ describe('inactivate rules', function () {
 
     var setEnv = {};
     var setData = [];
-    var delay = 1000;
-    var maxTries = 50;
+    const waitRetry = {
+        delay: 1000,
+        maxTries: 50
+    };
     var count = 0;
 
     before('read excel file first', async function () {
@@ -15,33 +17,33 @@ describe('inactivate rules', function () {
     })
 
     it('should inactivate rules by user for a trading partner', function () {
-        delay = setEnv.delaySecond * 1000;
-        TimelineReporter.addContext({
-            delay: delay,
-            maxTries: setEnv.maxTries
-        });
+        waitRetry.delay = setEnv.delaySecond * 1000;
+        waitRetry.maxTries = setEnv.maxTries;
+        let noMore = false;
+        actions.timelineAddContext(waitRetry);
+
         browser.url(setEnv.url);
-        browser.pause(delay);
+        browser.pause(waitRetry.delay);
 
         actions.clickLoginButtonWhileExisting(setEnv);
 
-        browser.pause(delay);
+        browser.pause(waitRetry.delay);
         // loop start
         for (let j = 0; j < setData.length; j++) {
             console.log(`Start settings.xlsx/ir: row ${j + 1}: ${setData[j].tradingPartner}`);
             console.log(Date().toLocaleString());
             actions.searchTradingPartner(setEnv, setData[j]);
-            actions.waitForLoadingDotsDisappearIfAny(delay);
+            actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
 
             var ele = locators.datatablePager;
             var countTries = 0;
-            maxTries = 5;
+            waitRetry.maxTries = 5;
             while (true) {
                 try {
-                    $(ele).waitForExist({ timeout: delay * 2 });
+                    $(ele).waitForExist({ timeout: waitRetry.delay * (countTries + 1) });
                     break;
                 } catch (err) {
-                    if (countTries++ >= maxTries) break;
+                    if (countTries++ >= waitRetry.maxTries) break;
                 }
             }
 
@@ -63,27 +65,34 @@ describe('inactivate rules', function () {
                 sTotal = 1;
                 sNum = 0;
             }
-            maxTries = setEnv.maxTries;
-            actions.waitForExistWithRetry(locators.array3dots, { delay, maxTries });
-            while (($$(locators.array3dots)[i] != undefined) && ($$(locators.array3dots)[i].isExisting())) {
-                browser.pause(delay);
+            waitRetry.maxTries = setEnv.maxTries;
+
+            while ($$(locators.array3dots)[i] != undefined) {
+                noMore = false;
                 countTries = 0;
                 while (true) {
                     try {
-                        $$(locators.array3dots)[i].waitForExist({ timeout: delay * 2 });
+                        $$(locators.array3dots)[i].waitForExist({ timeout: waitRetry.delay * (countTries +1) });
                         break;
                     } catch (e) {
-                        if (countTries++ >= maxTries) {
-                            console.log('3dots array error, retry');
+                        if (countTries++ >= waitRetry.maxTries) {
+                            console.log(`3dots array error, retry ${countTries + 1}`);
                         } else {
+                            if ($(locators.rulesNotFound).isDisplayed()) {
+                                console.log('No Rules Found... Skip');
+                                noMore = true;
+                                break;
+                            }
                             throw e;
                         }
                     }
                 }
-
+                if (noMore) break;
                 // check createBy colume, if == setData.createdBy then try to delete, otherwise skip to the next row
-                createdBy = $$(locators.arrayCreatedBy)[i * sTotal + sNum].getText();
-                console.log(createdBy);
+                if ($$(locators.arrayCreatedBy)[i * sTotal + sNum] != undefined) {
+                    createdBy = $$(locators.arrayCreatedBy)[i * sTotal + sNum].getText();
+                    console.log(createdBy);
+                } else createdBy = "";
 
                 if ((doAll) || (arrayCreatedBy.includes(createdBy.toUpperCase()))) {
 
@@ -93,15 +102,24 @@ describe('inactivate rules', function () {
                             $$(locators.array3dots)[i].click();
                             break;
                         } catch (e) {
-                            console.log('span-3dots is not clickable. Retry...');
+                            if ($(locators.rulesNotFound).isDisplayed()) {
+                                console.log('No Rules Found... Skip');
+                                noMore = true;
+                                break;
+                            }
+                            console.log(`span-3dots is not clickable. Retry ${countTries + 1}`);
                             console.log(e);
-                            $$(locators.array3dots)[i].scrollIntoView();
-                            if (countTries++ >= maxTries) throw e;
+                            if ($$(locators.array3dots)[i] != undefined)
+                                $$(locators.array3dots)[i].scrollIntoView();
+                            if (countTries++ >= waitRetry.maxTries) throw e;
                         }
-                    }       
-                    browser.pause(delay);
+                    }   
+                    if (noMore) break;    
+                    browser.pause(waitRetry.delay);
+                    actions.waitForExistWithRetry(locators.inactivateMenu, waitRetry);
+
                     $(locators.inactivateMenu).click();
-                    browser.pause(delay);
+                    browser.pause(waitRetry.delay);
                     console.log(`${i+1} of ${$$(locators.array3dots).length}`);
                     // if can inactivate, "i" will stay, otherwise i++
                     try {
@@ -118,13 +136,13 @@ describe('inactivate rules', function () {
                     }
         
                     count++;
-                    actions.waitForLoadingDotsDisappearIfAny(delay);
+                    actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 } else {
                     // skip to the next row
                     i++;
                     console.log(`skip a rule on row ${i} by ${createdBy}`);
                 }
-                browser.pause(delay);
+                browser.pause(waitRetry.delay);
             }
             console.log(count + ' rules have been inactivated')
         }

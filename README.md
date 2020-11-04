@@ -28,6 +28,7 @@
     - url: rules page url (prod, test, profs, etc.) 
     - tradingPartner: inactivate rules for the trading partner  
     - delaySecond: delay seconds waiting on page elements  
+    - maxTries: maximum times to try on page elements
     - username: your login username (not required)
     - password: your login password (not required)
     - SKIP: program will use the first 'not TRUE' row
