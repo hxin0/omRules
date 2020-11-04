@@ -13,6 +13,9 @@
     - test/*
     - testdata/settings.xlsx
 
+Note: v1 is in branch v1-wdio4:
+https://jbhunt.visualstudio.com/EngAndTech/_git/omRules?path=%2F&version=GBv1-wdio4&_a=contents
+
 ## 2. Install dependencies
 `C:\...\omRules>npm install`
 
@@ -81,14 +84,16 @@
 ```
 
 capabilities maxInstances value determines how many tests to be run simutaneously.  
-This will run 5 instances with chrome capability:
+This will run 3 instances with chrome capability:
 ```javascript
   capabilities: [{
-    maxInstances: 5,
+    maxInstances: 3,
     browserName: 'chrome',
     acceptInsecureCerts: true,
   }],
 ```
+**Warning** Do not run irby.js simutaneously with other rule creating tests.
+
 ## 4. run
 run from code root folder:  
 
