@@ -219,16 +219,8 @@ describe('simpleton rules', function () {
                 actions.createRule(ruleNames.convertRejected, waitRetry);
                 // configure new rule page -- TP
 
-                // actions.waitForResultantWithRetry(ruleNames.customerRule, 1, waitRetry);
-
                 browser.pause(waitRetry.delay);
                 actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
-
-                if (setData[i].scac != undefined) {
-                    // Add scac
-                    createdRule.scsc = setData[i].scac;
-                    actions.setAttributeScac(setData[i].scac, 2, waitRetry);
-                }
 
                 createdRule.convertRejected = setData[i].convertRejected;
 
