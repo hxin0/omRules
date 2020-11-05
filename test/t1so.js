@@ -10,7 +10,7 @@ describe('tier 1 default service offering rules', function () {
     var setData = [];
     const waitRetry = {
         delay: 1000,
-        maxTries: 50
+        maxTries: 10
     }
     var tExcel = [];
     var ml = {};
@@ -45,8 +45,8 @@ describe('tier 1 default service offering rules', function () {
 
     it('should add t1 service offering for the trading partner', () => {
         const resultantType = 2;
-        waitRetry.delay = setEnv.delaySecond * 1000;
-        waitRetry.maxTries = setEnv.maxTries;
+        waitRetry.delay = setEnv.delaySecond? setEnv.delaySecond * 1000 : waitRetry.delay;
+        waitRetry.maxTries = setEnv.maxTries? setEnv.maxTries : waitRetry.maxTries;
         actions.timelineAddContext(waitRetry);
         browser.url(setEnv.url);
         browser.pause(waitRetry.delay);

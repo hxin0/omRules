@@ -10,7 +10,7 @@ describe('tier 2 default service offering rules', function () {
     var setData = [];
     const waitRetry = {
         delay: 1000,
-        maxTries: 50
+        maxTries: 10
     }
     var tExcel = [];
     var ml = {};
@@ -46,8 +46,8 @@ describe('tier 2 default service offering rules', function () {
     });
 
     it('should add t2 so for the trading partner', () => {
-        waitRetry.delay = setEnv.delaySecond * 1000;
-        waitRetry.maxTries = setEnv.maxTries;
+        waitRetry.delay = setEnv.delaySecond? setEnv.delaySecond * 1000 : waitRetry.delay;
+        waitRetry.maxTries = setEnv.maxTries? setEnv.maxTries : waitRetry.maxTries;
         actions.timelineAddContext(waitRetry);
         const resultantType = 2;
         browser.url(setEnv.url);

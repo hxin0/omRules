@@ -1,5 +1,4 @@
 const { TimelineService } = require('wdio-timeline-reporter/timeline-service');
-// const video = require('wdio-video-reporter');
 
 exports.config = {
     //
@@ -24,12 +23,12 @@ exports.config = {
     //     '--inspect=127.0.0.1:5859'
     // ],
     specs: [
-        './test/irby.js',
-        // './test/simpleton.js',
+        // './test/irby.js',
+        './test/simpleton.js',
         // './test/t1bt.js',
         // './test/t2bt.js',
 
-        './test/t1so.js',
+        // './test/t1so.js',
         // './test/t2so.js',
         // './test/t1fl.js',
         // './test/t2fl.js',

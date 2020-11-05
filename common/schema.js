@@ -80,17 +80,6 @@ const schemaTier = {
     }
 };
 
-// const schemaSimpleton = { // delete? no longer applied?
-//     "fileName": {
-//         prop: 'fileName',
-//         type: String
-//     },
-//     "tabName": {
-//         prop: 'tabName',
-//         type: String
-//     }
-// };
-
 const schemaTierData = {
     "PARENT(Bill To, Fleet, Service Offering)": {
         prop: 'code',
@@ -174,6 +163,10 @@ const schemaSimpletonData = {
         prop: 'fleet',
         type: String
     },
+    "Convert": {
+        prop: 'convertRejected',
+        type: Boolean
+    },
     "SKIP": {
         prop: 'skip',
         type: Boolean
@@ -251,7 +244,6 @@ module.exports = {
   schemaInactivateRules,
   schemaTier,
   schemaTierData,
-//   schemaSimpleton, // delete?
   schemaSimpletonData,
   schemaMissingCode,
   schemaMissingCodeData,

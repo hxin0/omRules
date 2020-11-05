@@ -7,7 +7,7 @@ describe('simpleton rules', function () {
     var setEnv = {};
     const waitRetry = {
         delay: 1000,
-        maxTries: 50
+        maxTries: 10
     }
     var setData = [];
 
@@ -16,8 +16,8 @@ describe('simpleton rules', function () {
     });
 
     it('should add simpeton rules for the trading partner', () => {
-        waitRetry.delay = setEnv.delaySecond * 1000;
-        waitRetry.maxTries = setEnv.maxTries;
+        waitRetry.delay = setEnv.delaySecond? setEnv.delaySecond * 1000 : waitRetry.delay;
+        waitRetry.maxTries = setEnv.maxTries? setEnv.maxTries : waitRetry.maxTries;
         actions.timelineAddContext(waitRetry);
 
         browser.url(setEnv.url);
@@ -203,6 +203,32 @@ describe('simpleton rules', function () {
                 $(locators.saveButton).click();
 
                 console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
+                console.log(createdRule);
+                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
+                createdRule = {};
+            }
+
+            if (setData[i].convertRejected != undefined) { // convert rejected tender rule
+                // start a new rule
+                console.log('Convert Rejected Tender rule');
+                if (!skipClickNewRuleButton) actions.clickNewRuleButton(waitRetry);
+
+                createdRule.rule = ruleNames.convertRejected;
+                createdRule.tradingPartner = setData[i].tradingPartner;
+
+                actions.createRule(ruleNames.convertRejected, waitRetry);
+                // configure new rule page -- TP
+
+                browser.pause(waitRetry.delay);
+                actions.setAttributeTradingPartner(setData[i].tradingPartner, waitRetry);
+
+                createdRule.convertRejected = setData[i].convertRejected;
+
+                // actions.setResultant(setData[i].corpAcct, waitRetry);
+                browser.pause(waitRetry.delay);
+                $(locators.saveButton).click();
+
+                console.log('simpleton ' + ruleNames.convertRejected + ' rule is saved.');
                 console.log(createdRule);
                 actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};

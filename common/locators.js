@@ -63,7 +63,8 @@ const ruleNames = {
     businessUnit: 'Default Business Unit',
     serviceOffering: 'Default Service Offering',
     fleetCode: 'Default Fleet Code',
-    customerRule: 'Default Customer For Trading Partner'
+    customerRule: 'Default Customer For Trading Partner',
+    convertRejected: 'Convert Rejected Tender To Type: Resubmitted',
 };
 
 const soAbbr = {
