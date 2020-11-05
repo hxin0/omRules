@@ -8,7 +8,7 @@ describe('inactivate rules', function () {
     var setData = [];
     const waitRetry = {
         delay: 1000,
-        maxTries: 50
+        maxTries: 10
     };
     var count = 0;
 
@@ -17,8 +17,8 @@ describe('inactivate rules', function () {
     })
 
     it('should inactivate rules by user for a trading partner', function () {
-        waitRetry.delay = setEnv.delaySecond * 1000;
-        waitRetry.maxTries = setEnv.maxTries;
+        waitRetry.delay = setEnv.delaySecond? setEnv.delaySecond * 1000 : waitRetry.delay;
+        waitRetry.maxTries = setEnv.maxTries? setEnv.maxTries : waitRetry.maxTries;
         let noMore = false;
         actions.timelineAddContext(waitRetry);
 

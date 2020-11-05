@@ -1,17 +1,18 @@
-# Version v2.1
+# Version v2.2
+
+# Quickstart
+
+### 1. download zip file from https://jbhunt.visualstudio.com/EngAndTech/_git/omRules  
+### 2. unzip to a folder
+### 3. install dependencies: `npm install`
+### 4. setup data
+### 5. run specs: `npm test`
 
 # Install
 
 ## 1. Copy files
   - Download ADO Repo: https://jbhunt.visualstudio.com/EngAndTech/_git/omRules  
   - Unzip downloaded file (omRules.zip) into a folder (code root folder)  
-  - (or copy the following to a folder e.g. `C:\...\omRules>`):
-    - package.json
-    - wdio.conf.js
-    - README.md
-    - common/*
-    - test/*
-    - testdata/settings.xlsx
 
 Note: v1 is in branch v1-wdio4:
 https://jbhunt.visualstudio.com/EngAndTech/_git/omRules?path=%2F&version=GBv1-wdio4&_a=contents
@@ -59,6 +60,7 @@ https://jbhunt.visualstudio.com/EngAndTech/_git/omRules?path=%2F&version=GBv1-wd
     - BU: business unit rule, leave blank if not applicable
     - SO: service offering rule, leave blank if not applicable
     - Fleet: fleet rule, leave blank if not applicable
+    - Convert: convert rejected tender rule, TRUE or blank
     - SKIP: program will run on all rows without 'TRUE'
 4. missingCode:  
     - missingCodeFileName  
@@ -117,6 +119,8 @@ run from code root folder:
   try to increase delaySecond in settings
 
 # What's new
+## v2.2  
+  - add convert rejected tender rule
 ## v2.1
   - add maxTries settings
 ## v2.0
