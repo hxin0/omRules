@@ -120,7 +120,7 @@ run from code root folder:
 
 # What's new
 ## v2.2.1
-  - continue when previous rule didn't get savedgit 
+  - continue on duplicate rule 
 ## v2.2  
   - add convert rejected tender rule
 ## v2.1
