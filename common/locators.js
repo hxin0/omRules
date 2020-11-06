@@ -48,8 +48,8 @@ const locators = {
     array3dots: '#span-3dots',
     goBack: '[id="a-goback"]',
     textRuleName: '[data-auto-id="text-ruleName"]',
-    businessValidationError: 'div[class="sn-title ng-tns-c15-9 ng-star-inserted"]',
-    duplicateRuleError: 'div[class="sn-content ng-tns-c15-9 ng-star-inserted"]',
+    snTitle: 'div.sn-title.ng-star-inserted',
+    snContent: 'div.sn-content.ng-star-inserted',
 };
 
 const consts = {
@@ -57,7 +57,8 @@ const consts = {
     pickupSiteCode: 'Pickup Site Code',
     deliverySiteCode: 'Delivery Site Code',
     ucrScac: 'UCR SCAC',
-    delay: 3000
+    delay: 3000,
+    duplicateRuleMsg: 'Duplicate Rules cannot be configured',
 };
 
 const ruleNames = {
