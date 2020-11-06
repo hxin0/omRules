@@ -58,7 +58,11 @@ const consts = {
     deliverySiteCode: 'Delivery Site Code',
     ucrScac: 'UCR SCAC',
     delay: 3000,
-    duplicateRuleMsg: 'Duplicate Rules cannot be configured',
+    snTitleSuccess: 'Success',
+    snTitleFailure: 'Failure',
+    snTitleValidationError: 'Business Validation Error',
+    snRuleSuccessfully: 'Rule Configured Successfully',
+    snDuplicateRule: 'Duplicate Rules cannot be configured',
 };
 
 const ruleNames = {

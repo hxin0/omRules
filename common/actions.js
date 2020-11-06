@@ -349,21 +349,33 @@ exports.verifyDropdownList = function (element, elementSet, value, { delay=1000,
   }
 }
 
-exports.goBackIfSaveButtonNotDisappear = function ({ delay=1000, maxTries=10 } = {}) {
+exports.checkAfterSave = function ({ delay=1000, maxTries=10 } = {}) {
   let countTries = 1;
-  const sn = {title:"", content:"", saved: true};
+  const sn = {title:"", content:"", saved: true, msg:""};
 
   while (true) {
     if ($(locators.snTitle).isDisplayed()) {
       sn.title = $(locators.snTitle).getText();
       sn.content = $(locators.snContent).getText();
-      sn.saved = false;
+      if (sn.title = consts.snTitleSuccess) {
+        sn.saved = true;
+        sn.msg = 'Rule saved';
+        break;
+      } else if (sn.title = consts.snTitleFailure) {
+        sn.saved = false;
+        sn.msg = 'Rule not saved, please redo this rule';
+        break;
+      } else if (sn.title = consts.snTitleValidationError) {
+        sn.saved = 'duplicateRule';
+        sn.msg = 'Duplicate rule exists, continue...';
+        break;
+      }
       console.log(sn)
       break;
     }
     browser.pause(delay);
     if (countTries++ > 5) {
-      console.log('not displayed')
+      console.log('no simple notification displayed')
       break;
     }
   }
@@ -385,7 +397,7 @@ exports.goBackIfSaveButtonNotDisappear = function ({ delay=1000, maxTries=10 } =
       break;
     } catch (e) {
       console.log(`Save button still exists after ${delay * countTries} milliseconds. Wait ${countTries}`);
-      if (countTries++ >= 3) {
+      if (countTries++ >= 2) {
         $(locators.goBack).click();
         browser.pause(delay);
         $(locators.goBack).click();
@@ -394,7 +406,6 @@ exports.goBackIfSaveButtonNotDisappear = function ({ delay=1000, maxTries=10 } =
       }
     }
   }
-  sn.saved = true;
   return sn;
 }
 
@@ -505,17 +516,8 @@ exports.tier1 = function tier1(
         if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
         createdRule.shipperCode = selectedShp;
 
-
-        sn = this.goBackIfSaveButtonNotDisappear(waitRetry);
-        console.log(Date().toLocaleString());
-        if (sn.saved) {
-          console.log("Tier 1 " + ruleName + " rule is saved:");
-        } else if (sn.title == 'Failure') {
-            console.log(`${sn.title} - ${sn.content}`);
-            console.log('this rule is not saved due to errors:');
-            console.log(createdRule);
-            throw 'Please re-processing this rule.'
-        }
+        sn = this.checkAfterSave(waitRetry);
+        console.log(`Tier 1 ${ruleName} - ${sn.msg}:`)
         console.log(createdRule);
         createdRule = {};
         selectedShp.length = 0;
@@ -684,16 +686,8 @@ exports.tier2 = function tier2(
         createdRule.shipperCode = selectedShp;
         createdRule.receiverCode = selectedRec;
 
-        sn = this.goBackIfSaveButtonNotDisappear(waitRetry);
-        console.log(Date().toLocaleString());
-        if (sn.saved) {
-          console.log("Tier 2 " + ruleName + " rule is saved:");
-        } else if (sn.title == 'Failure') {
-            console.log(`${sn.title} - ${sn.content}`);
-            console.log('this rule is not saved due to errors:');
-            console.log(createdRule);
-            throw 'Please re-processing this rule.'
-        }
+        sn = this.checkAfterSave(waitRetry);
+        console.log(`Tier 2 ${ruleName} - ${sn.msg}:`)
         console.log(createdRule);
         createdRule = {};
         selectedShp.length = 0;

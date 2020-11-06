@@ -63,15 +63,9 @@ describe('simpleton rules', function () {
                 actions.setResultant(setData[i].corpAcct, waitRetry);
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
-                sn = actions.goBackIfSaveButtonNotDisappear(waitRetry);
-                if (sn.saved) {
-                    console.log('simpleton ' + ruleNames.corpAcct + ' rule is saved.');
-                } else if (sn.title == 'Failure') {
-                    console.log(`${sn.title} - ${sn.content}`);
-                    console.log('this rule is not saved due to errors:');
-                    console.log(createdRule);
-                    throw 'Please re-processing this rule.'
-                }
+
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.customerRule} - ${sn.msg}:`)
                 console.log(createdRule);
                 createdRule = {};
             }
@@ -102,15 +96,9 @@ describe('simpleton rules', function () {
                 actions.setResultant(setData[i].code, waitRetry);
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
-                sn = actions.goBackIfSaveButtonNotDisappear(waitRetry);
-                if (sn.saved) {
-                    console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
-                } else if (sn.title == 'Failure') {
-                    console.log(`${sn.title} - ${sn.content}`);
-                    console.log('this rule is not saved due to errors:');
-                    console.log(createdRule);
-                    throw 'Please re-processing this rule.'
-                }
+
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.billingParty} - ${sn.msg}:`)
                 console.log(createdRule);
                 createdRule = {};
             }
@@ -142,15 +130,9 @@ describe('simpleton rules', function () {
                 actions.setResultant2(setData[i].businessUnit.substring(0,3), waitRetry);
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
-                sn = actions.goBackIfSaveButtonNotDisappear(waitRetry);
-                if (sn.saved) {
-                    console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
-                } else if (sn.title == 'Failure') {
-                    console.log(`${sn.title} - ${sn.content}`);
-                    console.log('this rule is not saved due to errors:');
-                    console.log(createdRule);
-                    throw 'Please re-processing this rule.'
-                }
+
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.businessUnit} - ${sn.msg}:`)
                 console.log(createdRule);
                 createdRule = {};
             }
@@ -187,15 +169,9 @@ describe('simpleton rules', function () {
 
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
-                sn = actions.goBackIfSaveButtonNotDisappear(waitRetry);
-                if (sn.saved) {
-                    console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
-                } else if (sn.title == 'Failure') {
-                    console.log(`${sn.title} - ${sn.content}`);
-                    console.log('this rule is not saved due to errors:');
-                    console.log(createdRule);
-                    throw 'Please re-processing this rule.'
-                }
+
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.serviceOffering} - ${sn.msg}:`)
                 console.log(createdRule);
                 createdRule = {};
             }
@@ -227,15 +203,9 @@ describe('simpleton rules', function () {
                 actions.setResultant(setData[i].fleet, waitRetry);
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
-                sn = actions.goBackIfSaveButtonNotDisappear(waitRetry);
-                if (sn.saved) {
-                    console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
-                } else if (sn.title == 'Failure') {
-                    console.log(`${sn.title} - ${sn.content}`);
-                    console.log('this rule is not saved due to errors:');
-                    console.log(createdRule);
-                    throw 'Please re-processing this rule.'
-                }
+
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.fleetCode} - ${sn.msg}:`)
                 console.log(createdRule);
                 createdRule = {};
             }
@@ -256,18 +226,11 @@ describe('simpleton rules', function () {
 
                 createdRule.convertRejected = setData[i].convertRejected;
 
-                // actions.setResultant(setData[i].corpAcct, waitRetry);
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
-                sn = actions.goBackIfSaveButtonNotDisappear(waitRetry);
-                if (sn.saved) {
-                    console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
-                } else if (sn.title == 'Failure') {
-                    console.log(`${sn.title} - ${sn.content}`);
-                    console.log('this rule is not saved due to errors:');
-                    console.log(createdRule);
-                    throw 'Please re-processing this rule.'
-                }
+
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.convertRejected} - ${sn.msg}:`)
                 console.log(createdRule);
                 createdRule = {};
             }
