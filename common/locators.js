@@ -48,6 +48,8 @@ const locators = {
     array3dots: '#span-3dots',
     goBack: '[id="a-goback"]',
     textRuleName: '[data-auto-id="text-ruleName"]',
+    businessValidationError: 'div[class="sn-title ng-tns-c15-9 ng-star-inserted"]',
+    duplicateRuleError: 'div[class="sn-content ng-tns-c15-9 ng-star-inserted"]',
 };
 
 const consts = {
