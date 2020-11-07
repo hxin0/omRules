@@ -1,15 +1,16 @@
 const { schemaSimpleton, schemaSimpletonData } = require('../common/schema');
-const { locators, ruleNames, soAbbr } = require('../common/locators');
+const { locators, ruleNames, soAbbr, consts } = require('../common/locators');
 const actions = require('../common/actions');
 
 describe('simpleton rules', function () {
 
     var setEnv = {};
+
+    var setData = [];
     const waitRetry = {
         delay: 1000,
         maxTries: 10
     }
-    var setData = [];
 
     before('read file first', async function () {
         ({ setEnv, setData } = await actions.readDataSheets(setEnv, setData, schemaSimpletonData, 'simpleton'));
@@ -30,6 +31,7 @@ describe('simpleton rules', function () {
         var i;
         var createdRule = {};
         var skipClickNewRuleButton = false;
+        var sn;
 
         for (i = 0; i < setData.length; i++) {
             console.log(`Start settings.xlsx/simpleton on row ${i+1}: ${setData[i].tradingPartner}`);
@@ -62,9 +64,9 @@ describe('simpleton rules', function () {
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
-                console.log('simpleton ' + ruleNames.customerRule + ' rule is saved.');
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.customerRule} - ${sn.msg}:`)
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
@@ -95,9 +97,9 @@ describe('simpleton rules', function () {
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
-                console.log('simpleton ' + ruleNames.billingParty + ' rule is saved.');
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.billingParty} - ${sn.msg}:`)
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
@@ -129,9 +131,9 @@ describe('simpleton rules', function () {
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
-                console.log('simpleton ' + ruleNames.businessUnit + ' rule is saved.');
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.businessUnit} - ${sn.msg}:`)
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
@@ -168,9 +170,9 @@ describe('simpleton rules', function () {
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
-                console.log('simpleton ' + ruleNames.serviceOffering + ' rule is saved.');
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.serviceOffering} - ${sn.msg}:`)
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
@@ -202,9 +204,9 @@ describe('simpleton rules', function () {
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
-                console.log('simpleton ' + ruleNames.fleetCode + ' rule is saved.');
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.fleetCode} - ${sn.msg}:`)
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
 
@@ -224,13 +226,12 @@ describe('simpleton rules', function () {
 
                 createdRule.convertRejected = setData[i].convertRejected;
 
-                // actions.setResultant(setData[i].corpAcct, waitRetry);
                 browser.pause(waitRetry.delay);
                 $(locators.saveButton).click();
 
-                console.log('simpleton ' + ruleNames.convertRejected + ' rule is saved.');
+                sn = actions.checkAfterSave(waitRetry);
+                console.log(`simpleton ${ruleNames.convertRejected} - ${sn.msg}:`)
                 console.log(createdRule);
-                actions.waitForLoadingDotsDisappearIfAny(waitRetry.delay);
                 createdRule = {};
             }
         }

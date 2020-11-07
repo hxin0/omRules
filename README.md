@@ -1,4 +1,4 @@
-# Version v2.2
+# Version v2.2.1
 
 # Quickstart
 
@@ -119,6 +119,8 @@ run from code root folder:
   try to increase delaySecond in settings
 
 # What's new
+## v2.2.1
+  - continue on duplicate rule 
 ## v2.2  
   - add convert rejected tender rule
 ## v2.1

@@ -5,7 +5,6 @@ const locators = {
     loginButton: 'input[value="Log In"]',
     searchMenuDropdown: '[id="searchMenuItems"]',
     searchMenu1TradingPartner: '[id="ui-select-choices-id-1"]',
-    // configureNewRuleButton: 'button[="Configure New Rule"]',
     configureNewRuleButton: '[data-auto-id="btn-configureNewRule"]',
     searchRuleName: '[id="searchRuleName"]',
     span3Dots: '[id="span-3dots"]',
@@ -16,7 +15,6 @@ const locators = {
     ruleNameRow: '[class="datatable-row-center datatable-row-group ng-star-inserted"]',
     ruleNameColumn: '.datatable-row-center.datatable-row-group.ng-star-inserted .datatable-body-cell .datatable-body-cell-label .ng-star-inserted',
     selectAttributeDropdown: 'span=Select Attribute',
-    // selectAttributeDropdown: '[id="orderRuleCriteria"] > div > div[class="ui-select-match ng-star-inserted"] > span',
     attributeDropdown: '[class="ui-select-placeholder text-muted ng-star-inserted"]',
     inputAttribute: 'input[class="form-control ui-select-search ng-star-inserted"]',
     inputAttributeText: 'span[class="ui-select-match-text pull-left ng-star-inserted"]',
@@ -48,6 +46,8 @@ const locators = {
     array3dots: '#span-3dots',
     goBack: '[id="a-goback"]',
     textRuleName: '[data-auto-id="text-ruleName"]',
+    snTitle: 'div.sn-title.ng-star-inserted',
+    snContent: 'div.sn-content.ng-star-inserted',
 };
 
 const consts = {
@@ -55,7 +55,12 @@ const consts = {
     pickupSiteCode: 'Pickup Site Code',
     deliverySiteCode: 'Delivery Site Code',
     ucrScac: 'UCR SCAC',
-    delay: 3000
+    delay: 3000,
+    snTitleSuccess: 'Success',
+    snTitleFailure: 'Failure',
+    snTitleValidationError: 'Business Validation Error',
+    snRuleSuccessfully: 'Rule Configured Successfully',
+    snDuplicateRule: 'Duplicate Rules cannot be configured',
 };
 
 const ruleNames = {

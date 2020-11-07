@@ -123,8 +123,7 @@ exports.setAttributeTradingPartner = function (tradingPartner, { delay=1000, max
   $(locators.selectOperatorDropdown).click();
   $(locators.operatorEquals).click(); // Equals
 
-  $(locators.attributeValue).waitForExist({ timeout: delay });
-  $(locators.attributeValue).click();
+  this.waitForExistThenClick(locators.attributeValue, waitRetry);
   $(locators.attributeValue).setValue(tradingPartner + " "); // Trading Partner
   this.waitForExistThenClick(locators.firstAttributeDropdownValue, waitRetry);
 };
@@ -137,10 +136,8 @@ exports.setAttribute2 = function (attribute, index, { delay=1000, maxTries=10 } 
   this.waitForExistWithRetry(locators.inputAttribute, waitRetry);
   $(locators.inputAttribute).setValue(attribute); // UCR SCAC
 
-  // ckeck here, if locator.dropdownItem getText is not correct, retry setValue again
   this.waitForExistThenClick(locators.dropdownItem, waitRetry);
   this.verifyValue(locators.inputAttribute, locators.inputAttributeText, index, attribute, waitRetry);
-  // or maybe check the above mentioned here?
 
   $(locators.selectOperatorDropdown).waitForExist({ timeout: delay });
   $(locators.selectOperatorDropdown).click();
@@ -273,8 +270,8 @@ exports.waitForExistWithRetry = function (element, { delay=1000, maxTries=10 } =
       $(element).waitForExist({ timeout: delay * (countTries + 1) });
       break;
     } catch (e) {
+      console.log(`"Element ${element} is not existing" after ${delay * (countTries + 1 )} milliseconds. Retry ${countTries + 1}`);
       if (countTries++ >= maxTries) {
-        console.log(`"Element ${element} is not existing" after ${delay * countTries} milliseconds. Retry ${countTries}`);
         throw e;
       }
     }
@@ -330,6 +327,66 @@ exports.verifyDropdownList = function (element, elementSet, value, { delay=1000,
   }
 }
 
+exports.checkAfterSave = function ({ delay=1000, maxTries=10 } = {}) {
+  let countTries = 1;
+  const sn = {title:"", content:"", saved: true, msg:""};
+
+  while (true) {
+    if ($(locators.snTitle).isDisplayed()) {
+      sn.title = $(locators.snTitle).getText();
+      sn.content = $(locators.snContent).getText();
+      if (sn.title = consts.snTitleSuccess) {
+        sn.saved = true;
+        sn.msg = 'Rule saved';
+        break;
+      } else if (sn.title = consts.snTitleFailure) {
+        sn.saved = false;
+        sn.msg = 'Rule not saved, please redo this rule';
+        break;
+      } else if (sn.title = consts.snTitleValidationError) {
+        sn.saved = 'duplicateRule';
+        sn.msg = 'Duplicate rule exists, continue...';
+        break;
+      }
+      console.log(sn)
+      break;
+    }
+    browser.pause(delay);
+    if (countTries++ > 5) {
+      console.log('no simple notification displayed')
+      break;
+    }
+  }
+
+  if (sn.content == consts.duplicateRuleMsg) {
+    console.log('Duplicate rule exists, continue...');
+    $(locators.goBack).click();
+    browser.pause(delay);
+    $(locators.goBack).click();
+    browser.pause(delay);
+    return sn;
+  } else if (sn.title == "Failure") {
+    return sn;
+  }
+  countTries = 1;
+  while (true) {
+    try {
+      $(locators.saveButton).waitForExist({ timeout: delay * countTries, reverse: true });
+      break;
+    } catch (e) {
+      console.log(`Save button still exists after ${delay * countTries} milliseconds. Wait ${countTries}`);
+      if (countTries++ >= 2) {
+        $(locators.goBack).click();
+        browser.pause(delay);
+        $(locators.goBack).click();
+        browser.pause(delay);
+        return sn;
+      }
+    }
+  }
+  return sn;
+}
+
 exports.tier1 = function tier1(
   input,
   tExcel,
@@ -344,6 +401,7 @@ exports.tier1 = function tier1(
   var selectedShp = [];
   var createdRule = {};
   var skipClickNewRuleButton = false;
+  var sn;
   const waitRetry = { delay, maxTries };
   for (i = 0; i < tExcel.length; i++) {
     if (tExcel[i].code != ruleCode || tExcel[i].scac != scacCode) {
@@ -379,7 +437,6 @@ exports.tier1 = function tier1(
         tExcel[i].shipper
       ) {
         eleExists = true;
-        // $(locators.firstAttributeDropdownValue).click(); // existing but not clickable if fitst dropdown item is blank
         this.clickWithRetry(locators.firstAttributeDropdownValue, maxTries);
         selectedShp.push(tExcel[i].shipper);
       } else {
@@ -401,7 +458,6 @@ exports.tier1 = function tier1(
         ml.parentCode = tExcel[i].code;
         console.log(`missing shipper location: ${tExcel[i].shipper}`);
       }
-      // browser.pause(delay);
     }
 
     // Save if billto code or scac on next row changes, or reached to the end
@@ -433,16 +489,15 @@ exports.tier1 = function tier1(
         this.waitForLoadingDotsDisappearIfAny(delay);
 
         createdRule.parentCode = ruleCode;
-        if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
+        if (tExcel[i].scac != undefined) createdRule.scac = scacCode;
         createdRule.shipperCode = selectedShp;
-        console.log("Tier 1 " + ruleName + " rule is saved:");
-        console.log(Date().toLocaleString());
-        console.log(createdRule);
-        selectedShp.length = 0;
-        createdRule = {};
-        skipClickNewRuleButton = false;
 
-        $(locators.saveButton).waitForDisplayed({timeout: delay * 10, reverse: true});
+        sn = this.checkAfterSave(waitRetry);
+        console.log(`Tier 1 ${ruleName} - ${sn.msg}:`)
+        console.log(createdRule);
+        createdRule = {};
+        selectedShp.length = 0;
+        skipClickNewRuleButton = false;
       }
     }
   }
@@ -464,6 +519,7 @@ exports.tier2 = function tier2(
   var selectedRec = [];
   var createdRule = {};
   var skipClickNewRuleButton = false;
+  var sn;
   const waitRetry = { delay, maxTries };
   for (i = 0; i < tExcel.length; i++) {
     if (
@@ -502,7 +558,6 @@ exports.tier2 = function tier2(
           tExcel[i].shipper
         ) {
           eleExists = true;
-          // $(locators.firstAttributeDropdownValue).click(); // existing but not clickable if fitst dropdown item is blank
           this.clickWithRetry(locators.firstAttributeDropdownValue, maxTries);
           selectedShp.push(tExcel[i].shipper);
         } else {
@@ -524,7 +579,6 @@ exports.tier2 = function tier2(
           ml.parentCode = tExcel[i].code;
           console.log(`missing shipper location: ${tExcel[i].shipper}`);
         }
-        // browser.pause(delay);
       }
       // configure new rule page - receiver
       if (selectedShp.length > 0) {
@@ -537,18 +591,17 @@ exports.tier2 = function tier2(
       receiverField.waitForExist({ timeout: delay });
       receiverField.click();
       receiverField.setValue(tExcel[i].receiver + " ");
-      // browser.pause(delay);
+
       this.waitForLoadingDotsDisappearIfAny(delay);
       this.waitForExistWithRetry(locators.firstAttributeDropdownValue, waitRetry);
       if ($(locators.firstAttributeDropdownValue).isExisting()) {
-        // browser.pause(delay);
+
         let eleExists = false;
         if (
           $(locators.firstAttributeDropdownValue).getText() ==
           tExcel[i].receiver
         ) {
           eleExists = true;
-          // $(locators.firstAttributeDropdownValue).click(); // existing but not clickable if fitst dropdown item is blank
           this.clickWithRetry(locators.firstAttributeDropdownValue, maxTries);
           selectedRec.push(tExcel[i].receiver);
         } else {
@@ -570,7 +623,6 @@ exports.tier2 = function tier2(
           ml.parentCode = tExcel[i].code;
           console.log(`missing receiver location: ${tExcel[i].receiver}`);
         }
-        // browser.pause(delay);
       }
     }
     // Save if billto code or shipper code or scac on next row changes, or reached to the end
@@ -602,18 +654,17 @@ exports.tier2 = function tier2(
         $(locators.saveButton).click();
         browser.pause(delay);
         createdRule.parentCode = ruleCode;
-        if (tExcel[i].scac != undefined) createdRule.scac = scacCode; // tExcel[i].scac);
+        if (tExcel[i].scac != undefined) createdRule.scac = scacCode;
         createdRule.shipperCode = selectedShp;
         createdRule.receiverCode = selectedRec;
-        this.waitForLoadingDotsDisappearIfAny(delay);
-        console.log("Tier 2 " + ruleName + " rule is saved:");
-        console.log(Date().toLocaleString());
+
+        sn = this.checkAfterSave(waitRetry);
+        console.log(`Tier 2 ${ruleName} - ${sn.msg}:`)
         console.log(createdRule);
+        createdRule = {};
         selectedShp.length = 0;
         selectedRec.length = 0;
-        createdRule = {};
         skipClickNewRuleButton = false;
-        $(locators.saveButton).waitForDisplayed({timeout: delay * 10, reverse: true});
       }
     }
   }
